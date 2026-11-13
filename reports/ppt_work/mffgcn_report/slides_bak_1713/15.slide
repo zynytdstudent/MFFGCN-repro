@@ -1,0 +1,68 @@
+<Slide style={{ width: 1280, height: 720, padding: 60, background: '#FFFFFF' }}>
+    <Box style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#123C6E' }}>训练配置与评价口径</Text>
+        <Text style={{ fontSize: 16, color: '#8B97A8' }}>03 · 实验设置</Text>
+    </Box>
+    <Box style={{ width: '100%', height: 1, background: '#123C6E', marginTop: 18 }} />
+
+    <Box style={{ flexDirection: 'row', marginTop: 26 }}>
+        <Box style={{ width: 452, flexDirection: 'column' }}>
+            <Text style={{ fontSize: 15, color: '#1E5A9E', letterSpacing: 2 }}>TRAINING</Text>
+
+            <Box style={{ flexDirection: 'row', alignItems: 'center', height: 46, borderBottom: '1px solid #D8DEE7' }}>
+                <Text style={{ fontSize: 17, color: '#5A6675', width: 120 }}>优化器</Text>
+                <Text style={{ fontSize: 17, color: '#1A2230' }}>Adam</Text>
+            </Box>
+            <Box style={{ flexDirection: 'row', alignItems: 'center', height: 46, borderBottom: '1px solid #D8DEE7' }}>
+                <Text style={{ fontSize: 17, color: '#5A6675', width: 120 }}>初始学习率</Text>
+                <Text style={{ fontSize: 17, color: '#1A2230' }}>1e−3，第 40 轮衰减 ×0.1</Text>
+            </Box>
+            <Box style={{ flexDirection: 'row', alignItems: 'center', height: 46, borderBottom: '1px solid #D8DEE7' }}>
+                <Text style={{ fontSize: 17, color: '#5A6675', width: 120 }}>训练轮数</Text>
+                <Text style={{ fontSize: 17, color: '#1A2230' }}>50 epoch</Text>
+            </Box>
+            <Box style={{ flexDirection: 'row', alignItems: 'center', height: 46, borderBottom: '1px solid #D8DEE7' }}>
+                <Text style={{ fontSize: 17, color: '#5A6675', width: 120 }}>批大小</Text>
+                <Text style={{ fontSize: 17, color: '#1A2230' }}>15（算法 1 给定）</Text>
+            </Box>
+            <Box style={{ flexDirection: 'row', alignItems: 'center', height: 46, borderBottom: '1px solid #D8DEE7' }}>
+                <Text style={{ fontSize: 17, color: '#5A6675', width: 120 }}>归一化 / 激活</Text>
+                <Text style={{ fontSize: 17, color: '#1A2230' }}>BatchNorm / ReLU</Text>
+            </Box>
+            <Box style={{ flexDirection: 'row', alignItems: 'center', height: 46, borderBottom: '1px solid #D8DEE7' }}>
+                <Text style={{ fontSize: 17, color: '#5A6675', width: 120 }}>重复次数</Text>
+                <Text style={{ fontSize: 17, color: '#1A2230' }}>5 个随机种子，报 mean ± std</Text>
+            </Box>
+        </Box>
+
+        <Box style={{ flex: 1, flexDirection: 'column', marginLeft: 52 }}>
+            <Text style={{ fontSize: 15, color: '#1E5A9E', letterSpacing: 2 }}>METRICS</Text>
+
+            <Box style={{ flexDirection: 'row', alignItems: 'center', marginTop: 12 }}>
+                <Math latex="\\mathrm{NMSE}=\\frac{\\sum\\left(y-\\hat{y}\\right)^{2}}{\\sum y^{2}}" width={220} display={true} color="#123C6E" />
+                <Text style={{ fontSize: 16, color: '#5A6675', width: 340, lineHeight: 1.5, marginLeft: 20 }}>
+                    分母是该区域的信号能量，衡量"相对误差"。
+                </Text>
+            </Box>
+            <Box style={{ flexDirection: 'row', alignItems: 'center', marginTop: 14 }}>
+                <Math latex="\\mathrm{RMSE}=\\sqrt{\\frac{1}{HW}\\sum\\left(y-\\hat{y}\\right)^{2}}" width={250} display={true} color="#123C6E" />
+                <Text style={{ fontSize: 16, color: '#5A6675', width: 340, lineHeight: 1.5, marginLeft: 20 }}>
+                    分母是像素个数，反映物理量意义上的绝对偏差。
+                </Text>
+            </Box>
+
+            <Box style={{ background: '#E8F0FA', borderLeft: '4px solid #C0392B', padding: '14px 18px', marginTop: 20 }}>
+                <Text style={{ fontSize: 17, color: '#1A2230', lineHeight: 1.55 }}>
+                    两个指标必须一起报：禁区信号能量小，会出现"RMSE 低、NMSE 反而高"的情况，只报一个就能得到想要的结论。
+                </Text>
+            </Box>
+        </Box>
+    </Box>
+
+    <Box style={{ marginTop: 26, borderTop: '1px solid #D8DEE7', paddingTop: 18 }}>
+        <Text style={{ fontSize: 15, color: '#1E5A9E', letterSpacing: 2 }}>BASELINES</Text>
+        <Text style={{ fontSize: 17, color: '#1A2230', lineHeight: 1.9, marginTop: 6 }}>
+            传统插值 KNN、Kriging　｜　自编码器 AE、DeepAE　｜　图像到图像 U-Net、RadioUNet、Pix2pix+、RME-GAN　｜　本文 MFFGCN
+        </Text>
+    </Box>
+</Slide>

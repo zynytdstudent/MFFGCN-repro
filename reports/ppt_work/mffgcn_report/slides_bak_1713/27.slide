@@ -1,0 +1,77 @@
+<Slide style={{ width: 1280, height: 720, padding: 60, background: '#FFFFFF' }}>
+    <Box style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#123C6E' }}>结论、局限与可讨论之处</Text>
+        <Text style={{ fontSize: 16, color: '#8B97A8' }}>04 · 实验结果</Text>
+    </Box>
+    <Box style={{ width: '100%', height: 1, background: '#123C6E', marginTop: 18 }} />
+
+    <Box style={{ flexDirection: 'row', marginTop: 26 }}>
+        <Box style={{ width: 556, flexDirection: 'column' }}>
+            <Text style={{ fontSize: 15, color: '#1E5A9E', letterSpacing: 2 }}>CONCLUSION</Text>
+
+            <Box style={{ flexDirection: 'row', marginTop: 16 }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#123C6E', width: 40 }}>01</Text>
+                <Box style={{ flexDirection: 'column', width: 500 }}>
+                    <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#1A2230' }}>两条支路各司其职</Text>
+                    <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.5, marginTop: 6 }}>
+                        观测与环境分别编码、逐级融合，禁区内不再"无据可依"，这是 Setup 2/3 上比其他方法掉得慢的直接原因。
+                    </Text>
+                </Box>
+            </Box>
+
+            <Box style={{ flexDirection: 'row', marginTop: 20 }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#123C6E', width: 40 }}>02</Text>
+                <Box style={{ flexDirection: 'column', width: 500 }}>
+                    <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#1A2230' }}>建图比建大模型更划算</Text>
+                    <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.5, marginTop: 6 }}>
+                        patch 级动态图只增加 15% 的计算量，却把"远处的相似区域"接进禁区；图结构本身是抗采样不均的关键。
+                    </Text>
+                </Box>
+            </Box>
+
+            <Box style={{ flexDirection: 'row', marginTop: 20 }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#123C6E', width: 40 }}>03</Text>
+                <Box style={{ flexDirection: 'column', width: 500 }}>
+                    <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#1A2230' }}>残差是精度底线</Text>
+                    <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.5, marginTop: 6 }}>
+                        GCN 只学修正量，去掉就让 NMSE 涨 5.4 倍；这也说明"图操作会破坏像素对齐"，不宜直接回归整图。
+                    </Text>
+                </Box>
+            </Box>
+        </Box>
+
+        <Box style={{ flex: 1, flexDirection: 'column', marginLeft: 56 }}>
+            <Text style={{ fontSize: 15, color: '#C0392B', letterSpacing: 2 }}>LIMITATIONS</Text>
+
+            <Box style={{ flexDirection: 'row', marginTop: 16 }}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#C0392B', width: 34 }}>①</Text>
+                <Box style={{ flexDirection: 'column', width: 470 }}>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230' }}>环境图一旦失真就失效</Text>
+                    <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.5, marginTop: 6 }}>
+                        分辨率降到 75% 误差翻倍，随机缺失 4 栋建筑同样致命。作者把在线地图更新列为后续工作。
+                    </Text>
+                </Box>
+            </Box>
+
+            <Box style={{ flexDirection: 'row', marginTop: 18 }}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#C0392B', width: 34 }}>②</Text>
+                <Box style={{ flexDirection: 'column', width: 470 }}>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230' }}>场景覆盖有限</Text>
+                    <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.5, marginTop: 6 }}>
+                        只验证了 2D 场景、单一频点、DPM 传播模型；3D、多频与其他模型的迁移性没有实验。
+                    </Text>
+                </Box>
+            </Box>
+
+            <Box style={{ flexDirection: 'row', marginTop: 18 }}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#C0392B', width: 34 }}>③</Text>
+                <Box style={{ flexDirection: 'column', width: 470 }}>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230' }}>两处口径需要自己核</Text>
+                    <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.5, marginTop: 6 }}>
+                        λ₁ 正文写 0.1、表 VII 显示 0.5 才对应 0.0043；AFM 中 Softmax 沿哪个维度归一化原文未写明。
+                    </Text>
+                </Box>
+            </Box>
+        </Box>
+    </Box>
+</Slide>

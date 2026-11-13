@@ -1,0 +1,89 @@
+<Slide style={{ width: 1280, height: 720, padding: 60, background: '#FFFFFF' }}>
+    <Box style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#123C6E' }}>论文真正的卖点是"掉得慢"</Text>
+        <Text style={{ fontSize: 16, color: '#8B97A8' }}>04 · 实验结果</Text>
+    </Box>
+    <Box style={{ width: '100%', height: 1, background: '#123C6E', marginTop: 18 }} />
+
+    <Box style={{ flexDirection: 'row', marginTop: 10 }}>
+        <Box style={{ width: 760, flexDirection: 'column' }}>
+            <svg width='760' height='396' viewBox='0 0 760 396'>
+            <line x1='128' y1='18' x2='128' y2='380' stroke='#E2E7EE' strokeWidth='1' />
+            <text x='128' y='394' fontSize='12' fill='#8B97A8' textAnchor='middle'>0%</text>
+            <line x1='232' y1='18' x2='232' y2='380' stroke='#E2E7EE' strokeWidth='1' />
+            <text x='232' y='394' fontSize='12' fill='#8B97A8' textAnchor='middle'>10%</text>
+            <line x1='336' y1='18' x2='336' y2='380' stroke='#E2E7EE' strokeWidth='1' />
+            <text x='336' y='394' fontSize='12' fill='#8B97A8' textAnchor='middle'>20%</text>
+            <line x1='440' y1='18' x2='440' y2='380' stroke='#E2E7EE' strokeWidth='1' />
+            <text x='440' y='394' fontSize='12' fill='#8B97A8' textAnchor='middle'>30%</text>
+            <line x1='544' y1='18' x2='544' y2='380' stroke='#E2E7EE' strokeWidth='1' />
+            <text x='544' y='394' fontSize='12' fill='#8B97A8' textAnchor='middle'>40%</text>
+            <line x1='648' y1='18' x2='648' y2='380' stroke='#E2E7EE' strokeWidth='1' />
+            <text x='648' y='394' fontSize='12' fill='#8B97A8' textAnchor='middle'>50%</text>
+            <text x='116' y='40.6' fontSize='15' fontWeight='normal' fill='#1A2230' textAnchor='end'>KNN</text>
+            <rect x='128' y='26.0' width='2.0' height='19.2' fill='#A9B4C2' rx='1.5' />
+            <text x='140.0' y='40.6' fontSize='13' fontWeight='normal' fill='#5A6675'>0.04%</text>
+            <text x='116' y='79.1' fontSize='15' fontWeight='normal' fill='#1A2230' textAnchor='end'>Kriging</text>
+            <rect x='128' y='64.4' width='8.9' height='19.2' fill='#A9B4C2' rx='1.5' />
+            <text x='146.9' y='79.1' fontSize='13' fontWeight='normal' fill='#5A6675'>0.86%</text>
+            <text x='116' y='117.5' fontSize='15' fontWeight='bold' fill='#C0392B' textAnchor='end'>MFFGCN</text>
+            <rect x='128' y='102.9' width='34.6' height='19.2' fill='#C0392B' rx='1.5' />
+            <text x='172.6' y='117.5' fontSize='13' fontWeight='bold' fill='#C0392B'>3.33%</text>
+            <text x='116' y='155.9' fontSize='15' fontWeight='normal' fill='#1A2230' textAnchor='end'>Pix2pix+</text>
+            <rect x='128' y='141.3' width='100.0' height='19.2' fill='#1E5A9E' rx='1.5' />
+            <text x='238.0' y='155.9' fontSize='13' fontWeight='normal' fill='#5A6675'>9.62%</text>
+            <text x='116' y='194.4' fontSize='15' fontWeight='normal' fill='#1A2230' textAnchor='end'>RadioUNet</text>
+            <rect x='128' y='179.8' width='136.6' height='19.2' fill='#1E5A9E' rx='1.5' />
+            <text x='274.6' y='194.4' fontSize='13' fontWeight='normal' fill='#5A6675'>13.13%</text>
+            <text x='116' y='232.8' fontSize='15' fontWeight='normal' fill='#1A2230' textAnchor='end'>U-Net</text>
+            <rect x='128' y='218.2' width='137.2' height='19.2' fill='#1E5A9E' rx='1.5' />
+            <text x='275.2' y='232.8' fontSize='13' fontWeight='normal' fill='#5A6675'>13.19%</text>
+            <text x='116' y='271.3' fontSize='15' fontWeight='normal' fill='#1A2230' textAnchor='end'>RME-GAN</text>
+            <rect x='128' y='256.7' width='144.7' height='19.2' fill='#1E5A9E' rx='1.5' />
+            <text x='282.7' y='271.3' fontSize='13' fontWeight='normal' fill='#5A6675'>13.91%</text>
+            <text x='116' y='309.7' fontSize='15' fontWeight='normal' fill='#1A2230' textAnchor='end'>AE</text>
+            <rect x='128' y='295.1' width='458.4' height='19.2' fill='#6B7C90' rx='1.5' />
+            <text x='596.4' y='309.7' fontSize='13' fontWeight='normal' fill='#5A6675'>44.08%</text>
+            <text x='116' y='348.2' fontSize='15' fontWeight='normal' fill='#1A2230' textAnchor='end'>DeepAE</text>
+            <rect x='128' y='333.6' width='483.9' height='19.2' fill='#6B7C90' rx='1.5' />
+            <text x='621.9' y='348.2' fontSize='13' fontWeight='normal' fill='#5A6675'>46.53%</text>
+            </svg>
+            <Text style={{ fontSize: 14, color: '#8B97A8', marginTop: 4 }}>
+                横轴：S3 相对 S1 的 RMSE 劣化幅度（%），由表 III 直接算出。
+            </Text>
+        </Box>
+
+        <Box style={{ flex: 1, flexDirection: 'column', marginLeft: 40, justifyContent: 'center' }}>
+            <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                <Box style={{ width: 12, height: 12, background: '#A9B4C2' }} />
+                <Text style={{ fontSize: 16, color: '#1A2230' }}>传统插值　+0.04% ~ +0.9%</Text>
+            </Box>
+            <Text style={{ fontSize: 15, color: '#5A6675', lineHeight: 1.5, marginTop: 6, marginLeft: 22 }}>
+                本来就不依赖采样分布，噪声式对照。
+            </Text>
+
+            <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 20 }}>
+                <Box style={{ width: 12, height: 12, background: '#1E5A9E' }} />
+                <Text style={{ fontSize: 16, color: '#1A2230' }}>图像到图像　+9.6% ~ +13.9%</Text>
+            </Box>
+            <Text style={{ fontSize: 15, color: '#5A6675', lineHeight: 1.5, marginTop: 6, marginLeft: 22 }}>
+                U-Net 系与 GAN 系的常规水平。
+            </Text>
+
+            <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 20 }}>
+                <Box style={{ width: 12, height: 12, background: '#6B7C90' }} />
+                <Text style={{ fontSize: 16, color: '#1A2230' }}>自编码器　+44% ~ +47%</Text>
+            </Box>
+            <Text style={{ fontSize: 15, color: '#5A6675', lineHeight: 1.5, marginTop: 6, marginLeft: 22 }}>
+                纯编解码最不耐受采样不均。
+            </Text>
+
+            <Box style={{ marginTop: 26, padding: '14px 18px', background: '#FBF3F2', borderLeft: '4px solid #C0392B' }}>
+                <Text style={{ fontSize: 26, fontWeight: 'bold', color: '#C0392B' }}>+3.33%</Text>
+                <Text style={{ fontSize: 16, color: '#1A2230', lineHeight: 1.5, marginTop: 4 }}>
+                    MFFGCN 的劣化幅度，只有 RME-GAN 的四分之一。
+                </Text>
+            </Box>
+        </Box>
+    </Box>
+</Slide>

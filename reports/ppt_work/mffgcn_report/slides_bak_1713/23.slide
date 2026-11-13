@@ -1,0 +1,35 @@
+<Slide style={{ width: 1280, height: 720, padding: 60, background: '#FFFFFF' }}>
+    <Box style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#123C6E' }}>图结构如何把信息送进禁区</Text>
+        <Text style={{ fontSize: 16, color: '#8B97A8' }}>04 · 实验结果</Text>
+    </Box>
+    <Box style={{ width: '100%', height: 1, background: '#123C6E', marginTop: 18 }} />
+
+    <Box style={{ flexDirection: 'row', justifyContent: 'center', width: '100%', marginTop: 12 }}>
+        <Image src="assets/fig12.png" style={{ width: 1060, height: 275 }} />
+    </Box>
+    <Text style={{ fontSize: 14, color: '#5A6675', lineHeight: 1.5, marginTop: 8 }}>
+        图 12　(a) 真值与禁区　(b) 粗估计，RMSE = 0.0173　(c) 禁区内部一个 patch 节点的连边　(d) 图卷积精化后，RMSE = 0.0147
+    </Text>
+
+    <Box style={{ flexDirection: 'row', gap: 32, marginTop: 26 }}>
+        <Box style={{ width: 352, flexDirection: 'column', borderTop: '3px solid #123C6E', paddingTop: 12 }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230' }}>边是按"像不像"连的</Text>
+            <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.5, marginTop: 6 }}>
+                (c) 中禁区节点的邻居大量落在可观测区——因为它们的信号分布相似，而不是因为位置相邻。
+            </Text>
+        </Box>
+        <Box style={{ width: 352, flexDirection: 'column', borderTop: '3px solid #123C6E', paddingTop: 12 }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230' }}>位置只用于建边</Text>
+            <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.5, marginTop: 6 }}>
+                位置编码不进入消息传递，避免模型退化成"记住坐标"，这也是它能跨城市泛化的前提。
+            </Text>
+        </Box>
+        <Box style={{ width: 352, flexDirection: 'column', borderTop: '3px solid #C0392B', paddingTop: 12 }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230' }}>精度提升 15%</Text>
+            <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.5, marginTop: 6 }}>
+                RMSE 从 0.0173 降到 0.0147。这是单个样本的例子，与表 V 中"去 GCN 劣化 14%"的量级一致。
+            </Text>
+        </Box>
+    </Box>
+</Slide>

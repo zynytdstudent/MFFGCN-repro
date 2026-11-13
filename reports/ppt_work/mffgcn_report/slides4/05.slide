@@ -1,0 +1,62 @@
+<Slide style={{ width: 1280, height: 720, padding: 0, background: '#FFFFFF', position: 'relative' }}>
+    <Image src="assets/banner.jpg" style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 60, objectFit: 'cover' }} />
+    <Text style={{ position: 'absolute', top: 15, left: 60, width: 820, fontSize: 28, fontWeight: 'bold', color: '#FFFFFF', letterSpacing: 1 }}>现有 RME 模型：四条路线，卡在同一个地方</Text>
+    <Text style={{ position: 'absolute', top: 23, left: 900, width: 100, fontSize: 15, color: '#BBD9F2', textAlign: 'right' }}>01 · 绪论</Text>
+    <Image src="assets/logo_bar.png" style={{ position: 'absolute', top: 8, left: 1010, width: 210, height: 44, objectFit: 'contain' }} />
+
+    <Box style={{ position: 'absolute', top: 72, left: 60, width: 1160, height: 616, flexDirection: 'column', justifyContent: 'center' }}>
+
+        <Table
+            style={{ width: '100%', height: 356, marginTop: 20 }}
+            defaultTextStyle={{ fontSize: 16, textAlign: 'left', color: '#1A2230' }}
+            defaultCellStyle={{ border: { bottom: { width: 1, color: '#E2E7EE' } }, padding: '8px 12px' }}
+            cells={[
+                [
+                    { text: '技术路线', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#123C6E' } } },
+                    { text: '代表工作', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#123C6E' } } },
+                    { text: '核心做法', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#123C6E' } } },
+                    { text: '在观测盲区上的短板', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#123C6E' } } },
+                ],
+                [
+                    { text: '传统插值', textStyle: { bold: true } },
+                    'Kriging、KNN\n反距离加权',
+                    '依赖空间平滑性假设，用邻近观测点加权外推',
+                    '城市多建筑遮挡、非视距传播下平滑性不成立，插值直接把盲区抹平',
+                ],
+                [
+                    { text: 'CNN 补全', textStyle: { bold: true } },
+                    'AE、DeepAE\nU-Net、RadioUNet',
+                    '把地图当图像做编码—解码补全，均匀采样下精度很高',
+                    '没有针对盲区的专门结构，输入整块为 0 时等于让网络凭空猜',
+                ],
+                [
+                    { text: '生成式', textStyle: { bold: true } },
+                    'Pix2pix+\nRME-GAN',
+                    '引入无线传播先验与对抗损失，稀疏场景更稳',
+                    '缺跨区域信息聚合，只能靠局部纹理生成，大面积盲区仍失真',
+                ],
+                [
+                    { text: 'GNN', textStyle: { bold: true } },
+                    'GNN 用于 RME\n的早期工作',
+                    '用图结构建模非欧的传播关系，理论上能传递长程依赖',
+                    '直接在像素级建图，256×256 就是 6.5 万节点，计算开销不可接受',
+                ],
+            ]}
+        />
+
+        <Box style={{ flexDirection: 'row', gap: 20, marginTop: 24 }}>
+            <Box style={{ flex: 1, background: '#E8F0FA', borderLeft: '4px solid #123C6E', padding: '16px 20px' }}>
+                <Text style={{ fontSize: 17, color: '#1A2230', lineHeight: 1.5 }}>
+                    <span style={{ fontWeight: 'bold', color: '#123C6E' }}>研究缺口　</span>
+                    没有工作同时做到：面向观测盲区的专门设计 + 多模态自适应融合 + Patch 级动态图的跨区域聚合。
+                </Text>
+            </Box>
+            <Box style={{ width: 400, background: '#FBF3F2', borderLeft: '4px solid #C0392B', padding: '16px 20px' }}>
+                <Text style={{ fontSize: 17, color: '#1A2230', lineHeight: 1.5 }}>
+                    <span style={{ fontWeight: 'bold', color: '#C0392B' }}>所以需要两阶段　</span>
+                    先把全局补个大概，再用图把远端的有效观测搬进盲区。
+                </Text>
+            </Box>
+        </Box>
+    </Box>
+</Slide>

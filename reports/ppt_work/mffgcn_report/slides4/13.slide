@@ -1,0 +1,15 @@
+<Slide style={{ width: 1280, height: 720, padding: 0, background: '#1A6CAC', position: 'relative' }}>
+    <Image src="assets/bg_cover.jpg" style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 720, objectFit: 'cover' }} />
+    <Box style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 720, background: 'linear-gradient(105deg, rgba(8,38,74,0.84) 0%, rgba(12,52,96,0.62) 58%, rgba(16,62,110,0.34) 100%)' }} />
+
+    <Image src="assets/logo_bar.png" style={{ position: 'absolute', top: 40, left: 60, width: 210, height: 44, objectFit: 'contain' }} />
+
+    <Box style={{ position: 'absolute', top: 272, left: 60, width: 1160, flexDirection: 'row', alignItems: 'flex-end' }}>
+        <Text style={{ fontSize: 132, fontWeight: 'bold', color: '#7FB4E4', lineHeight: 1, opacity: 0.42 }}>03</Text>
+        <Box style={{ flexDirection: 'column', marginLeft: 34, paddingBottom: 16 }}>
+            <Text style={{ fontSize: 40, fontWeight: 'bold', color: '#FFFFFF' }}>实验</Text>
+            <Text style={{ fontSize: 16, color: '#FFF2CC', marginTop: 12, letterSpacing: 2 }}>EXPERIMENTS</Text>
+        </Box>
+    </Box>
+    <Box style={{ position: 'absolute', top: 444, left: 60, width: 640, height: 3, background: '#FFF2CC', opacity: 0.75 }} />
+</Slide>

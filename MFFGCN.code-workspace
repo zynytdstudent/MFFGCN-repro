@@ -1,0 +1,84 @@
+{
+  "folders": [
+    {
+      "name": "① 本地阅读版（分层 + 中文批注）",
+      "path": ".",
+      "settings": {
+        "python.defaultInterpreterPath": "C:\\Users\\ROG\\.workbuddy\\binaries\\python\\versions\\3.13.12\\python.exe",
+        "python.terminal.activateEnvironment": false,
+        "python.analysis.extraPaths": [
+          "${workspaceFolder}/src/01_data",
+          "${workspaceFolder}/src/02_models",
+          "${workspaceFolder}/src/03_train",
+          "${workspaceFolder}/src/04_eval",
+          "${workspaceFolder}/src/05_baselines",
+          "${workspaceFolder}/src/06_figures",
+          "${workspaceFolder}/src/07_diag"
+        ],
+        "python.analysis.diagnosticSeverityOverrides": {
+          "reportMissingImports": "none"
+        }
+      }
+    },
+    {
+      "name": "② 服务器执行版 zjut148",
+      "uri": "vscode-remote://ssh-remote+zjut148/public2/czz/ZhangYu/project/mffgcn",
+      "settings": {
+        "python.defaultInterpreterPath": "/public2/czz/ZhangYu/miniconda3/envs/zhangyu/bin/python",
+        "python.terminal.activateEnvironment": true,
+        "python.analysis.extraPaths": [
+          "/public2/czz/ZhangYu/project/mffgcn/src"
+        ],
+        "python.analysis.typeCheckingMode": "basic",
+        "terminal.integrated.defaultProfile.linux": "zhangyu",
+        "terminal.integrated.profiles.linux": {
+          "zhangyu": {
+            "path": "/bin/bash",
+            "args": [
+              "--rcfile",
+              "/public2/czz/ZhangYu/shell_zhangyu.sh",
+              "-i"
+            ],
+            "icon": "terminal-ubuntu",
+            "overrideName": true
+          },
+          "bash": {
+            "path": "/bin/bash"
+          }
+        },
+        "files.exclude": {
+          "**/__pycache__": true,
+          "**/*.pyc": true
+        }
+      }
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/__pycache__": true,
+      "**/*.pyc": true,
+      "**/.ipynb_checkpoints": true
+    },
+    "search.exclude": {
+      "**/runs": true,
+      "**/data": true,
+      "**/.vscode-server": true,
+      "**/src/_from_server": true
+    },
+    "files.associations": {
+      "*.sbatch": "shellscript"
+    },
+    "editor.formatOnSave": false,
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 2000,
+    "explorer.compactFolders": false
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-python.python",
+      "ms-python.vscode-pylance",
+      "ms-vscode-remote.remote-ssh",
+      "ms-toolsai.jupyter"
+    ]
+  }
+}

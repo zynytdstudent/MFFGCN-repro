@@ -1,0 +1,61 @@
+<Slide style={{ width: 1280, height: 720, padding: 60, background: '#FFFFFF' }}>
+    <Box style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#123C6E' }}>问题建模：三路输入合成一张图</Text>
+        <Text style={{ fontSize: 16, color: '#8B97A8' }}>01 · 研究背景</Text>
+    </Box>
+    <Box style={{ width: '100%', height: 1, background: '#123C6E', marginTop: 18 }} />
+
+    <Box style={{ flexDirection: 'row', gap: 28, marginTop: 30 }}>
+        <Box style={{ width: 368, padding: 22, background: '#F7F9FC', border: '1px solid #D8DEE7', flexDirection: 'column' }}>
+            <Text style={{ fontSize: 14, color: '#1E5A9E', letterSpacing: 1.5 }}>INPUT 1</Text>
+            <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1A2230', marginTop: 8 }}>稀疏观测 f</Text>
+            <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.55, marginTop: 8 }}>
+                仅传感器所在栅格有实测值，其余像素置 0，有效像素不足 0.5%。
+            </Text>
+        </Box>
+        <Box style={{ width: 368, padding: 22, background: '#F7F9FC', border: '1px solid #D8DEE7', flexDirection: 'column' }}>
+            <Text style={{ fontSize: 14, color: '#1E5A9E', letterSpacing: 1.5 }}>INPUT 2</Text>
+            <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1A2230', marginTop: 8 }}>环境图 m</Text>
+            <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.55, marginTop: 8 }}>
+                卫星图对应的建筑二值掩码，决定信号被哪堵墙挡住、朝哪里衍射。
+            </Text>
+        </Box>
+        <Box style={{ width: 368, padding: 22, background: '#F7F9FC', border: '1px solid #D8DEE7', flexDirection: 'column' }}>
+            <Text style={{ fontSize: 14, color: '#1E5A9E', letterSpacing: 1.5 }}>INPUT 3</Text>
+            <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1A2230', marginTop: 8 }}>发射机图 p</Text>
+            <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.55, marginTop: 8 }}>
+                发射机位置为 1，其余为 0，提供信号的"源"与主瓣方向。
+            </Text>
+        </Box>
+    </Box>
+
+    <Box style={{ flexDirection: 'row', alignItems: 'center', marginTop: 34 }}>
+        <Box style={{ width: 116, flexDirection: 'column' }}>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1A2230' }}>观测模型</Text>
+            <Text style={{ fontSize: 15, color: '#8B97A8', marginTop: 4 }}>式 (1)</Text>
+        </Box>
+        <Math latex="\\tilde{y}(x_n)=\\sum_{t=1}^{N_t}\\Upsilon_t\\,|H_t(x_n)|^{2}+n(x_n)" width={470} display={true} color="#123C6E" />
+        <Box style={{ flex: 1 }} />
+        <Text style={{ fontSize: 16, color: '#5A6675', width: 480, lineHeight: 1.55 }}>
+            接收功率是各发射机信道响应的功率叠加，再叠加热噪声与背景噪声。
+        </Text>
+    </Box>
+
+    <Box style={{ flexDirection: 'row', alignItems: 'center', marginTop: 26 }}>
+        <Box style={{ width: 116, flexDirection: 'column' }}>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1A2230' }}>估计目标</Text>
+            <Text style={{ fontSize: 15, color: '#8B97A8', marginTop: 4 }}>式 (2)</Text>
+        </Box>
+        <Math latex="y_i=g\\left(f_i,\\,m_i,\\,p_i\\right)\\in\\mathbb{R}^{H/r\\times W/r}" width={360} display={true} color="#123C6E" />
+        <Box style={{ flex: 1 }} />
+        <Text style={{ fontSize: 16, color: '#5A6675', width: 480, lineHeight: 1.55 }}>
+            学一个映射 g，把三路输入还原成全域高分辨率地图，而不只是补观测点之间的洞。
+        </Text>
+    </Box>
+
+    <Box style={{ background: '#E8F0FA', borderLeft: '4px solid #123C6E', padding: '16px 22px', marginTop: 30 }}>
+        <Text style={{ fontSize: 18, color: '#1A2230', lineHeight: 1.5 }}>
+            三路输入缺一不可：建筑图给出遮挡结构，发射机图给出信号源，稀疏观测负责校准绝对电平。
+        </Text>
+    </Box>
+</Slide>

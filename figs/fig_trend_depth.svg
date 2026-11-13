@@ -1,0 +1,48 @@
+<svg viewBox="0 0 920 440" width="100%" xmlns="http://www.w3.org/2000/svg" role="img">
+<rect x="0" y="0" width="920" height="440" fill="#ffffff"/>
+<text x="24.0" y="30.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="15" fill="#1f2933" text-anchor="start" font-weight="600" opacity="1.0">图 4　盲区越深误差越高，但本文模型的劣化速度更慢</text>
+<text x="24.0" y="50.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="11.5" fill="#6b7785" text-anchor="start" font-weight="400" opacity="1.0">按「盲区像素到最近观测像素的距离」分箱，只统计未观测像素；Setup 1，全测试集 8,080 张，权重为修复坐标后的新训练结果。</text>
+<line x1="76" y1="358.3" x2="704" y2="358.3" stroke="#e3e8ee"/>
+<text x="68.0" y="362.3" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">0.0100</text>
+<line x1="76" y1="311.0" x2="704" y2="311.0" stroke="#e3e8ee"/>
+<text x="68.0" y="315.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">0.0150</text>
+<line x1="76" y1="263.7" x2="704" y2="263.7" stroke="#e3e8ee"/>
+<text x="68.0" y="267.7" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">0.0200</text>
+<line x1="76" y1="216.3" x2="704" y2="216.3" stroke="#e3e8ee"/>
+<text x="68.0" y="220.3" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">0.0250</text>
+<line x1="76" y1="169.0" x2="704" y2="169.0" stroke="#e3e8ee"/>
+<text x="68.0" y="173.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">0.0300</text>
+<line x1="76" y1="121.6" x2="704" y2="121.6" stroke="#e3e8ee"/>
+<text x="68.0" y="125.6" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">0.0350</text>
+<text x="76.0" y="386.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">1–2</text>
+<text x="201.6" y="386.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">2–4</text>
+<text x="327.2" y="386.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">4–8</text>
+<text x="452.8" y="386.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">8–16</text>
+<text x="578.4" y="386.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">16–32</text>
+<text x="704.0" y="386.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">32+</text>
+<text x="390.0" y="424.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="11" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">盲区像素到最近观测像素的距离（px）</text>
+<text x="68.0" y="70.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">RMSE</text>
+<polyline points="76.0,347.1 201.6,325.6 327.2,306.1 452.8,287.6 578.4,261.2 704.0,225.2" fill="none" stroke="#2f6fb3" stroke-width="2.4"/>
+<circle cx="76.0" cy="347.1" r="3.6" fill="#fff" stroke="#2f6fb3" stroke-width="2"/>
+<circle cx="201.6" cy="325.6" r="3.6" fill="#fff" stroke="#2f6fb3" stroke-width="2"/>
+<circle cx="327.2" cy="306.1" r="3.6" fill="#fff" stroke="#2f6fb3" stroke-width="2"/>
+<circle cx="452.8" cy="287.6" r="3.6" fill="#fff" stroke="#2f6fb3" stroke-width="2"/>
+<circle cx="578.4" cy="261.2" r="3.6" fill="#fff" stroke="#2f6fb3" stroke-width="2"/>
+<circle cx="704.0" cy="225.2" r="3.6" fill="#fff" stroke="#2f6fb3" stroke-width="2"/>
+<polyline points="76.0,339.6 201.6,317.0 327.2,296.9 452.8,274.4 578.4,231.9 704.0,121.9" fill="none" stroke="#c0392b" stroke-width="2.4"/>
+<circle cx="76.0" cy="339.6" r="3.6" fill="#fff" stroke="#c0392b" stroke-width="2"/>
+<circle cx="201.6" cy="317.0" r="3.6" fill="#fff" stroke="#c0392b" stroke-width="2"/>
+<circle cx="327.2" cy="296.9" r="3.6" fill="#fff" stroke="#c0392b" stroke-width="2"/>
+<circle cx="452.8" cy="274.4" r="3.6" fill="#fff" stroke="#c0392b" stroke-width="2"/>
+<circle cx="578.4" cy="231.9" r="3.6" fill="#fff" stroke="#c0392b" stroke-width="2"/>
+<circle cx="704.0" cy="121.9" r="3.6" fill="#fff" stroke="#c0392b" stroke-width="2"/>
+<line x1="730" y1="90" x2="760" y2="90" stroke="#2f6fb3" stroke-width="2.4"/>
+<text x="768.0" y="94.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="start" font-weight="400" opacity="1.0">MFFGCN（本文）</text>
+<text x="768.0" y="109.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="start" font-weight="400" opacity="1.0">末端 0.0241</text>
+<line x1="730" y1="136" x2="760" y2="136" stroke="#c0392b" stroke-width="2.4"/>
+<text x="768.0" y="140.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="start" font-weight="400" opacity="1.0">U-Net（单编码器）</text>
+<text x="768.0" y="155.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="start" font-weight="400" opacity="1.0">末端 0.0350</text>
+<text x="84.0" y="335.1" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#2f6fb3" text-anchor="start" font-weight="600" opacity="1.0">贴边处只领先 7%</text>
+<text x="698.0" y="251.2" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#2f6fb3" text-anchor="end" font-weight="600" opacity="1.0">深处领先 31%</text>
+<text x="730.0" y="198.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f9d55" text-anchor="start" font-weight="600" opacity="1.0">优势随深度扩大 4.7 倍</text>
+</svg>

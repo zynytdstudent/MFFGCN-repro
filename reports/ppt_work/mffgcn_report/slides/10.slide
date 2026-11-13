@@ -1,0 +1,38 @@
+<Slide style={{ width: 1280, height: 720, padding: 0, background: '#FFFFFF', position: 'relative' }}>
+        <Image src="assets/banner.jpg" style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 60, objectFit: 'cover' }} />
+    <Text style={{ position: 'absolute', top: 15, left: 60, width: 820, fontSize: 28, fontWeight: 'bold', color: '#FFFFFF', letterSpacing: 1 }}>图精化：把粗估计切成 patch 建图</Text>
+    <Text style={{ position: 'absolute', top: 23, left: 900, width: 100, fontSize: 15, color: '#BBD9F2', textAlign: 'right' }}>02 · 方法设计</Text>
+    <Image src="assets/logo_bar.png" style={{ position: 'absolute', top: 8, left: 1010, width: 210, height: 44, objectFit: 'contain' }} />
+
+    <Box style={{ position: 'absolute', top: 72, left: 60, width: 1160, height: 616, flexDirection: 'column' }}>
+
+        <Box style={{ flexDirection: 'row', justifyContent: 'center', width: '100%', marginTop: 14 }}>
+            <Image src="assets/fig05.png" style={{ width: 830, height: 360 }} />
+        </Box>
+
+        <Text style={{ fontSize: 14, color: '#5A6675', lineHeight: 1.5, marginTop: 10 }}>
+            图 5　上图：粗估计切 patch、展平并加位置编码后 KNN 建边；下图：观测支路（Map，1 通道）与粗估计支路（Guide，81 通道）拼接后送入 GCN，再经转置卷积还原为图像。
+        </Text>
+
+        <Box style={{ flexDirection: 'row', gap: 24, marginTop: 14 }}>
+            <Box style={{ width: 372, flexDirection: 'column' }}>
+                <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#123C6E' }}>① 为什么是 patch 级</Text>
+                <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.45, marginTop: 4 }}>
+                    16×16 切成 256 个节点；像素级建图复杂度是平方级，算不动。
+                </Text>
+            </Box>
+            <Box style={{ width: 372, flexDirection: 'column' }}>
+                <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#123C6E' }}>② 边按语义相似度连</Text>
+                <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.45, marginTop: 4 }}>
+                    KNN 在特征空间找近邻，不按空间距离，因此能跨过禁区连边。
+                </Text>
+            </Box>
+            <Box style={{ width: 372, flexDirection: 'column' }}>
+                <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#123C6E' }}>③ 图是动态的</Text>
+                <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.45, marginTop: 4 }}>
+                    每个输入单独建图；位置信息只用于建边，不进消息传递。
+                </Text>
+            </Box>
+        </Box>
+    </Box>
+</Slide>

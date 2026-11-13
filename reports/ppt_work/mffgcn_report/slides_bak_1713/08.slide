@@ -1,0 +1,35 @@
+<Slide style={{ width: 1280, height: 720, padding: 60, background: '#FFFFFF' }}>
+    <Box style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#123C6E' }}>多模态融合网络：双编码器逐级融合</Text>
+        <Text style={{ fontSize: 16, color: '#8B97A8' }}>02 · 方法设计</Text>
+    </Box>
+    <Box style={{ width: '100%', height: 1, background: '#123C6E', marginTop: 18 }} />
+
+    <Box style={{ flexDirection: 'row', justifyContent: 'center', width: '100%', marginTop: 16 }}>
+        <Image src="assets/fig03.png" style={{ width: 880, height: 416 }} />
+    </Box>
+
+    <Text style={{ fontSize: 14, color: '#5A6675', lineHeight: 1.5, marginTop: 10 }}>
+        图 3　观测图与卫星环境图分别送入两条编码支路，每个 stage 用 AFM 把环境特征注入观测支路；解码器逐级上采样并跳连拼接，输出粗估计。
+    </Text>
+
+    <Box style={{ flexDirection: 'row', gap: 32, marginTop: 16 }}>
+        <Box style={{ width: 360, flexDirection: 'column' }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#123C6E' }}>为什么不早期融合</Text>
+            <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.5, marginTop: 6 }}>
+                拼接成 3 通道直接进 U-Net，禁区内没有观测可依，建筑特征会被大量零值稀释。
+            </Text>
+        </Box>
+        <Box style={{ width: 360, flexDirection: 'column' }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#123C6E' }}>逐级融合的好处</Text>
+            <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.5, marginTop: 6 }}>
+                浅层对齐纹理、深层对齐语义，每个尺度都有一次跨模态校正机会。
+            </Text>
+        </Box>
+        <Box style={{ flex: 1, flexDirection: 'column', background: '#E8F0FA', padding: '12px 18px' }}>
+            <Text style={{ fontSize: 17, color: '#1A2230', lineHeight: 1.5 }}>
+                消融显示：双编码器比单编码器 NMSE 低 9–10%。
+            </Text>
+        </Box>
+    </Box>
+</Slide>

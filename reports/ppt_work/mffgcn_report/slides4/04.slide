@@ -1,0 +1,75 @@
+<Slide style={{ width: 1280, height: 720, padding: 0, background: '#FFFFFF', position: 'relative' }}>
+        <Image src="assets/banner.jpg" style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 60, objectFit: 'cover' }} />
+    <Text style={{ position: 'absolute', top: 15, left: 60, width: 820, fontSize: 28, fontWeight: 'bold', color: '#FFFFFF', letterSpacing: 1 }}>什么是 RME：三路输入，一张功率图</Text>
+    <Text style={{ position: 'absolute', top: 23, left: 900, width: 100, fontSize: 15, color: '#BBD9F2', textAlign: 'right' }}>01 · 绪论</Text>
+    <Image src="assets/logo_bar.png" style={{ position: 'absolute', top: 8, left: 1010, width: 210, height: 44, objectFit: 'contain' }} />
+
+    <Box style={{ position: 'absolute', top: 76, left: 60, width: 1160, height: 612, flexDirection: 'column' }}>
+
+        <Box style={{ flexDirection: 'row' }}>
+            <Box style={{ width: 476, flexDirection: 'column' }}>
+                <Text style={{ fontSize: 21, fontWeight: 'bold', color: '#123C6E' }}>无线电地图估计（RME）</Text>
+                <Text style={{ fontSize: 17, color: '#1A2230', lineHeight: 1.7, marginTop: 10 }}>
+                    也叫频谱制图。把一片城区切成网格，估计每个格子里的接收功率，画成一张热力图——哪里覆盖好、哪里被楼挡住、哪里彻底没信号，一张图就看得出来。
+                </Text>
+                <Text style={{ fontSize: 17, color: '#1A2230', lineHeight: 1.7, marginTop: 8 }}>
+                    它不替代实测，而是把<span style={{ fontWeight: 'bold', color: '#C0392B' }}>稀疏的几十个测点</span>扩展成全图，用来做规划、监管和应急决策。
+                </Text>
+                <Box style={{ flexDirection: 'row', gap: 10, marginTop: 16 }}>
+                    <Box style={{ width: 108, padding: '7px 0', background: '#E8F0FA', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 15, color: '#123C6E' }}>网络规划</Text>
+                    </Box>
+                    <Box style={{ width: 108, padding: '7px 0', background: '#E8F0FA', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 15, color: '#123C6E' }}>干扰协调</Text>
+                    </Box>
+                    <Box style={{ width: 108, padding: '7px 0', background: '#E8F0FA', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 15, color: '#123C6E' }}>频谱监管</Text>
+                    </Box>
+                    <Box style={{ width: 108, padding: '7px 0', background: '#E8F0FA', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 15, color: '#123C6E' }}>应急通信</Text>
+                    </Box>
+                </Box>
+            </Box>
+
+            <Box style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginLeft: 40 }}>
+                <Image src="assets/fig01.png" style={{ width: 340, height: 274 }} />
+                <Text style={{ fontSize: 13, color: '#5A6675', lineHeight: 1.5, marginTop: 8, width: 520, textAlign: 'center' }}>
+                    图 1　(a) 测点覆盖全图时，插值就够了；(b) 存在观测受限区（深红块），该区只能靠周边信息反推。
+                </Text>
+            </Box>
+        </Box>
+
+        <Box style={{ flexDirection: 'row', alignItems: 'center', marginTop: 22 }}>
+            <Box style={{ width: 240, padding: 14, background: '#F7F9FC', border: '1px solid #D8DEE7', flexDirection: 'column' }}>
+                <Text style={{ fontSize: 13, color: '#1E5A9E', letterSpacing: 1.5 }}>INPUT 1</Text>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230', marginTop: 6 }}>稀疏观测 f</Text>
+                <Text style={{ fontSize: 14, color: '#5A6675', lineHeight: 1.5, marginTop: 6 }}>有测点的格子填实测值，其余置 0</Text>
+            </Box>
+            <Box style={{ width: 240, padding: 14, background: '#F7F9FC', border: '1px solid #D8DEE7', flexDirection: 'column', marginLeft: 14 }}>
+                <Text style={{ fontSize: 13, color: '#1E5A9E', letterSpacing: 1.5 }}>INPUT 2</Text>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230', marginTop: 6 }}>建筑环境 m</Text>
+                <Text style={{ fontSize: 14, color: '#5A6675', lineHeight: 1.5, marginTop: 6 }}>建筑二值掩码，决定遮挡与衍射</Text>
+            </Box>
+            <Box style={{ width: 240, padding: 14, background: '#F7F9FC', border: '1px solid #D8DEE7', flexDirection: 'column', marginLeft: 14 }}>
+                <Text style={{ fontSize: 13, color: '#1E5A9E', letterSpacing: 1.5 }}>INPUT 3</Text>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230', marginTop: 6 }}>发射机 p</Text>
+                <Text style={{ fontSize: 14, color: '#5A6675', lineHeight: 1.5, marginTop: 6 }}>基站位置为 1，给出信号源与主瓣</Text>
+            </Box>
+
+            <Text style={{ fontSize: 26, color: '#123C6E', marginLeft: 16, marginRight: 16 }}>→</Text>
+
+            <Box style={{ flex: 1, padding: 14, background: '#123C6E', flexDirection: 'column' }}>
+                <Text style={{ fontSize: 13, color: '#BBD9F2', letterSpacing: 1.5 }}>OUTPUT</Text>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#FFFFFF', marginTop: 6 }}>全图功率 y</Text>
+                <Text style={{ fontSize: 14, color: '#D8E6F5', lineHeight: 1.5, marginTop: 6 }}>256×256 逐像素 dBm，含盲区</Text>
+            </Box>
+        </Box>
+
+        <Box style={{ background: '#FBF3F2', borderLeft: '4px solid #C0392B', padding: '14px 22px', marginTop: 24 }}>
+            <Text style={{ fontSize: 17, color: '#1A2230', lineHeight: 1.55 }}>
+                难点在于：实测点往往不足总像素的 <span style={{ fontWeight: 'bold', color: '#C0392B' }}>0.5%</span>，还有整块区域因安全、隐私、政策根本无法布点。
+                <span style={{ fontWeight: 'bold', color: '#C0392B' }}>全局大体对、盲区一片糊</span>，这就是本文要解决的场景。
+            </Text>
+        </Box>
+    </Box>
+</Slide>

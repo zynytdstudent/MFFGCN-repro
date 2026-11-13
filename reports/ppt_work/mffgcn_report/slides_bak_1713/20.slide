@@ -1,0 +1,51 @@
+<Slide style={{ width: 1280, height: 720, padding: 60, background: '#FFFFFF' }}>
+    <Box style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#123C6E' }}>收敛更快，且对观测数量不敏感</Text>
+        <Text style={{ fontSize: 16, color: '#8B97A8' }}>04 · 实验结果</Text>
+    </Box>
+    <Box style={{ width: '100%', height: 1, background: '#123C6E', marginTop: 18 }} />
+
+    <Box style={{ flexDirection: 'row', justifyContent: 'center', width: '100%', marginTop: 10 }}>
+        <Image src="assets/fig06.png" style={{ width: 900, height: 248 }} />
+    </Box>
+    <Text style={{ fontSize: 14, color: '#5A6675', lineHeight: 1.5, marginTop: 6 }}>
+        图 6　训练损失曲线：(a) Setup 1　(b) Setup 2　(c) Setup 3。RadioUNet 的初始损失随设置变难而显著抬升，MFFGCN 几乎不变。
+    </Text>
+
+    <Box style={{ flexDirection: 'row', marginTop: 14 }}>
+        <Box style={{ width: 400, flexDirection: 'column' }}>
+            <Image src="assets/fig07.png" style={{ width: 380, height: 203 }} />
+            <Text style={{ fontSize: 14, color: '#5A6675', marginTop: 6 }}>
+                图 7　Setup 1 下误差随观测点数量的变化。
+            </Text>
+        </Box>
+
+        <Box style={{ flex: 1, flexDirection: 'column', marginLeft: 44 }}>
+            <Box style={{ flexDirection: 'row' }}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1E5A9E', width: 34 }}>Ⅰ</Text>
+                <Box style={{ flexDirection: 'column', width: 640 }}>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230' }}>收敛速度是训练成本问题</Text>
+                    <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.5, marginTop: 4 }}>
+                        MFFGCN 在 10 个 epoch 内把损失压下去；RadioUNet 需要两阶段、各 50 个 epoch 分别训练两个 U-Net。
+                    </Text>
+                </Box>
+            </Box>
+
+            <Box style={{ flexDirection: 'row', marginTop: 16 }}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1E5A9E', width: 34 }}>Ⅱ</Text>
+                <Box style={{ flexDirection: 'column', width: 640 }}>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230' }}>插值法对样本数最敏感</Text>
+                    <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.5, marginTop: 4 }}>
+                        KNN、Kriging 的曲线最陡——它们的精度几乎完全由观测点密度决定；深度模型则靠建筑图先验兜底。
+                    </Text>
+                </Box>
+            </Box>
+
+            <Box style={{ marginTop: 16, padding: '12px 18px', background: '#E8F0FA', borderLeft: '4px solid #123C6E' }}>
+                <Text style={{ fontSize: 16, color: '#1A2230', lineHeight: 1.5 }}>
+                    在 Setup 1 上，MFFGCN 与 RME-GAN 的曲线几乎重合，这说明它的优势不来自"更会拟合"，而来自"更抗分布偏移"。
+                </Text>
+            </Box>
+        </Box>
+    </Box>
+</Slide>

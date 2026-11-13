@@ -1,0 +1,48 @@
+<Slide style={{ width: 1280, height: 720, padding: 0, background: '#FFFFFF', position: 'relative' }}>
+    <Image src="assets/banner.jpg" style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 60, objectFit: 'cover' }} />
+    <Text style={{ position: 'absolute', top: 15, left: 60, width: 735, fontSize: 28, fontWeight: 'bold', color: '#FFFFFF', letterSpacing: 1 }}>复杂度：算力最省，耗时略多 1.4%</Text>
+    <Text style={{ position: 'absolute', top: 23, left: 800, width: 200, fontSize: 15, color: '#BBD9F2', textAlign: 'right' }}>03 · <span style={{ color: '#FFF2CC', fontWeight: 'bold' }}>阶段 4</span> · 鲁棒与代价</Text>
+    <Image src="assets/logo_bar.png" style={{ position: 'absolute', top: 8, left: 1010, width: 210, height: 44, objectFit: 'contain' }} />
+
+    <Box style={{ position: 'absolute', top: 72, left: 60, width: 1160, height: 616, flexDirection: 'column' }}>
+
+        <Box style={{ flexDirection: 'row', justifyContent: 'center', width: '100%', marginTop: 20 }}>
+            <Image src="assets/t8full.png" style={{ width: 900, height: 248 }} />
+        </Box>
+        <Text style={{ fontSize: 14, color: '#8B97A8', lineHeight: 1.5, marginTop: 8 }}>
+            表 VIII　三个模型的 FLOPs、参数量与单张推理耗时。
+        </Text>
+
+        <Box style={{ flexDirection: 'row', gap: 20, marginTop: 22 }}>
+            <Box style={{ flex: 1, flexDirection: 'column', borderTop: '3px solid #123C6E', paddingTop: 16 }}>
+                <Text style={{ fontSize: 15, color: '#1E5A9E', letterSpacing: 2 }}>FLOPs</Text>
+                <Text style={{ fontSize: 30, fontWeight: 'bold', color: '#123C6E', marginTop: 8 }}>40.32 G</Text>
+                <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.55, marginTop: 8 }}>
+                    比 RadioUNet 低 14.5%，比 RME-GAN 低 20.1%。两个编码器并没有让计算量失控。
+                </Text>
+            </Box>
+
+            <Box style={{ flex: 1, flexDirection: 'column', borderTop: '3px solid #C0392B', paddingTop: 16 }}>
+                <Text style={{ fontSize: 15, color: '#C0392B', letterSpacing: 2 }}>PARAMS</Text>
+                <Text style={{ fontSize: 30, fontWeight: 'bold', color: '#C0392B', marginTop: 8 }}>18.23 M</Text>
+                <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.55, marginTop: 8 }}>
+                    反而比 RadioUNet 高 37%，几乎全是 AFM 的门控分支带来的——用参数换融合能力。
+                </Text>
+            </Box>
+
+            <Box style={{ flex: 1, flexDirection: 'column', borderTop: '3px solid #1E5A9E', paddingTop: 16 }}>
+                <Text style={{ fontSize: 15, color: '#1E5A9E', letterSpacing: 2 }}>LATENCY</Text>
+                <Text style={{ fontSize: 30, fontWeight: 'bold', color: '#123C6E', marginTop: 8 }}>5.17 ms</Text>
+                <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.55, marginTop: 8 }}>
+                    三者最慢：比 RadioUNet 慢 1.4%（0.07 ms），比 RME-GAN 慢 0.4%。同量级，但不是优势项。
+                </Text>
+            </Box>
+        </Box>
+
+        <Box style={{ background: '#E8F0FA', borderLeft: '4px solid #123C6E', padding: '16px 22px', marginTop: 30 }}>
+            <Text style={{ fontSize: 18, color: '#1A2230', lineHeight: 1.5 }}>
+                结论：<span style={{ fontWeight: 'bold', color: '#C0392B' }}>FLOPs 最省，参数与时延都不占优</span>——算力 −14.5%，参数 +37%，时延 +1.4%（5.17 ms，三者最慢）。1.4% 在部署上几乎无感，但不能写成"持平"。
+            </Text>
+        </Box>
+    </Box>
+</Slide>

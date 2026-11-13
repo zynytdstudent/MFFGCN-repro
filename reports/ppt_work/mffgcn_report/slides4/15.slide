@@ -1,0 +1,79 @@
+<Slide style={{ width: 1280, height: 720, padding: 0, background: '#FFFFFF', position: 'relative' }}>
+        <Image src="assets/banner.jpg" style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 60, objectFit: 'cover' }} />
+    <Text style={{ position: 'absolute', top: 15, left: 60, width: 820, fontSize: 28, fontWeight: 'bold', color: '#FFFFFF', letterSpacing: 1 }}>实验逻辑：四个阶段回答四个问题</Text>
+    <Text style={{ position: 'absolute', top: 23, left: 900, width: 100, fontSize: 15, color: '#BBD9F2', textAlign: 'right' }}>03 · 实验总览</Text>
+    <Image src="assets/logo_bar.png" style={{ position: 'absolute', top: 8, left: 1010, width: 210, height: 44, objectFit: 'contain' }} />
+
+    <Box style={{ position: 'absolute', top: 76, left: 60, width: 1160, height: 612, flexDirection: 'column' }}>
+
+        <Box style={{ flexDirection: 'row', alignItems: 'center', height: 126, borderBottom: '1px solid #E2E7EE' }}>
+            <Box style={{ width: 52, height: 52, background: '#123C6E', alignItems: 'center', justifyContent: 'center' }}>
+                <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#FFFFFF', lineHeight: 1 }}>1</Text>
+            </Box>
+            <Box style={{ width: 222, marginLeft: 18, flexDirection: 'column' }}>
+                <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#123C6E' }}>基准性能对比</Text>
+                <Text style={{ fontSize: 14, color: '#8B97A8', marginTop: 5 }}>先问：它到底强不强 · P16–P19</Text>
+            </Box>
+            <Text style={{ width: 392, marginLeft: 16, fontSize: 15, color: '#5A6675', lineHeight: 1.5 }}>
+                S1 均匀、S2/S3 带 10%–50% 盲区，逐一对比 8 个基线（表 III）
+            </Text>
+            <Text style={{ flex: 1, marginLeft: 20, fontSize: 17, color: '#1A2230', lineHeight: 1.5 }}>
+                均匀场景与 RME-GAN 打平，盲区场景领先 <span style={{ fontWeight: 'bold', color: '#C0392B' }}>11.8%–16.4%</span>
+            </Text>
+        </Box>
+
+        <Box style={{ flexDirection: 'row', alignItems: 'center', height: 126, borderBottom: '1px solid #E2E7EE' }}>
+            <Box style={{ width: 52, height: 52, background: '#123C6E', alignItems: 'center', justifyContent: 'center' }}>
+                <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#FFFFFF', lineHeight: 1 }}>2</Text>
+            </Box>
+            <Box style={{ width: 222, marginLeft: 18, flexDirection: 'column' }}>
+                <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#123C6E' }}>盲区专项分析</Text>
+                <Text style={{ fontSize: 14, color: '#8B97A8', marginTop: 5 }}>再问：强在哪里 · P20–P22</Text>
+            </Box>
+            <Text style={{ width: 392, marginLeft: 16, fontSize: 15, color: '#5A6675', lineHeight: 1.5 }}>
+                只统计盲区内像素误差，扫盲区离图心的距离与边长，配偏差热力图（图 8–11）
+            </Text>
+            <Text style={{ flex: 1, marginLeft: 20, fontSize: 17, color: '#1A2230', lineHeight: 1.5 }}>
+                禁区 RMSE 只涨 <span style={{ fontWeight: 'bold', color: '#C0392B' }}>9.7%</span>，误差集中在建筑边缘，不在盲区内部
+            </Text>
+        </Box>
+
+        <Box style={{ flexDirection: 'row', alignItems: 'center', height: 126, borderBottom: '1px solid #E2E7EE' }}>
+            <Box style={{ width: 52, height: 52, background: '#123C6E', alignItems: 'center', justifyContent: 'center' }}>
+                <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#FFFFFF', lineHeight: 1 }}>3</Text>
+            </Box>
+            <Box style={{ width: 222, marginLeft: 18, flexDirection: 'column' }}>
+                <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#123C6E' }}>消融验证</Text>
+                <Text style={{ fontSize: 14, color: '#8B97A8', marginTop: 5 }}>三问：部件都有用吗 · P23–P24</Text>
+            </Box>
+            <Text style={{ width: 392, marginLeft: 16, fontSize: 15, color: '#5A6675', lineHeight: 1.5 }}>
+                换融合方式、去 GCN、换静态图、去残差，逐项拆开（表 V、图 12–13）
+            </Text>
+            <Text style={{ flex: 1, marginLeft: 20, fontSize: 17, color: '#1A2230', lineHeight: 1.5 }}>
+                其余变体只劣化 4.7%–16.3%，去残差 <span style={{ fontWeight: 'bold', color: '#C0392B' }}>NMSE 涨 5.4 倍</span>
+            </Text>
+        </Box>
+
+        <Box style={{ flexDirection: 'row', alignItems: 'center', height: 126, borderBottom: '1px solid #E2E7EE' }}>
+            <Box style={{ width: 52, height: 52, background: '#123C6E', alignItems: 'center', justifyContent: 'center' }}>
+                <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#FFFFFF', lineHeight: 1 }}>4</Text>
+            </Box>
+            <Box style={{ width: 222, marginLeft: 18, flexDirection: 'column' }}>
+                <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#123C6E' }}>鲁棒性与复杂度</Text>
+                <Text style={{ fontSize: 14, color: '#8B97A8', marginTop: 5 }}>末问：能不能落地 · P25–P27</Text>
+            </Box>
+            <Text style={{ width: 392, marginLeft: 16, fontSize: 15, color: '#5A6675', lineHeight: 1.5 }}>
+                盲区形状、损失权重、环境图加噪与降分辨率；FLOPs、参数量、时延（表 VI–VIII）
+            </Text>
+            <Text style={{ flex: 1, marginLeft: 20, fontSize: 17, color: '#1A2230', lineHeight: 1.5 }}>
+                40.32 G FLOPs 比 RadioUNet 低 14.5%，但 5.17 ms 略慢 1.4%
+            </Text>
+        </Box>
+
+        <Box style={{ marginTop: 22, background: '#E8F0FA', borderLeft: '4px solid #123C6E', padding: '14px 20px' }}>
+            <Text style={{ fontSize: 17, color: '#1A2230', lineHeight: 1.5 }}>
+                四步不是并列关系，是一条证据链：<span style={{ fontWeight: 'bold', color: '#123C6E' }}>先证明更强 → 再解释为什么强 → 拆开看每个部件 → 最后看代价能不能接受</span>。
+            </Text>
+        </Box>
+    </Box>
+</Slide>

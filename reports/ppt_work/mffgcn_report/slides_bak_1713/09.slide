@@ -1,0 +1,62 @@
+<Slide style={{ width: 1280, height: 720, padding: 60, background: '#FFFFFF' }}>
+    <Box style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#123C6E' }}>AFM：给环境特征学一个门控</Text>
+        <Text style={{ fontSize: 16, color: '#8B97A8' }}>02 · 方法设计</Text>
+    </Box>
+    <Box style={{ width: '100%', height: 1, background: '#123C6E', marginTop: 18 }} />
+
+    <Box style={{ flexDirection: 'row', marginTop: 30 }}>
+        <Box style={{ width: 540, flexDirection: 'column' }}>
+            <Image src="assets/fig04.png" style={{ width: 520, height: 225 }} />
+            <Text style={{ fontSize: 14, color: '#5A6675', lineHeight: 1.5, marginTop: 14 }}>
+                图 4　自适应特征融合模块（AFM）。环境特征先经 3×3 卷积与 Softmax 生成权重矩阵，加权后再与观测特征拼接融合。
+            </Text>
+            <Box style={{ background: '#E8F0FA', borderLeft: '4px solid #123C6E', padding: '14px 18px', marginTop: 22 }}>
+                <Text style={{ fontSize: 17, color: '#1A2230', lineHeight: 1.5 }}>
+                    门控在问一个问题：这个位置的环境线索，值不值得信？
+                </Text>
+            </Box>
+        </Box>
+
+        <Box style={{ flex: 1, flexDirection: 'column', marginLeft: 44 }}>
+            <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 14 }}>
+                <Math latex="F^{s}=\\mathrm{AFM}\\left(F_o^{s},\\,F_e^{s}\\right)" width={300} display={true} color="#123C6E" />
+                <Text style={{ fontSize: 15, color: '#8B97A8' }}>式 (3)</Text>
+            </Box>
+            <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 14, marginTop: 10 }}>
+                <Math latex="F_e^{\\prime}=W\\otimes F_e" width={190} display={true} color="#123C6E" />
+                <Text style={{ fontSize: 15, color: '#8B97A8' }}>式 (4)</Text>
+            </Box>
+
+            <Box style={{ flexDirection: 'row', marginTop: 26 }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1E5A9E', width: 44 }}>①</Text>
+                <Box style={{ flexDirection: 'column', width: 470 }}>
+                    <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#1A2230' }}>生成门控</Text>
+                    <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.5, marginTop: 6 }}>
+                        环境特征 F_e 过 3×3 卷积 + Softmax，得到与特征同形状的权重矩阵 W。
+                    </Text>
+                </Box>
+            </Box>
+
+            <Box style={{ flexDirection: 'row', marginTop: 20 }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1E5A9E', width: 44 }}>②</Text>
+                <Box style={{ flexDirection: 'column', width: 470 }}>
+                    <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#1A2230' }}>加权环境特征</Text>
+                    <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.5, marginTop: 6 }}>
+                        W 与 F_e 逐元素相乘，抑制与当前观测无关的建筑纹理。
+                    </Text>
+                </Box>
+            </Box>
+
+            <Box style={{ flexDirection: 'row', marginTop: 20 }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1E5A9E', width: 44 }}>③</Text>
+                <Box style={{ flexDirection: 'column', width: 470 }}>
+                    <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#1A2230' }}>拼接融合</Text>
+                    <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.5, marginTop: 6 }}>
+                        加权特征与观测特征 concat，经 3×3 卷积输出该 stage 的融合特征。
+                    </Text>
+                </Box>
+            </Box>
+        </Box>
+    </Box>
+</Slide>

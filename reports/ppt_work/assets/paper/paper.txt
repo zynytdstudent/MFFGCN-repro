@@ -1,0 +1,1457 @@
+--- page 1 ---
+13366
+IEEE TRANSACTIONS ON MOBILE COMPUTING, VOL. 24, NO. 12, DECEMBER 2025
+MFFGCN: Multimodal Feature Fusion Graph
+Convolution Network for Radio
+Map Estimation With Uneven
+Spatial Sampling
+Han Zhang
+, Graduate Student Member, IEEE, Yu Han
+, Lingxin Meng
+, Guan Gui
+, Fellow, IEEE,
+Wei Xiang
+, Senior Member, IEEE, and Yun Lin
+, Senior Member, IEEE
+Abstract—Radio map estimation (RME) is a crucial method
+for analyzing spectrum space utilization and network coverage,
+serving as an essential tool for the mobile communication. However,
+physicalconstraints,security,privacy,andotherissuesoftenrender
+some areas inaccessible, resulting in extremely sparse and unevenly
+distributed measurement data. To address these challenges, we
+propose a multimodal feature fusion graph convolution network
+(MFFGCN). The model incorporates a dual-encoder architecture
+with an adaptive multi-feature fusion module to exploit environ-
+mental information and learn the shadowing effects of radio-signal
+propagation. We then convert the coarse estimation into regional
+feature patches and construct a graph over these patches. A graph
+neural network aggregates contextual information among them,
+thereby alleviating the impact of uneven spatial sampling. Exten-
+sive experiments on open datasets demonstrate that our method
+achieves state-of-the-art performance, effectively reducing the ef-
+fects of uneven sampling.
+Index Terms—Radio map estimation, uneven spatial distr-
+ibution, multimodal fusion, graph neural network.
+I. INTRODUCTION
+W
+ITH the rapid development of the ﬁfth-generation (5G)
+standard cellular technologies, the use of radio spectrum
+in urban has become more complex, variable and difﬁcult to
+Received 8 August 2024; revised 13 July 2025; accepted 15 July 2025. Date of
+publication 18 July 2025; date of current version 5 November 2025. This work
+was supported in part by the National Natural Science Foundation of China under
+Grant 62201172, and in part by the National Key Research and Development
+Program of China under Grant 2022YFE0136800. This work was also supported
+in part by the Key Laboratory of Advanced Marine Communication and Infor-
+mation Technology, Ministry of Industry and Information Technology, Harbin
+Engineering University, Harbin, China, and in part by the Fundamental Research
+FundsfortheCentralUniversitiesunderGrant3072025YY0801.Recommended
+for acceptance by X. Yu. (Corresponding author: Yun Lin.)
+Han Zhang, Yu Han, Lingxin Meng, and Yun Lin are with the College
+of Information and Communication Engineering, Harbin Engineering Univer-
+sity, Harbin 150009, China (e-mail: hldzhh1997@hrbeu.edu.cn; yu.han1001@
+foxmail.com; menglingxin666@gmail.com; linyun@hrbeu.edu.cn).
+Guan Gui is with the College of Telecommunications and Information Engi-
+neering, Nanjing University of Posts and Telecommunications, Nanjing 210003,
+China (e-mail: guiguan@njupt.edu.cn).
+Wei Xiang is with the School of Computing, Engineering and Mathemat-
+ical Sciences, La Trobe University, Melbourne, VIC 3086, Australia (e-mail:
+w.xiang@latrobe.edu.au).
+Digital Object Identiﬁer 10.1109/TMC.2025.3590335
+measure [1]. The ensuing frequency conﬂicts and interference
+pose signiﬁcant challenges to spectrum control and planning [2].
+Radio Map Estimation (RME), also known as Spectrum Car-
+tography (SC), can capture signal activity, network coverage,
+and spectrum occupancy information [3]. It provides important
+support for illegal radiation source management and wireless
+network coverage planning and is of great signiﬁcance to the
+spectrum security [4]. In recent years, with the rise of new
+mobile communication applications, the application scenarios
+of radio maps have been further expanded [5]. For example:
+radiation source localization, trajectory tracking [6], inter-cell
+interference coordination [7] and UAV-based air-ground com-
+munication [8]. In these novel applications, the accuracy of RME
+is directly related to the ﬁnal effect of the application. There-
+fore, accurate and high-resolution RME becomes increasingly
+important [9].
+A “radio map” generally characterizes the distribution of the
+signal’s power spectral density (PSD) over spatial locations and
+frequencies, and sometimes over time [10]. It is often built
+on crowd-sourced sensor systems such as Electrosense+ [11]
+and its predecessor Electrosense [12]. Radio maps are formed
+by reconstructing the cumulative power of RF signals received
+by sensors and are presented as 2D or 3D “images” in which
+each pixel represents the grid to which it belongs, as shown
+in Fig. 1(a). Each pixel describes the measured or estimated
+value of the Received Signal Strength Indicator (RSSI), or
+sometimes the Reference Signal Received Power (RSRP) is used
+instead, depending on the needs of the scene. Early work mainly
+used path loss models or data-driven interpolation algorithms.
+With the development of deep learning and its wide application
+in wireless communications, in recent work, researchers have
+used deep learning methods to implement RME. Meanwhile,
+current mainstream models usually use autoencoders (AEs) or
+U-Net as the backbone. With the rise of Generative Adversarial
+Networks (GANs) [13], recent work has introduced GANs. We
+will provide a more comprehensive literature review later in
+Section II.
+Despite many successes, existing solutions still exhibit cer-
+tain limitations. In “urban canyons”, complex non-line-of-sight
+propagation effects due to tall buildings and vegetation produce
+1536-1233 © 2025 IEEE. All rights reserved, including rights for text and data mining, and training of artiﬁcial intelligence and similar technologies.
+Personal use is permitted, but republication/redistribution requires IEEE permission. See https://www.ieee.org/publications/rights/index.html for more information.
+Authorized licensed use limited to: Zhejiang University of Technology. Downloaded on January 23,2026 at 04:17:30 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+--- page 2 ---
+ZHANG et al.: MFFGCN: MULTIMODAL FEATURE FUSION GRAPH CONVOLUTION NETWORK FOR RADIO MAP ESTIMATION WITH UNEVEN
+13367
+Fig. 1.
+Radio map estimation in different settings (a) RME in Ideal Conditions.
+(b) RME with observation-constrained Regions.
+detailed texture features in radio maps, which are important for
+spectrum management and planning. Existing methods typically
+assume that there are sufﬁcient and evenly distributed observa-
+tions to recover these textures. However, a practical problem
+is that observation-constrained areas are always difﬁcult to
+avoid. Due to physical constraints or policy, legal, and privacy
+concerns, the sensors are not able to access a particular region,
+as shown in Fig. 1(b). This makes the observations from the
+sensor network unevenly distributed with blank areas. While
+some studies have obtained additional information by opti-
+mizing the sampling paths [14], these observation-constrained
+regionsposeasigniﬁcantchallengeforﬁne-resolutionresolution
+radio map construction. Interpolation-based methods suffer the
+most. Zhang et al. [15] proposed an interpolation strategy based
+on propagation priority, which alleviates this problem to some
+extent but inevitably accumulates errors during the iteration
+process. For deep learning-based methods, uneven observations
+also reduce the reliability of the results. This means that the
+model must either obtain more signal propagation features from
+the environmental information or guide the reconstruction of the
+observation-constrained region based on the experience of the
+unconstrained region. To our knowledge, this problem has not
+been investigated by existing deep learning-based methods.
+In order to solve the above problems, a multimodal feature
+fusion graph convolution network (MFFGCN) is proposed in
+this paper. We retain the current mainstream encoder-decoder
+as a simple and effective feature extraction architecture. To
+achieve multimodal feature fusion of sparse observations with
+environmental maps, we design a dual-encoder architecture
+that includes an adaptive feature fusion module to replace the
+encoder part in U-Net. What’s more, We introduce a GCN to
+model observation-constrained areas, dynamically constructing
+graphs in a patch-like fashion. Our motivation for proposing this
+model is that the information transfer principle of GCN makes it
+possible to aggregate information over long distances between
+different areas to better reconstruct observation-constrained ar-
+eas. In addition, we propose a residual output method that makes
+the GCN pay more attention to the differences due to sampling
+non-uniformity rather than estimating the radio maps directly.
+In summary, the main contributions of the paper are as follows:
+1) We propose a multimodal feature fusion network contain-
+ing a dual-encoder U-Net and an adaptive feature fusion
+module for better learning of shading effects and signal
+propagation laws from sparse observations and environ-
+mental maps.
+2) We propose a patch-level graph convolution reﬁne net-
+work for remotely aggregating features between patches,
+thus reducing the impact of observation-constrained re-
+gions. The estimation results are then optimized on the
+basis of 1 by a residual output method.
+3) Extensive experiments are conducted on an authorita-
+tive dataset which show that the reconstruction error of
+the proposed model is signiﬁcantly improved compared
+to previous state-of-the-art approaches, especially in the
+observation-constrained case.
+The remainder of this article is organized as follows. Sec-
+tion II covers the literature on RME. Section III introduces the
+deﬁnition of the problem studied in this research. Section IV
+presents the details of our method. In Section V, we evaluate
+the error performance of MFFGCN under evenly distributed
+and unevenly distributed observations, respectively. And We
+conclude this article in Section VI.
+II. RELATED WORK
+A. Non-Deep Learning-Based RME
+In some simple settings, RME can be integrated with path
+loss, such as the classic log-distance path-loss (LDPL) model
+estimation [16]. Under the assumption that the propagation law
+isﬁxed,Leeetal.[17]usedtheleastsquares(LS)methodtosolve
+for the unknown parameters and reconstructed the complete
+radio map. For more complex settings, researchers prefer spatial
+interpolation methods, the most classical of which is based on
+kriging [18]. Sato et al. [19] proposed a modiﬁed kriging-based
+RME method to realize probabilistic interference constraints in
+the propagation environment through quadratic parameter esti-
+mation. Besides kriging, well-known examples of such methods
+include inverse distance weighting (IDW) [20], thin plate spline
+(TPS) [21] and radial basis function (RBF) [22]. Additionally,
+there are research outcomes based on traditional machine learn-
+ingtechniques[10],includingdictionarylearning[23],Bayesian
+learning [24], compressed sensing [25], tensor completion [26]
+and k-nearest neighbor [27]. The aforementioned methods often
+rely on ideal assumptions such as smoothness and low-rankness,
+which unfortunately cannot be satisﬁed by the complex propa-
+gation effects in urban.
+B. Deep Learning-Based RME
+With the development of deep learning and its wide appli-
+cation in wireless communications, deep neural network-based
+methods have received increasing attention in recent years.
+Shrestha et al. [28] proposed a method based on tensor decom-
+position that reconstructs separate radio maps for each source
+and uses DNNs to learn the image-to-image transformation task.
+Authorized licensed use limited to: Zhejiang University of Technology. Downloaded on January 23,2026 at 04:17:30 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+--- page 3 ---
+13368
+IEEE TRANSACTIONS ON MOBILE COMPUTING, VOL. 24, NO. 12, DECEMBER 2025
+Much subsequent work has largely followed this framework.
+Yang et al. [29] introduced an automatic radio map updating
+method based on enhanced transfer learning. Li et al. [30]
+proposed a ﬁne-grained radio map transfer method leveraging
+a domain classiﬁer. These efforts provide important support for
+deep learning-based RME.
+Inspired by the success of Convolutional Neural Network
+(CNN) in the ﬁeld of image processing, a series of works
+have emerged in recent years using U-Net or AE as backbone
+networks. Teganya et al. [31] were the ﬁrst to introduce deep
+learning methods and developed a fully convolutional deep
+completion autoencoder to learn the propagation phenomena
+of spatial structures. Levie et al. [32] proposed a RadioUNet
+model based on the connection of two U-Nets, and for the ﬁrst
+time proposed the use of Tx, building maps and sparse sampling
+splices as model inputs, which had a signiﬁcant impact on sub-
+sequent work. Hu et al. [33] proposed an unsupervised learning
+variant of GAN that utilizes ResNet and dilated convolution in
+thepatchGANframeworktolearnRSSdistributionsin3Dspace.
+Chenetal.[34]ﬁrstintroducedgraphneuralnetworksintoRME.
+They constructed a pixel-level graph based on line-of-sight or
+non-line-of-sight, and then reconstructed the radio maps using
+graph attention networks (GAT). However, constructing graphs
+based on individual pixels results in overly complex graphs,
+making them impractical for high-resolution RME. Wang et
+al. [35] introduced a diffusion model and improved the estima-
+tion performance under sampling-free conditions. However the
+huge computational load of the diffusion model is a signiﬁcant
+challenge.
+All of the above studies are based on purely data-driven
+approaches, so they require high data quality. In contrast, re-
+cent work has begun to favor the incorporation of physical
+propagation knowledge into the model to improve robustness.
+Zheng et al. [36] introduced a Pix2Pix-based model and used
+residual estimation methods to introduce SPM wireless propa-
+gation models. Zhang et al. [37] proposed an approach based
+on conditional generative adversarial networks (cGAN) and a
+two-stage training method that utilizes a combination of multiple
+loss functions to learn the shading details of LDPL models.
+For the ﬁrst time, they considered the inhomogeneous sampling
+problem and improved model robustness by GAN and signal
+propagation model. Jiang et al. [38] introduced the volume
+integral equation into the loss function to predict the total electric
+ﬁeld based on the mathematical relationship between the total
+electric ﬁeld and the incident ﬁeld.
+These methods have achieved signiﬁcant success in RME.
+However, there is still a gap in the study of observation-
+constrained areas. Existing purely data-driven methods assume
+that sensors can be uniformly distributed in space and lack
+efﬁcient and specialized structures to ensure that they can be
+applied to non-uniformly distributed data. While methods based
+on propagation models (e.g., RME-GAN) improve robustness
+to some extent, there is still a lack of dedicated modules to
+address constrained regions. This greatly limits the use of
+RME in real scenarios. To address the limitations identiﬁed
+above, we introduce MFFGCN, which fuses environmental
+context with sparse observations and propagates information
+over patch-level graphs—thereby preserving long-range spatial
+dependence. The model also remains lightweight and robust in
+severely observation-constrained regions.
+III. PROBLEM FORMULATION
+In this section, we introduce the formulation of the problem
+studied in this paper. We focus on the RME in the urban two-
+dimensional space, at a single ﬁxed frequency.
+Speciﬁcally, we focus on a piece of urban region i of size
+H × W,anddivideitintoagridofH/r × W/r witharesolution
+of r. There are Nt transmitters (Tx) and Nr receiver sensors
+(RX) with known locations in the region, and the transmitters
+operate at the same frequency f. The distribution of transmitters
+is random, while the distribution of receiver sensors is random
+or observation-constrained. Assuming that the sensing range of
+the receiver sensor can cover the grid on which it is located, its
+observation can be deﬁned for every xn = x1 . . . , xNr:
+˜y(xn) =
+Nt
+
+t=1
+Υt |Ht(xn)|2 + n(xn),
+(1)
+where Υt is the transmit PSD of the transmitter s, |Ht(xn)| is
+the channel frequency response of the transmitter s at position
+xn and n(xn) is a noise interference term at position xn, in-
+cluding thermal noise, background radiated noise. The sparse
+observation image fi ∈RH/r×W/r for region m is obtained by
+plotting the observations from all the receiving sensors on the
+grid on which they are located and ﬁlling the unobserved grids
+with zeros. Environmental information such as city maps mi ∈
+RH/r×W/r and transmitter maps pi ∈RH/r×W/r can also be
+written in image form and used as input to the model along
+with fi, where the transmitter map uses 1 to indicate transmitter
+location and 0 to indicate that no transmitter. Assuming that
+the observation is the fundamental truth of the radio map of the
+grid, our goal is to train the learning machine g(·) to estimate
+the ﬁne-resolution radio map for all grid, i.e.,
+yi = g (fi, mi, pi) ∈RH/r×W/r.
+(2)
+There has been some research on how to obtain good recon-
+struction errors when observations are extremely sparse. The
+goal of this paper is to train an efﬁcient model g(·) in order to
+achieve the same results with unevenly distributed observations.
+IV. METHODOLOGY
+In this section, we give the design of the proposed MFFGCN,
+whose structure is shown in Fig. 2. MFFGCN is composed of
+2 parts: (1) Multimodal feature fusion network based on dual
+encoderU-Net;and(2)graphconvolutionreﬁnenetwork.Unlike
+the aggregation of sparse observations and environmental maps
+as model inputs [31], [32], [33], the multimodal feature fusion
+network learns from sparse observations and environmental
+maps through two encoders, respectively, and fuses the features
+of the two through an adaptive feature fusion module (AFM),
+ﬁnally outputs coarse estimations results through a decoder.
+While the graph convolution reﬁne network performs patch-
+level graph construction for coarse estimations and propagates
+Authorized licensed use limited to: Zhejiang University of Technology. Downloaded on January 23,2026 at 04:17:30 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+--- page 4 ---
+ZHANG et al.: MFFGCN: MULTIMODAL FEATURE FUSION GRAPH CONVOLUTION NETWORK FOR RADIO MAP ESTIMATION WITH UNEVEN
+13369
+Fig. 2.
+Overview of the MFFGCN architecture. It is mainly composed of 2 parts: (1) Multimodal feature fusion network based on dual encoder U-Net; and (2)
+graph convolution reﬁne network. Given a sparse observation and an environment map, use the multimodal feature fusion network to obtain coarse estimations.
+Then, the coarse estimations are subjected to patch-level graph construction and dynamic graph propagation to obtain the residual estimations. Finally, the residual
+estimations and the coarse estimations are summed to obtain the reﬁne estimations.
+TABLE I
+STRUCTURE OF U-NET
+messages between different patches through dynamic graph
+convolution, and ﬁnally reduces the graph to an image to obtain
+reﬁne estimations. It is worth noting that the ﬁnal output is the
+sum of the results of coarse estimations and reﬁne estimations. In
+other words, the graph convolution reﬁne network focuses only
+on the difference between the coarse estimate and the ground
+truth, rather than re-estimating the radio map. We will introduce
+these parts in detail below.
+A. Multimodal Feature Fusion Network
+According to (2), we consider a 256 × 256 m2 scene with
+a resolution of 1 m, hence sparse observation fi ∈R256×256,
+environment map (mi, pi) ∈R2×256×256. In this paper, we use
+U-Net as the backbone of the multimodal feature fusion network
+becauseitswidelyrecognizedeffectiveness.TheU-Netstructure
+is shown in Table I, which are similar to [32].
+Most of the current deep learning-based methods use the
+strategy of early fusion. It is a simple and effective approach
+because it allows learning radio propagation features from both
+observations and the environment. However, the drawbacks of
+this structure become apparent when there are observation-
+constrained regions. In the restricted region, there is a lack of
+observations corresponding to the environment map, which can
+lead to unreliable model outputs.
+Based on this problem, we designed a two-encoder U-Net as
+a multimodal feature fusion network, as shown in Fig. 3. We
+design a hybrid fusion strategy that fuses environmental map
+features Fs
+e with sparse observation features Fs
+o at different
+stages s of the encoder via an AFM. Therefore, the output of
+the encoder at each stage is:
+Fs = AFM (Fs
+o, Fs
+e) ,
+(3)
+where Fs is the fused output obtained by the encoder at stage s,
+and AFM is the adaptive fusion module.
+As shown in Fig. 4, it is assumed that Fo and Fe denote the
+features from the observation and the environment input to the
+adaptive fusion module, respectively. The environment features
+Fe is passed through a basic convolution block of kernel size
+3 × 3 and a Softmax activation function to produce a weight
+matrix W with values between 0 and 1. The input environment
+features Fe and weight matrix W are then multiplied at the
+element-wise to generate a weighted environment features F′
+e.
+This process is expressed as:
+F′
+e = W ⊗Fe,
+(4)
+where ⊗denotes the element-wise multiplication. Finally the
+weighted environment features F′
+e is concatenated with the
+observation features Fo and fed to another basic convolution
+block of kernel size 3 × 3 to produce the ﬁnal fused features F′.
+F′ = conv (F′
+e ⊕Fo) .
+(5)
+Authorized licensed use limited to: Zhejiang University of Technology. Downloaded on January 23,2026 at 04:17:30 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+--- page 5 ---
+13370
+IEEE TRANSACTIONS ON MOBILE COMPUTING, VOL. 24, NO. 12, DECEMBER 2025
+Fig. 3.
+Illustration of the proposed multimodal feature fusion network. The inputs to the model include sparse observations and environmental maps from PSD
+observations acquired by the sensor network and satellite maps. The main body of the model is a U-Net based on Table I, and it is extended to a dual encoder form.
+At each stage of encoding, the adaptive feature fusion module (AFM) fuses the information from the environmental encoder into the observation encoder.
+Fig. 4.
+Proposed adaptive feature fusion module (AFM). Features from the
+environment map are multiplied with a weight matrix to obtain weighted
+features. The weighted features are then concatenated with the features from
+the observation observations and fed into a convolution module to output the
+fused features.
+B. Graph Convolution Reﬁne Network
+After obtaining the coarse estimations, we mitigate the effect
+of observation-constrained regions through the message passing
+mechanism of graph neural networks. Speciﬁcally, our proposed
+Graph Convolution Reﬁne Network is shown in Fig. 5. After
+obtaining the concatenated feature map from the map and guide
+branches, we divide it into non-overlapping spatial patches.
+Each patch is then ﬂattened into a feature vector, denoted as
+f(i), where i indicates the index of the patch node. These
+feature vectors serve as the initial node representations for
+graph construction and are subsequently processed by the GCN
+to perform feature reﬁnement through neighborhood message
+passing. First, sparse observations are utilized to replace part of
+the results in Coarse estimation to ensure the accuracy of the
+input data.
+Two types of features are then extracted through separate
+convolutional branches. The map features are generated from
+the sparse observation input. Their primary role is to re-inject
+the original, high-conﬁdence measurement information into the
+reﬁnement stage. This helps the network preserve local accuracy
+by anchoring the reﬁnement to ground-truth values in observed
+areas.
+The guide features, on the other hand, are extracted from the
+coarse estimation result. They encode prior knowledge about
+the predicted signal distribution and are used to guide the sub-
+sequent graph construction. Speciﬁcally, they provide semantic
+cues about channel fading patterns and spatial similarity, which
+enable the graph to establish meaningful connections between
+spatially related or propagation-similar patches.
+After concatenation, the two features are passed to the graph
+construction module (Map2Graph) and further reﬁned by the
+GCN layers. This architecture effectively separates structural
+input injection (via map features) from semantic propagation
+modeling (via guide features), enabling the network to leverage
+both observation-grounded data and learned signal priors during
+reﬁnement.
+The channel dimensions for both feature types are selected
+based on their distinct roles in the reﬁnement framework. The
+map features use a single channel, as the sparse observations
+contain localized, high-conﬁdence information. Their function
+is to retain spatial ﬁdelity rather than encode complex semantics,
+making a single-channel design both sufﬁcient and efﬁcient. In
+contrast, the guide features require greater expressive capac-
+ity to represent coarse-level signal priors and support graph
+construction. Based on empirical tuning, we adopt 81 channels
+for the guide features, which provides a good balance between
+representational power and computational cost, with negligible
+performance improvement observed beyond this setting.
+Then, an important question is how to construct graphs. As
+shown in the upper part of Fig. 5, to construct a graph repre-
+sentation suitable for spatial reﬁnement, we adopt a patch-level
+strategy that balances local detail preservation with computa-
+tionalefﬁciency.Speciﬁcally,giventhecoarseestimationfeature
+map ym ∈Rh×w (where h and w denote the height and width
+of the map, respectively), we divide it into non-overlapping
+Authorized licensed use limited to: Zhejiang University of Technology. Downloaded on January 23,2026 at 04:17:30 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+--- page 6 ---
+ZHANG et al.: MFFGCN: MULTIMODAL FEATURE FUSION GRAPH CONVOLUTION NETWORK FOR RADIO MAP ESTIMATION WITH UNEVEN
+13371
+Fig. 5.
+Illustration of the process of graph construction. The coarse estimation of size H × W is ﬁrst cut into several patches of size Ph × Pw. Then the sequence
+of nodes is obtained by ﬂattening. Finally the edges are obtained by KNN.
+patches of ﬁxed size ypatch
+m
+∈RN×Ph×Pw, where Ph and Pw
+are the height and width of the patch, respectively. The total
+number of patches is denoted by N =
+h
+Ph ×
+w
+Pw . For a typical
+256 × 256 map and 16 × 16 patch size, this results in N = 256
+patches. Each patch is then ﬂattened and positionally encoded to
+form a node feature vector xi ∈RD, producing the graph node
+set X = {x1, x2, . . ., xN}, where D is the feature dimension.
+Considering the patches as a set of unordered graph nodes,
+the feature X is the node features, so we get the node vector
+V = [v1, v2, . . . , vN]. To capture semantic similarity between
+spatial regions, we connect each node vi to its K most similar
+neighbors N(vi) using a k-nearest neighbors (KNN) algorithm.
+The similarity is measured using Euclidean distance in the
+semantic feature space, derived from the guide features extracted
+during encoding. This allows the graph to encode long-range
+dependencies and similarity-aware structures beyond simple
+spatial adjacency. This process is expressed as:
+N(vi) = {vj|vj ∈TopK (d(vi, V ))} ,
+(6)
+where d(vi, V ) is the euclidean distance from node vi to other
+nodes in V . So we obtain the set of edges E. Based on the above
+operations, we obtain a graph G = (V, E).
+Since edges are obtained based on the similarities of coarse
+estimations, this process can be viewed as modeling the sim-
+ilarity of different patches. During subsequent graph passing,
+GCN will aggregate message from other patches with similar
+PSD distributions to its for the patches containing observation-
+constrained regions.
+Finally we discuss the choice of patch size. Because the com-
+plexity of graph passing grows quadratically with the number
+of nodes N, it is impractical to construct the graph at the pixel
+level. And too large patches and a small number of nodes are
+not favorable for GNN learning. So as a compromise, for a
+256 × 256 radio map, we pick a patch size of 16 × 16. More
+speciﬁcally, we implement patch embedding by the stacked 4
+convolutions with the stride of 2, the kernel size of 3, the padding
+size of 1.
+Here, we use 3 layers of graph convolution to implement
+patch-level graph passing. In general, GCNs update and learn
+node features by aggregating the features of its neighborhood.
+For a given graph G, the generalized formula for graph convo-
+lution is as follows:
+Gl+1 = F (Gl, Wl)
+= Update
+
+Aggregate
+
+Gl, W l
+agg
+
+, W l
+update
+
+,
+(7)
+where Gl and Wl are the graph and learnable weights of layer l,
+respectively. And W l
+agg and W l
+update are the learnable weights
+of the aggregation and update functions in layer l. Where the
+aggregation function usually works on the features between a
+node and its neighboring nodes. Commonly used aggregation
+function include averaging, max-pooling and attention. Thus,
+for a patch node xi and its neighborhood N(xi), the graph
+convolution process can be written:
+x′
+i = h (xi, g(xi, N(xi), Wagg), Wupdate) ,
+(8)
+where h(·) and g(·) are the update and aggregation functions,
+respectively. Here we use maximum relative graph convolu-
+tion [39]:
+g(·) = [xi, max({xj −xi|j ∈N(xi)}]
+h(·) = g(xi)Wupdate, .
+(9)
+Importantly, position information is used only during edge con-
+struction to inform neighborhood relationships but is excluded
+from graph propagation, preventing over-reliance on absolute
+coordinates. The resulting graph is dynamically constructed for
+each input based on its encoded features, ensuring adaptivity to
+different spatial signal distributions.
+Authorized licensed use limited to: Zhejiang University of Technology. Downloaded on January 23,2026 at 04:17:30 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+--- page 7 ---
+13372
+IEEE TRANSACTIONS ON MOBILE COMPUTING, VOL. 24, NO. 12, DECEMBER 2025
+Then, as shown in Fig. 5, we transform the graph back into an
+image via the Graph2Image module, which consists of a series
+of transposed convolution layers. In this case, the Graph2Image
+is instantiated as a stack of four tranposed convolution with the
+kernel size of 4, the stride of 2 and one convolution with the
+kernel size of 3, the padding size of 1.
+A simple but important design of this paper is to estimate
+radio maps in a residual manner. We treat the output of the graph
+convolution reﬁne network as a residual map rather than a direct
+estimation. This is motivated by two practical considerations.
+First, the coarse estimation already captures the global propa-
+gation structure and major signal patterns, leaving the residuals
+to model local shading details and corrections—particularly in
+observation-constrained regions. Second, due to the patch-based
+graph construction, the pixel-wise alignment is partially lost
+during the reﬁnement process, making direct regression of the
+full-resolution map from the GCN less effective. By modeling
+only the residual, the GCN is guided to focus on localized dif-
+ferences, improving learning efﬁciency and numerical stability.
+This design allows the reﬁnement network to better complement
+the coarse estimation without attempting to fully reconstruct the
+radio map.
+C. Loss Functions
+We now present the design of the loss function. As shown in
+Fig. 2, the loss function of the proposed architecture consists of
+three parts:
+1) Loss Function of Coarse Estimation: We compute the
+mean square error (MSE) between the coarse estimation and
+the ground truth as the ﬁrst term of the loss function:
+LC =
+1
+H × W · ||y −˜yC||2
+F ,
+(10)
+where || · ||2
+F is the Frobenius norm, y and ˜yC are ground truth
+and coarse estimations, respectively.
+2) Loss Function of Reﬁne Estimation: As with the coarse
+estimation, for the reﬁne estimation, we also use MSE as the
+loss function:
+LR =
+1
+H × W · ||y −˜yR||2
+F ,
+(11)
+where ˜yR is the reﬁne estimation, equal to the sum of the coarse
+estimation and the residual estimation.
+3) Multiscale Structural Similarity Index (MS-SSIM): MS-
+SSIM is a metric for evaluating the structural similarity of two
+images at different scales and has a wide range of applications in
+the ﬁeld of image processing. In the latest literature, MS-SSIM
+is also used for RME [36], [37]. Therefore, we use it as the third
+term of the loss function to improve the quality of radio map. It
+is calculated as follows:
+MS( ˜
+yR, y)=[l ( ˜
+yR, y)]αM ·
+M
+
+j=1
+[c ( ˜
+yR, y)]βj · [s ( ˜
+yR, y)]γj ,
+(12)
+wherel(·),c(·)ands(·)aretheluminance,contrast,andstructure
+comparison functions, respectively. And αM, βj, and γj are the
+weights used to adjust the importance of luminance, contrast,
+Algorithm 1: The Proposed MFFGCN Method for RME.
+and structural information. l(·), c(·) and s(·) are calculated as
+follows:
+l(u, v) = 2μuμv + c1
+μ2u + μ2v + c1
+c(u, v) = 2σuσv + c2
+σ2u + σ2v + c2
+s(u, v) = σuv + c3
+σuσv + c3
+,
+(13)
+where μu and μv are the mean values of the two images u and
+v respectively. σu and σv are the standard deviation. c1, c2 and
+c3 are constants. So the MS-SSIM loss function is deﬁned by:
+LMS = 1 −MS ( ˜
+yR, y) .
+(14)
+Summarizing the above introduction, the complete loss func-
+tion of this paper is expressed as:
+L = λ1LC + λ2LR + λ3LMS,
+(15)
+where λ are the weights to control each loss term.
+D. Summary and Workﬂow
+In summary, the multimodal feature fusion network, the graph
+convolution reﬁne network and the loss function introduced
+above constitute the MFFGCN model proposed in this paper,
+aiming to cope with the sampling unevenness problem in RME.
+The algorithm ﬂow is shown in Algorithm 1.
+First, the sparse measurement map and the environmental
+information map are ﬁrst fed into the two encoders, and the
+Authorized licensed use limited to: Zhejiang University of Technology. Downloaded on January 23,2026 at 04:17:30 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+--- page 8 ---
+ZHANG et al.: MFFGCN: MULTIMODAL FEATURE FUSION GRAPH CONVOLUTION NETWORK FOR RADIO MAP ESTIMATION WITH UNEVEN
+13373
+TABLE II
+PARAMETERS OF THE RADIOMAPSEER DATA SET
+spatial propagation features of both are learned through the
+AFM module, and a coarse radio map estimation is output. This
+estimation is then subjected to patch-level graph construction
+in the graph convolution reﬁne network, and information from
+different patches is aggregated by graph convolution to balance
+uneven sampling. And output the residual estimation. Finally,
+the coarse estimation results are added with the residual esti-
+mation to obtain the ﬁnal estimation. The well-designed loss
+function ensures the accuracy and quality of the estimation.
+V. EXPERIMENTS
+In this section, we evaluate and compare MFFGCN’s results
+on an authoritative data set, particularly in the presence of
+observation-constrained areas.
+A. Dataset Description
+The experiments are based on the RadioMapSeer data set[32],
+which contains simulated radio maps, building maps, and trans-
+mitter maps with both 2D and 3D scenes. In the experiments, we
+consider only 2D scenes and use the building maps in the data
+set to replace the environment maps in the framework shown
+in Fig. 2. The city maps in this data set were obtained from
+OpenStreetMap and radio maps were obtained through WIn-
+Prop. The radio maps include three radio propagation simulation
+models: DPM, IRT2 and IRT4. The city maps in the data set
+include Ankara, Berlin, Glasgow, Ljubljana, London and Tel
+Aviv. Speciﬁcally, the data set consists of 701 city maps of size
+256 × 256 m2, with a resolution of 1 m. 80 potential transmitters
+are considered in each map. Each transmitter is 1.5 meters high
+with an isotropic antenna. It transmits wireless signals with
+23 dBm of power at 5.9 GHz. More speciﬁc parameters of the
+data set are shown in Table II.
+Among the available simulation modalities in the Ra-
+dioMapSeer dataset (DPM, IRT2, IRT4), we adopt the DPM
+(Dominant Path Model) to ensure compatibility with prior
+works. In particular, DPM is used as the standard input modality
+in RadioUNet [32], and is also adopted in several recent top-tier
+studies on deep learning-based radio map estimation [35], [37],
+[38]. These works demonstrate that DPM strikes a favorable bal-
+ance between physical realism and signal smoothness, offering
+stable learning behavior and reproducible results.
+To maintain consistency with baseline settings, we follow
+the same data preprocessing steps as implemented in the
+RadioUNet. Speciﬁcally, all radio maps are ﬁrst normalized
+to the [0, 1] range based on the original path loss values
+([−127, −47] dB). A thresholding operation is then applied
+to remove pixels with normalized values below 0.2, which
+correspond to extremely weak or noisy signals. The remaining
+values are re-normalized to [0, 1] to restore dynamic range.
+Each sample consists of three spatially aligned inputs: a sparse
+observation map, a binary environment mask, and a transmitter
+location map. The sparse observation is generated by sampling
+a subset of signal values from the DPM radio map according
+to predeﬁned densities or observation constraints (see Sec-
+tion V-B), following the setting used in RadioUNet. No further
+augmentation or transformation is applied. This preprocessing
+strategy ensures fair comparison with prior methods and sup-
+ports consistent evaluation under different sampling scenarios.
+B. Experiment Settings
+Referring to the setup in [32], we divide the training set,
+validation set and test set in the ratio of 5:1:1. Speciﬁcally, data
+from 500 maps are used for training, 100 for validation, and
+the last 100 for testing. This ensures that the maps in the test
+set are never seen by the model and can effectively verify the
+generalization of the model across different cities.
+Considering that the number of actual observations is ex-
+tremely sparse and unstable, we set the minimum number of
+observable samples per map to 10 and the maximum to 300 (less
+than 0.5% of the total). The experiments are repeated ﬁve times
+with different random seeds, and we report the mean ± standard
+deviation across these runs. For the observation-constrained
+region, from the practical application point of view, we consider
+that it is usually located at the edge position of the map, so its
+range is abstracted as a rectangular region close to the edge in the
+experimentaldesign. Thatis,werandomlyappendregionstoone
+side of the map (top, bottom, left, or right), and all sampled data
+within this region will be eliminated. So the model must rely on
+sampled data from other regions to recover the complete radio
+map. In fact, the different region shapes have almost no effect
+on the experimental results, as we will discuss in Section V-F.
+In order to verify the performance of the model in uniform and
+non-uniform scenarios, we further consider the following three
+different settings:
+1) Setup 1: All samples are randomly distributed over the
+entire radio map.
+2) Setup 2: The radio map has a rectangular observation-
+constrainedareaof 25%of thetotal. Samples arerandomly
+distributed throughout the rest of the radio map.
+3) Setup 3: The size of the rectangular observation-
+constrained region is variable, ranging from 10 to 50
+percent of the total. Samples are randomly distributed
+throughout the rest of the radio map.
+In the whole experiment, we implement it with Pytorch 2.2.
+The conﬁguration of the PC is i9-13980HX, 32 GB, RTX 4080.
+For the MFFGCN framework, we use Batch Normalization and
+Relu as normalization and activation functions. Training of all
+Authorized licensed use limited to: Zhejiang University of Technology. Downloaded on January 23,2026 at 04:17:30 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+--- page 9 ---
+13374
+IEEE TRANSACTIONS ON MOBILE COMPUTING, VOL. 24, NO. 12, DECEMBER 2025
+TABLE III
+COMPARISON OF OUR MFFGCN AND OTHER STATE-OF-THE-ART METHODS
+methods was performed with Adam. The initial learning rate of
+the MFFGCN is set to 1e−3. We trained a total of 50 epochs, and
+at the 40th epoch, the learning rate was reduced by 0.1 times. The
+weights of each loss function item are set as: λ1 = 0.1, λ2 = 1
+and λ3 = 0.0001.
+The experiments use Root Mean Square Error (RMSE) and
+Normalized Mean Square Error (NMSE) as performance evalu-
+ation metrics.
+C. Comparison to State-of-the-Art
+We compare the MFFGCN with the following models.
+r Kriging [19]: Kriging is a classical data interpolation al-
+gorithm and is also the most widely used of the traditional
+RME method.
+r KNN [27]: KNN is a simple and effective traditional ma-
+chine learning method that does not have a speciﬁc training
+phase, but instead uses all data from the testing phase to
+predict new samples.
+r AE [31]: Autoencoder consists of a symmetric encoder and
+decoder and a skip connection between them. The depth of
+the encoder or decoder is 7 layers and the code length is
+64.
+r DeepAE [31]: Deep Autoencoder a is a deeper Autoen-
+coder with encoder and decoder depths of 13. It contains
+more convolutional layers. And the code length is also 64.
+r U-Net [32]: U-Net is a widely used model in image seg-
+mentation. Unlike AE, it reduces or enlarges feature size
+by max-pooling or transposed convolution.
+r RadioUNet [32]: RadioUNet is also known as WNet, be-
+cause it consists of two U-Nets connected in series (U + U
+= W). The two U-Nets are trained separately.
+r Pix2pix+ [36]: Pix2pix+ is a cGAN model based on
+Pix2pix. It guides the GAN training through path loss
+model and designs a masking process to avoid the inter-
+ference of missing data.
+r RME-GAN [37]: RME-GAN is also a cGAN model based
+on U-Net. Its ﬁrst phase of training is based on log-distance
+path-loss, while in the second phase it learns real radio
+propagation.
+We ﬁrst compare the proposed MFFGCN with state-of-the-art
+models in different settings. The NMSE and RMSE of the
+reconstructed radio maps are shown in Table III. The best
+performances are in bold.
+TABLE IV
+COMPARISON WITH RME-GAN UNDER ITS ORIGINAL SETUP
+Fig. 6 gives a comparison of the training loss curves. Ra-
+dioUNet has a signiﬁcant increase in its initial Loss as the setting
+difﬁculty increases (Setup 1 to 3), while the proposed MFFGCN
+does not change much, which side by side illustrates the ro-
+bustness of MFFGCN under uneven sampling. Moreover, com-
+pared with the pure CNN RadioUNet, the proposed MFFGCN
+converges faster, basically within 10 epochs. And compared
+with the two-stage training of RadioUNet (which requires 50*2
+epochs), MFFGCN achieves a lower Loss in one training stage
+by merging the loss functions, which improves the efﬁciency of
+model training. This result illustrates that the message passing
+mechanism of GCN can improve the convergence of MFFGCN.
+Considering that all the settings are based on complex urban
+environments that are sensitive to the shadowing effect of ra-
+dio maps, the two traditional interpolation methods, KNN and
+Kriging, perform poorly. In contrast, the deep learning-based
+methods perform well overall. At the same time, since the tradi-
+tional interpolation algorithms cannot effectively reconstruct the
+radio maps in urban, the performance of the two methods, KNN
+and Kriging, is similar in different settings. In the following, we
+mainly discuss the comparison between the model proposed in
+this paper and other state-of-the-art deep learning models.
+In order to better compare with RME-GAN, which also claims
+to perform well under non-uniform sampling, the comparison
+results under its original setup are given, as shown in Table IV.
+The proposed MFFGCN also achieved SOTA performance.
+Setups 4 and 5 are set as follows:
+1) Setup 4: In this setup, we sample the radio map at a
+random ratio from 1% to 10% in each region, and the
+sparse observations are uniformly distributed.
+2) Setup 5: We divide the radio map into two sides randomly.
+Then, we sample 1% of observations from one side and
+10% from the other side.
+In Setup 1, the samples are uniformly distributed to mainly
+compare the performance of the models under sparse sam-
+pling. As shown in Table III, the results of MFFGCN proposed
+in this paper are basically consistent with the state-of-the-art
+Authorized licensed use limited to: Zhejiang University of Technology. Downloaded on January 23,2026 at 04:17:30 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+--- page 10 ---
+ZHANG et al.: MFFGCN: MULTIMODAL FEATURE FUSION GRAPH CONVOLUTION NETWORK FOR RADIO MAP ESTIMATION WITH UNEVEN
+13375
+Fig. 6.
+Comparative analysis of training loss curves between MFFGCN and RadioUNet. (a) Setup 1. (b) Setup 2. (c) Setup 3.
+Fig. 7.
+Performance of different methods at different numbers of samples.
+(a) NMSE. (b) RMSE.
+model RME-GAN, and outperform models such as Pix2pix+,
+RadioUNet and DeepAE. This shows that MFFGCN achieves a
+consistent level of the current state-of-the-art model under the
+condition of uniform sampling. Meanwhile, it can be found that
+the U-Net models perform better than the autoencoder-based
+models. We believe this is due to the fact that U-Net compresses
+the image to a smaller size by max-pooling in the encoding
+stage, which facilitates the convolution layer to learn feature
+dependencies in a larger spatial range.
+In Setup 1, we also compare the effect of different numbers of
+observation samples on different models, as shown in Fig. 7. The
+errors of all the models decrease with the increase of the number
+of samples. The decrease of the errors of KNN and Kriging is
+more obvious, which is due to the fact that the interpolation
+algorithms are more sensitive to the number of samples. The
+curves of our proposed MFFGCN almost overlap with RME-
+GAN, which also shows that MFFGCN performs almost the
+same as the state-of-the-art model.
+D. Performance With Uneven Spatial Sampling
+In Setup 2 and Setup 3, there are observation-constrained
+regions that focus on comparing the performance of the models
+in the presence of an uneven distribution of observation samples.
+As can be seen from Table III, the performances decreases in
+different degrees for both Setup 2 and Setup 3 compared to
+Setup 1. Among them, the performance of is worse in Setting 3
+due to the randomness in the size of the observation-constrained
+region. The MFFGCN proposed in this paper, on the other hand,
+has the smallest decrease and thus outperforms all baseline
+models in terms of estimation error. Moreover, the results of
+MFFGCN are almost the same under Setting 2 and Setting 3.
+These results indicate that the model is well adapted to the
+observation-constrained region.
+Speciﬁcally, RME-GAN, Pix2pix+ and RadioUNet increased
+the RMSE by 9.27%, 8.33%, and 9.38% in Setting 2 compared to
+Setting 1. And in Setting 3, it increased by 13.91%, 9.62%, and
+13.13%, respectively. Whereas the autoencoder-based model is
+less resilient to uneven sampling distribution, DeepAE and AE
+are increased by 41.67% and 37.50% in Setting 2. In setting
+3, they are 46.53% and 44.08%. In contrast, the proposed MF-
+FGCN has an increase in RMSE of 2.67% and 3.33% in Setting
+2 and Setting 3, respectively, which is much smaller than the
+baseline models. As a result, compared to the state-of-the-art
+model, the MFFGCN reduces the RMSE by 6.67% and 9.36%
+in Setup 2 and Setup 3, respectively, and the NMSE by 11.76%
+and 14.82%.
+In Setup 2 and Setup 3, we also compare the performance of
+the different models in the observation-constrained region, as
+shown in Fig. 8. It can be seen that the errors of the models are
+essentially the same in both cases, indicating that the models
+are not sensitive to different sizes of observation-constrained
+regions, and the difference in performance per pixel is small.
+The comparison results are similar to those in Table III, where
+the performance of MFFGCN is still ahead of all the restricted
+models. In addition, compared with the global average results
+in Table III, MFFGCN increases the RMSE in the restricted
+region by 9.68% and 9.23%, and the NMSE by 2.52% and
+1.82%. Whereas, RME-GAN has increased RMSE by 10.50%
+and 10.81% and NMSE by 6.85% and 3.74%. This shows that
+MFFGCN outperforms the above models in both absolute and
+relative values in the restricted region.
+To further demonstrate the advantages of the proposed model
+under uneven spatial sampling conditions, we conduct an in-
+depth analysis of obstacle region impacts under Setup 3. Specif-
+ically, we investigate how 1) the obstacle position (represented
+by distance from map center) and 2) region size (represented
+by side length) affect model performance, as shown in Figs. 9
+and 10. Our MFFGCN consistently achieves lower errors than
+RadioUNet and RME-GAN across all conditions, aligning with
+the results in Table III.
+Authorized licensed use limited to: Zhejiang University of Technology. Downloaded on January 23,2026 at 04:17:30 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+--- page 11 ---
+13376
+IEEE TRANSACTIONS ON MOBILE COMPUTING, VOL. 24, NO. 12, DECEMBER 2025
+Fig. 8.
+Performance of different methods in the observation-constrained re-
+gions (metrics normalized to error per pixel). (a) NMSE. (b) RMSE.
+Fig. 9.
+Performance of different distance between the observation-constrained
+regions and the center. (a) NMSE. (b) RMSE.
+Fig. 10.
+Performance of different side length of observation-constrained re-
+gions. (a) NMSE. (b) RMSE.
+Notably, Figs. 9 and 10 show that RadioUNet maintains a
+high error due to its lack of specialized design for non-uniform
+sampling, suggesting that it is insensitive to observable informa-
+tion. In contrast, both RME-GAN and MFFGCN show superior
+performance to RadioUNet, and the errors are approximately
+linear with respect to distance from map center and region
+size, suggesting that they enhance their adaptability to sampling
+nonuniformity by efﬁciently utilizing available information. The
+effectiveness of RME-GAN may stem from its integration of
+knowledge of the propagation model, which provides rough
+estimates that maintain reasonable accuracy even in the sparsely
+sampled case. Remarkably, MFFGCN has the best overall per-
+formance, further validating its superiority in the case of uneven
+sampling.
+We believe that the success of the MFFGCN is mainly due to
+two aspects: (1) adequate multimodal fusion allows the model
+to make more use of the information in the environmental maps
+rather than relying on sparse observations. (2) The aggregation
+processing of map convolution further improves the output error.
+Thus the model is signiﬁcantly less affected when there are
+constrained regions. We will further demonstrate the above
+conclusions in subsequent ablation experiments.
+As shown in Fig. 11, we give an example of the estimation
+results of different models. It can be seen that the estimation
+results of AE and DeepAE have large deviations in terms of the
+shading effect of buildings. This indicates that the autoencoder-
+based models, although superior to the traditional interpolation
+methods, still have defects in the estimation of shading details.
+The results of U-Net, RadioUNet and RME-GAN, although with
+a small range of deviation, are also signiﬁcantly higher in the
+observation-constrained regions of Setting 2 and Setting 3 than
+in the corresponding regions of Setting 1. This indicates that
+these models do not perform well in the observation-constrained
+scenarios. On the other hand, the MFFGCN proposed in this
+paper performs well in all the three settings and is almost
+unaffected by the observation-constrained regions. This result
+visualizes the robustness of MFFGCN in the case of uneven
+sampling distribution.
+E. Ablation Study
+We conducted a number of experiments to validate the effec-
+tiveness of each of the proposed components. Speciﬁcally, we
+focused on exploring the effects of dual encoder, adaptive fusion
+module, dynamic graph construction, and residual estimation.
+The effects of graph iteration steps and the number of neighbors
+on the results are also discussed.
+In order to verify the effect of the dual-encoder structure, we
+replaced it with the standard single-encoder form (Single En-
+coder), a variant that directly concatenates sparse observations
+andenvironmentmapsasinputs.Further,wereplacetheadaptive
+fusion module with basic fusion methods or attention-based
+fusion modules including: additive-based fusion module (Ad-
+ditive), concatenation-based fusion module (Concatenation),
+Squeeze-and-Excitation module (channel attention) and cross-
+attention, which are used to compare the effects of the AFM. The
+results, as shown in Table V, show that the concatenation-based
+Authorized licensed use limited to: Zhejiang University of Technology. Downloaded on January 23,2026 at 04:17:30 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+--- page 12 ---
+ZHANG et al.: MFFGCN: MULTIMODAL FEATURE FUSION GRAPH CONVOLUTION NETWORK FOR RADIO MAP ESTIMATION WITH UNEVEN
+13377
+Fig. 11.
+Visualization results of the different methods, where the red rectangles are within the observation-constrained regions. About darker colors in the
+deviation plot indicate larger estimation bias. (a) MFFGCN. (b) DeepAE. (c) U-Net. (d) RadioUNet. (e) Pix2pix+. (f) RME-GAN.
+TABLE V
+ABLATION EXPERIMENTS
+method is comparable to the single encoder effect, while the
+additive-based method does not perform well. The two attention
+modules work better than the fusion methods but still not as
+well as the AFM proposed in this paper, which suggests that the
+design can effectively fuse features from sparse observations
+and environment information.
+In order to verify the effect of graph convolution, we re-
+move the part of graph convolution and output the estimation
+results directly from the dual-encoder U-Net (w/o GCN). In
+addition, we verify the effectiveness of each design in the graph
+convolution by replacing the dynamic graph using the static
+graph (w/o Dynamic) or removing the residual design (w/o
+Authorized licensed use limited to: Zhejiang University of Technology. Downloaded on January 23,2026 at 04:17:30 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+--- page 13 ---
+13378
+IEEE TRANSACTIONS ON MOBILE COMPUTING, VOL. 24, NO. 12, DECEMBER 2025
+Fig. 12.
+Visualization of the graph structure and GCN-enhanced estimation. (a) Ground truth with the observation-constrained regions. (b) Coarse esti-
+mation result (RMSE = 0.0173). (c) Graph connection of a patch node within the observation-constrained regions. (d) Reﬁne estimation result with GCN
+(RMSE = 0.0147).
+Residual). As shown in Table V, graph convolution, dynamic
+graph construction and residual output can effectively reduce
+the prediction error, and combined with the results in Fig. 11,
+it can be shown that the graph-based method can effectively
+balance the error brought by observation-constrained areas, and
+improve the estimation accuracy in the case of uneven sampling
+distribution.
+As shown in Table V, removing the residual structure leads
+to a dramatic degradation in performance across all setups,
+further supporting our design rationale in Section IV-B. For
+instance, in Setup 1, the NMSE increases from 0.0043 to 0.0231,
+and the RMSE rises from 0.0150 to 0.0347—more than a
+fourfold increase. These results indicate that directly learning
+the full-resolution radio map from the patch-based GCN is
+signiﬁcantly less effective, likely due to the disrupted spatial
+alignment caused by graph operations. In contrast, the residual
+design allows the GCN to focus on localized corrections over
+the coarse estimation, enhancing both accuracy and robustness.
+This layered learning mechanism is particularly beneﬁcial in
+observation-constrained regions, where residual modeling plays
+a crucial role in compensating for missing information.
+In summary, relative to the single-encoder baseline, the dual-
+encoder design reduces NMSE by 9–10% across all three setups.
+Replacing plain concatenation with the proposed AFM brings a
+further 4–6% reduction by adaptively gating cross-modal cues.
+Disabling dynamic graph construction (w/o Dynamic) raises
+NMSE by roughly 6% in the most uneven-sampling scenario,
+underscoring its value. Finally, removing the residual branch
+(w/o Residual) inﬂates NMSE by a factor of ﬁve, conﬁrming
+the necessity of coarse-to-ﬁne reﬁnement.
+Fig. 12 provides a visual example to demonstrate the effect
+of the graph structure in improving estimation under sparse ob-
+servations. In Fig. 12(c), we visualize the graph connectivity of
+a patch node located within an observation-constrained region.
+By constructing edges based on spatial similarity, the graph con-
+nects nodes in unobserved areas with those in observed regions,
+allowing the nodes to access reliable contextual information. As
+showninFig.12(d),thereﬁneestimationaftergraphconvolution
+achieves signiﬁcantly better reconstruction quality, reducing the
+RMSE from 0.0173 in the coarse estimation to 0.0147. These
+results validate the effectiveness of the proposed graph-based
+Fig. 13.
+Impact of iteration steps and number of neighbors.
+reﬁnement strategy, particularly in scenarios with incomplete
+observations.
+The iteration step and the number of neighbors are two im-
+portant parameters in dynamic graph convolution. We compare
+different combinations of parameters to investigate the impact
+of these factors on the ﬁnal results. The results in Fig. 13 show
+that not enough information can be aggregated when there are
+fewer iteration steps, so the results become worse. While when
+iterating more than 3 steps, the modal results hardly get better,
+which means that a smaller number of steps is sufﬁcient. For
+the number of neighbors, we ﬁnd that the results also improve
+slightly when the number of neighbors increases. Thus, the
+combination of a larger number of iteration steps and neigh-
+bors results in better performance, but this also implies greater
+Authorized licensed use limited to: Zhejiang University of Technology. Downloaded on January 23,2026 at 04:17:30 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+--- page 14 ---
+ZHANG et al.: MFFGCN: MULTIMODAL FEATURE FUSION GRAPH CONVOLUTION NETWORK FOR RADIO MAP ESTIMATION WITH UNEVEN
+13379
+TABLE VI
+IMPACT OF THE RESTRICTED REGION SHAPES
+TABLE VII
+IMPACT OF λ ON MFFGCN PERFORMANCE
+complexity. So we chose the existing parameters to balance error
+and efﬁciency.
+F. Robustness
+In order to verify the robustness of our MFFGCN, we eval-
+uate it in three aspects: the shape of the restricted region, the
+sensitivity to hyperparameters, and the sensitivity to noise. First,
+although Table III reports the good performance of MFFGCN
+under uneven sampling, general considerations suggest that the
+shape of the restricted region may not be ﬁxed in practical ap-
+plications. So we evaluate the zero-shot performance of models
+trained on rectangular constrained regions under circles and
+triangles, as shown in Table VI. It can be seen that the error
+of the model hardly increases without any adjustment, which
+illustrates the robustness and generalizability of the model. In
+fact, from a data perspective, the different shapes do not change
+the quantity and quality of the available observation information,
+so their effect on the results can be ignored.
+Then, the ﬁne-tuning of the loss function coefﬁcient in the
+loss function 14 are reported in Table VII, focusing mainly on
+the effects of λ1 and λ3. We choose λ1 from the levels of 0.1,
+0.5 and 1. When λ1 is 0.5, the MFFGCN achieves the best
+performance because it strikes a balance between course and
+reﬁne estimation. Compared to tasks such as image restoration,
+theimagestructureofspectralmapsismuchsimpler,anditserror
+is mainly in the ﬁneness of the shaded edges, so we followed the
+suggestion of [37] and chose a very small factor for MS-SSIM to
+avoid over-smoothing problems. We choose from three levels,
+0.00001, 0.0001 and 0.001, and MFFGCN achieves the best
+performance when λ3 is 0.0001. When λ3 is small, MS-SSIM
+does not work, resulting in unnatural radio maps. And when
+λ3 is large, local artifacts may be retained, resulting in blurred
+details.
+G. Sensitivity and Complexity
+Next, we further analyze the impact of the environment map
+quality. Under Setup 3, we analyze it from three aspects: noise,
+resolution, and random missing. Considering that the environ-
+ment map is in the form of a binary mask, we use impulse noise
+Fig. 14.
+Performance with impulse noise. (a) NMSE. (b) RMSE.
+Fig. 15.
+Impact of map resolution on performance. (a) NMSE. (b) RMSE.
+Fig. 16.
+Performance with missing buildings. (a) NMSE. (b) RMSE.
+to evaluate it. Fig. 14 shows the performance of the model under
+different noise intensities. The proposed MFFGCN exhibits
+better noise resistance, which is due to the design of the dual
+encoder.
+For the resolution test, we downsample and upsample the
+original environment map ﬁrst, and then processed the new map
+back to a binary mask through the threshold. The results are
+shown in Fig. 15. The performance of the proposed MFFGCN
+is basically the same as the baselines. The performance of all
+models dropped sharply; for example, even a small change in
+resolution (75%) would cause the error to increase by more
+than one time. This is because the resolution scaling causes a
+signiﬁcant change in the shape of the building edge, which leads
+to a deviation in the model’s judgment of the propagation mode.
+Authorized licensed use limited to: Zhejiang University of Technology. Downloaded on January 23,2026 at 04:17:30 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+--- page 15 ---
+13380
+IEEE TRANSACTIONS ON MOBILE COMPUTING, VOL. 24, NO. 12, DECEMBER 2025
+TABLE VIII
+COMPLEXITY ANALYSIS
+Fig. 16 shows the results of the impact of missing building
+maps. The results show that as the number of missing buildings
+increases, the performance of all models also shows a signiﬁcant
+decline, and the decline rate of MFFGCN is slightly higher than
+that of RadioUNet. But MFFGCN still maintains the best error
+index. Overall, MFFGCN performs well in noise resistance, and
+when the environment map is blurred or missing, there is a
+serious performance decline, but it can still maintains the best
+or suboptimal results. In subsequent work, the environment map
+sensitivity is an important research direction.
+The sensitivity analysis reveals two representative failure
+scenarios. (1) Severe map noise: injecting 1% impulse noise into
+the building map increases the NMSE of MFFGCN by 145%,
+whereas RadioUNet and RME-GAN surge by 160% and 182%,
+respectively, conﬁrming that MFFGCN is still the most robust
+under heavy corruption. (2) Abrupt structural changes: down-
+sampling the building map to 25% of its original resolution
+or randomly omitting four buildings raises the NMSE of every
+method by almost a factor of four. Although the dynamic-graph
+module mitigates part of the damage, MFFGCN degrades at a
+rate comparable to the baselines, exposing its limited adaptabil-
+ity to highly dynamic layouts.
+In summary, both map noise and rapid environmental vari-
+ation substantially reduce performance. MFFGCN remains the
+most resilient under noise, but improving its responsiveness to
+dynamic scenes will require on-the-ﬂy map updates and online
+ﬁne-tuning, which we leave for future work.
+Finally, the comparison of FLOPs, Params and inference
+time between MFFGCN and baselines is given in Table. VIII.
+Overall, the proposed model has comparable complexity to the
+baselines. The MFFGCN has fewer FLOPs and slightly more
+Params. This is due to the introduction of more parameters in
+the AFM module, which slightly increases the overall number
+of parameters in the model. Because dynamic GNNs are less
+efﬁcient, MFFGCN’s inference time is slightly longer than that
+of the baselines but remains comparable.
+VI. CONCLUSION
+Recovering radio maps from sparse and unbalanced sampling
+is the key to spectrum management and optimization, which
+is important for reducing frequency conﬂicts and promoting
+the development of mobile communications. In this study, we
+proposed an MFFGCN. To effectively combine sparse sampling
+and information in the environment, we designed a multi-feature
+fusion network based on dual encoders and adaptive feature
+fusion modules. To balance the uneven sampling, we designed
+a reﬁne network based on graph convolution with a residual
+output. This design enables the graph convolution to aggre-
+gate the information between patches and reduce the effect of
+observation-constrained regions. Extensive experiments demon-
+strated that our method clearly outperformed state-of-the-art
+methods, especially in the setting of observation-constrained
+regions. Our model reduced the RMSE by 6.67% and the
+NMSE by 11.76% compared to the state-of-the-art model at
+25% of the restricted regions, while requiring 14.5% fewer
+FLOPs and virtually the same per-sample latency (5.17 ms)
+as the lightweight RadioUNet baseline. At the same time, we
+also acknowledge the limitation of the model, which is overly
+dependent on environmental information. In the future, we will
+further improve the model to adapt to different scenarios.
+REFERENCES
+[1] Y. Lin, Y. Tu, and Z. Dou, “An improved neural network pruning technol-
+ogy for automatic modulation classiﬁcation in edge devices,” IEEE Trans.
+Veh. Technol., vol. 69, no. 5, pp. 5703–5706, May 2020.
+[2] Y. Zhao et al., “ASTF: Visual abstractions of time-varying patterns in radio
+signals,” IEEE Trans. Vis. Comput. Graph., vol. 29, no. 1, pp. 214–224,
+Jan. 2023.
+[3] J. Yin, Q. Yang, and L. M. Ni, “Learning adaptive temporal radio maps for
+signal-strength-based location estimation,” IEEE Trans. Mobile Comput.,
+vol. 7, no. 7, pp. 869–883, Jul. 2008.
+[4] S. Zhang, Y. Yang, Z. Zhou, Z. Sun, and Y. Lin, “DIBAD: A disentangled
+information bottleneck adversarial defense method using Hilbert-Schmidt
+independence criterion for spectrum security,” IEEE Trans. Inf. Forensics
+Secur., vol. 19, pp. 3879–3891, 2024.
+[5] Y. Lin, Y. Tu, Z. Dou, L. Chen, and S. Mao, “Contour stella image and
+deep learning for signal recognition in the physical layer,” IEEE Trans.
+Cogn. Commun. Netw., vol. 7, no. 1, pp. 34–46, Mar. 2021.
+[6] Y. Wang, A. K.-S. Wong, S.-H. G. Chan, and W. H. Mow, “Leto:
+Crowdsourced radio map construction with learned topology and a few
+landmarks,” IEEE Trans. Mobile Comput., vol. 23, no. 4, pp. 2795–2812,
+Apr. 2024.
+[7] W. B. Chikha, M. Masson, Z. Altman, and S. B. Jemaa, “Radio environ-
+ment map based inter-cell interference coordination for massive-MIMO
+systems,” IEEE Trans. Mobile Comput., vol. 23, no. 1, pp. 785–796,
+Jan. 2024.
+[8] Y. Lyu, W. Wang, and P. Chen, “Fixed-wing UAV based air-to-ground
+channel measurement and modeling at 2.7 GHz in rural environment,”
+IEEE Trans. Antennas Propag., vol. 73, no. 4, pp. 2038–2052, Apr. 2025,
+doi: 10.1109/TAP.2024.3428337.
+[9] L. Guo, M. Wang, and Y. Lin, “Electromagnetic environment portrait based
+on Big Data mining,” Wireless Commun. Mobile Comput., vol. 2021, pp. 1–
+13, 2021.
+[10] D. Romero and S.-J. Kim, “Radio map estimation: A data-driven approach
+to spectrum cartography,” IEEE Signal Process. Mag., vol. 39, no. 6,
+pp. 53–72, Nov. 2022.
+[11] R. Calvo-Palomino et al., “Electrosense: Crowdsourcing radio spec-
+trum decoding using IoT receivers,” Comput. Netw., vol. 174, 2020,
+Art. no. 107231.
+[12] S. Rajendran et al., “Electrosense: Open and big spectrum data,” IEEE
+Commun. Mag., vol. 56, no. 1, pp. 210–217, Jan. 2018.
+[13] Y. Tu, Y. Lin, J. Wang, and J.-U. Kim, “Semi-supervised learning with gen-
+erative adversarial networks on digital signal modulation classiﬁcation,”
+Comput. Mater. Continua, vol. 55, no. 2, pp. 243–254, 2018.
+[14] Y. Zeng, X. Xu, S. Jin, and R. Zhang, “Simultaneous navigation and radio
+mapping for cellular-connected UAV with deep reinforcement learning,”
+IEEE Trans. Wireless Commun., vol. 20, no. 7, pp. 4205–4220, Jul. 2021.
+[15] S. Zhang, T. Yu, B. Choi, F. Ouyang, and Z. Ding, “Radiomap inpainting
+for restricted areas based on propagation priority and depth map,” IEEE
+Trans. Wireless Commun., vol. 23, no. 8, pp. 9330–9344, Aug. 2024.
+[16] C. Phillips, D. Sicker, and D. Grunwald, “A survey of wireless path loss
+prediction and coverage mapping methods,” IEEE Commun. Surv. Tut.,
+vol. 15, no. 1, pp. 255–270, First Quarter 2013.
+[17] M. Lee and D. Han, “Voronoi tessellation based interpolation method
+for Wi-Fi radio map construction,” IEEE Commun. Lett., vol. 16, no. 3,
+pp. 404–407, Mar. 2012.
+[18] H. N. Qureshi et al., “Toward addressing training data scarcity challenge
+in emerging radio access networks: A survey and framework,” IEEE
+Commun. Surv. Tut., vol. 25, no. 3, pp. 1954–1990, Third Quarter 2023.
+Authorized licensed use limited to: Zhejiang University of Technology. Downloaded on January 23,2026 at 04:17:30 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+--- page 16 ---
+ZHANG et al.: MFFGCN: MULTIMODAL FEATURE FUSION GRAPH CONVOLUTION NETWORK FOR RADIO MAP ESTIMATION WITH UNEVEN
+13381
+[19] K. Sato and T. Fujii, “Kriging-based interference power constraint:
+Integrated design of the radio environment map and transmission
+power,” IEEE Trans. Cogn. Commun. Netw., vol. 3, no. 1, pp. 13–25,
+Mar. 2017.
+[20] D. Denkovski, V. Atanasovski, L. Gavrilovska, J. Riihijärvi, and P. Mähö-
+nen, “Reliability of a radio environment map: Case of spatial interpolation
+techniques,” in Proc. 7th Int. ICST Conf. Cogn. Radio Oriented Wireless
+Netw. Commun., Stockholm, Sweden, 2012, pp. 248–253.
+[21] J. A. Bazerque, G. Mateos, and G. B. Giannakis, “Group-lasso on splines
+for spectrum cartography,” IEEE Trans. Signal Process., vol. 59, no. 10,
+pp. 4648–4663, Oct. 2011.
+[22] M. Hamid and B. Beferull-Lozano, “Non-parametric spectrum cartogra-
+phy using adaptive radial basis functions,” in Proc. IEEE Int. Conf. Acoust.
+Speech Signal Process., Los Angeles, USA, 2017, pp. 3599–3603.
+[23] K. You, W. Guo, T. Peng, Y. Liu, P. Zuo, and W. Wang, “Parametric
+sparse Bayesian dictionary learning for multiple sources localization with
+propagation parameters uncertainty,” IEEE Trans. Signal Process., vol. 68,
+pp. 4194–4209, 2020.
+[24] J. Wang et al., “Sparse Bayesian learning-based 3-D radio environment
+map construction–sampling optimization, scenario-dependent dictionary
+construction, and sparse recovery,” IEEE Trans. Cogn. Commun. Netw.,
+vol. 10, no. 1, pp. 80–93, Feb. 2024.
+[25] F. Shen, Z. Wang, G. Ding, K. Li, and Q. Wu, “3D compressed spectrum
+mapping with sampling locations optimization in spectrum-heterogeneous
+environment,” IEEE Trans. Wireless Commun., vol. 21, no. 1, pp. 326–338,
+Jan. 2022.
+[26] X. Li, X. Wang, T. Song, and J. Hu, “Robust online prediction of spectrum
+map with incomplete and corrupted observations,” IEEE Trans. Mobile
+Comput., vol. 21, no. 12, pp. 4583–4594, Dec. 2022.
+[27] S. Mohammadjafari, S. Roginsky, E. Kavurmacioglu, M. Cevik, J. Ethier,
+and A. B. Bener, “Machine learning-based radio coverage prediction in
+urban environments,” IEEE Trans. Netw. Service Manag., vol. 17, no. 4,
+pp. 2117–2130, Dec. 2020.
+[28] S. Shrestha, X. Fu, and M. Hong, “Deep spectrum cartography: Complet-
+ing radio map tensors using learned neural models,” IEEE Trans. Signal
+Process., vol. 70, pp. 1170–1184, 2022.
+[29] J. Yang, X. Zhao, and Z. Li, “Updating radio maps without pain: An
+enhanced transfer learning approach,” IEEE Internet Things J., vol. 8,
+no. 13, pp. 10693–10705, Jul. 2021.
+[30] K. Li et al., “Model and transfer spatial-temporal knowledge for ﬁne-
+grained radio map reconstruction,” IEEE Trans. Cogn. Commun. Netw.,
+vol. 8, no. 2, pp. 828–841, Jun. 2022.
+[31] Y. Teganya and D. Romero, “Deep completion autoencoders for radio map
+estimation,” IEEE Trans. Wireless Commun., vol. 21, no. 3, pp. 1710–1724,
+Mar. 2022.
+[32] R. Levie, C. Yapar, G. Kutyniok, and G. Caire, “RadioUNet: Fast radio
+map estimation with convolutional neural networks,” IEEE Trans. Wireless
+Commun., vol. 20, no. 6, pp. 4001–4015, Jun. 2021.
+[33] T. Hu, Y. Huang, J. Chen, Q. Wu, and Z. Gong, “3D radio map reconstruc-
+tion based on generative adversarial networks under constrained aircraft
+trajectories,” IEEE Trans. Veh. Technol., vol. 72, no. 6, pp. 8250–8255,
+Jun. 2023.
+[34] X. Li et al., “RadioGAT: A joint model-based and data-driven framework
+for multi-band radiomap reconstruction via graph attention networks,”
+IEEE Trans. Wireless Commun., vol. 23, no. 11, pp. 17777–17792,
+Nov. 2024.
+[35] X. Wang et al., “RadioDiff: An effective generative diffusion model
+for sampling-free dynamic radio map construction,” IEEE Trans. Cogn.
+Commun. Netw., vol. 11, no. 2, pp. 738–750, Apr. 2025.
+[36] Y. Zheng, J. Wang, X. Li, J. Li, and S. Liu, “Cell-level RSRP estimation
+with the image-to-image wireless propagation model based on measured
+data,” IEEE Trans. Cogn. Commun. Netw., vol. 9, no. 6, pp. 1412–1423,
+Dec. 2023.
+[37] S. Zhang, A. Wijesinghe, and Z. Ding, “RME-GAN: A learning framework
+for radio map estimation based on conditional generative adversarial
+network,” IEEE Internet Things J., vol. 10, no. 20, pp. 18016–18027,
+Oct. 2023.
+[38] F. Jiang, T. Li, X. Lv, H. Rui, and D. Jin, “Physics-informed neural
+networksfor path lossestimation by solving electromagneticintegral equa-
+tions,” IEEE Trans. Wireless Commun., vol. 23, no. 10, pp. 15380–15393,
+Oct. 2024.
+[39] G. Li, M. Muller, A. Thabet, and B. Ghanem, “DeepGCNs: Can GCNs
+go as deep as CNNs,” in Proc. IEEE/CVF Int. Conf. Comput. Vis., Seoul,
+Korea (South), 2019, pp. 9266–9275.
+Han Zhang (Graduate Student Member, IEEE) re-
+ceived the BS and ME degrees in information and
+communication engineering from Harbin Engineer-
+ing University, Harbin, China, in 2020. He is currently
+working toward the PhD degree with Harbin En-
+gineering University, Harbin. His research interests
+include radio map estimation, spectrum prediction
+and deep learning.
+Yu Han received the BS and ME degrees in infor-
+mation and communication engineering from Harbin
+Engineering University (HEU), Harbin, China, in
+2009 and 2013, respectively, and the PhD degree in
+informationandcommunicationengineeringfromthe
+HarbinInstituteofTechnology,Harbin,in2021.From
+2017 and 2019, he was with the James Cook Univer-
+sity, Australia, as a visiting scholar. He has been with
+the College of Information and Communication En-
+gineering, HEU, as a lecturer since 2021. His current
+research interests include complex electromagnetic
+environment perception, the Internet of Things, and massive information access.
+Lingxin Meng received the BS degree in communi-
+cation engineering from Hohai University, Nanjing,
+China. He is currently working toward the MS degree
+with Harbin Engineering University, Harbin, China.
+His current research interests include radio map esti-
+mation and drone target recognition.
+Guan Gui (Fellow, IEEE) received the PhD degree
+from the University of Electronic Science and Tech-
+nology of China, Chengdu, China, in 2012. From
+2009 to 2014, he joined Tohoku University as a re-
+search assistant and a post-doctoral research fellow.
+From 2014 to 2015, he was an assistant professor
+with Akita Prefectural University, Akita, Japan. Since
+2015, he has been a professor with the Nanjing Uni-
+versity of Posts and Telecommunications, Nanjing,
+China. He has authored or co-authored more than
+200 IEEE journal/conference papers. His research
+interests include intelligence signal recognition and physical layer security. He
+was a recipient of several best paper awards, which include ICC 2017, ICC 2014,
+and VTC 2014-Spring. He is/was on the editorial boards of several journals,
+including IEEE Transactions on Vehicular Technology, IEICE Transactions on
+Communications, and Journal on Communications.
+Authorized licensed use limited to: Zhejiang University of Technology. Downloaded on January 23,2026 at 04:17:30 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+--- page 17 ---
+13382
+IEEE TRANSACTIONS ON MOBILE COMPUTING, VOL. 24, NO. 12, DECEMBER 2025
+Wei Xiang (Senior Member, IEEE) is currently a
+Cisco research chair of AI and the IoT and the director
+of the Cisco-La Trobe Centre, La Trobe University,
+for AI and the IoT. Previously, he was the foundation
+chair and the head of the Discipline of IoT Engi-
+neering, James Cook University, Cairns, Australia.
+Due to his instrumental leadership in establishing
+Australia’s ﬁrst accredited the Internet of Things
+Engineering degree program, he was inducted into
+Pearcy Foundation’s Hall of Fame, in 2018. He was
+named a Queensland International fellow from 2010
+to 2011, an Endeavour research fellow from 2012 to 2013, a Smart Futures
+fellow from 2012 to 2015, and a JSPS Invitational fellow from 2014 to 2015. He
+is a TEDx speaker and an elected fellow of IET in U.K. and Engineers Australia.
+He received the TNQ Innovation Award, in 2016, the Pearcey Entrepreneurship
+Award, in 2017, and the Engineers Australia Cairns Engineer of the Year, in
+2017. He was a co-recipient of four Best Paper Awards with WiSATS’019,
+WCSP’015, IEEE WCNC’011, and ICWMC’009. He has been awarded several
+prestigious fellowship titles. He is an associate editor of IEEE Communications
+Surveys & Tutorials, IEEE Transactions on Vehicular Technology, and IEEE
+Internet of Things Journal. He has published more than 300 papers, including
+three books and 220 journal articles. His research interests include the Internet
+of Things, wireles communications, machine learning for the IoT data analytics,
+and computer vision.
+Yun Lin (Senior Member, IEEE) received the BS
+degreeinelectricalengineeringfromDalianMaritime
+University, Dalian, China, in 2003, the MS degree
+in communication and information system from the
+Harbin Institute of Technology, Harbin, China, in
+2005, and the PhD degree in communication and
+information system from Harbin Engineering Uni-
+versity, Harbin, in 2010. From 2014 to 2015, he
+was a research scholar with Wright State University,
+Dayton, Ohio. He is currently a full professor with
+the College of Information and Communication En-
+gineering, Harbin Engineering University. He has authored or coauthored more
+than 200 international peer-reviewed journal/conference papers, such as IEEE
+Transactions on Industrial Informatics, IEEE Transactions on Communications,
+IEEE Internet of Things Journal, IEEE Transactions on Vehicular Technology,
+IEEE Transactions on Cognitive Communications and Networking, TR, IN-
+FOCOM, GLOBECOM, ICC, VTC, and ICNC. His current research interests
+include machine learning and data analytics over wireless networks, signal
+processing and analysis, cognitive radio and software-deﬁned radio, artiﬁcial
+intelligence, and pattern recognition.
+Authorized licensed use limited to: Zhejiang University of Technology. Downloaded on January 23,2026 at 04:17:30 UTC from IEEE Xplore.  Restrictions apply. 

@@ -1,0 +1,40 @@
+<Slide style={{ width: 1280, height: 720, padding: 60, background: '#FFFFFF' }}>
+    <Box style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#123C6E' }}>受限区：误差增长被压在 10% 以内</Text>
+        <Text style={{ fontSize: 16, color: '#8B97A8' }}>04 · 实验结果</Text>
+    </Box>
+    <Box style={{ width: '100%', height: 1, background: '#123C6E', marginTop: 18 }} />
+
+    <Box style={{ flexDirection: 'row', marginTop: 10 }}>
+        <Image src="assets/fig08.png" style={{ width: 277, height: 380 }} />
+
+        <Box style={{ flexDirection: 'column', marginLeft: 30 }}>
+            <Image src="assets/fig09.png" style={{ width: 340, height: 182 }} />
+            <Image src="assets/fig10.png" style={{ width: 340, height: 182, marginTop: 16 }} />
+        </Box>
+
+        <Box style={{ flex: 1, flexDirection: 'column', marginLeft: 34 }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230' }}>禁区内的代价有多小</Text>
+            <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.55, marginTop: 8 }}>
+                MFFGCN 在受限区相对全图：RMSE 只增加 9.68%（S2）、9.23%（S3），NMSE 增加 2.52%、1.82%；RME-GAN 的 RMSE 增幅为 10.50%、10.81%。
+            </Text>
+
+            <Box style={{ height: 1, background: '#D8DEE7', marginTop: 16 }} />
+
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230', marginTop: 16 }}>两个参数都近似线性</Text>
+            <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.55, marginTop: 8 }}>
+                禁区离图心越远、边长越大，三种模型的误差都近似线性上升，说明它们都在"用可观测信息外推"。RadioUNet 的曲线最平最高——它对可观测信息不敏感。
+            </Text>
+
+            <Box style={{ marginTop: 16, padding: '12px 18px', background: '#E8F0FA', borderLeft: '4px solid #123C6E' }}>
+                <Text style={{ fontSize: 16, color: '#1A2230', lineHeight: 1.5 }}>
+                    禁区大小几乎不影响误差量级，决定误差的是"还能看到多少信息"。
+                </Text>
+            </Box>
+        </Box>
+    </Box>
+
+    <Text style={{ fontSize: 14, color: '#8B97A8', marginTop: 8 }}>
+        图 8　受限区内各方法的误差（左，按每像素误差归一化）；图 9　禁区与图心距离的影响；图 10　禁区边长的影响。
+    </Text>
+</Slide>

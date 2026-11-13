@@ -1,0 +1,78 @@
+<Slide style={{ width: 1280, height: 720, padding: 0, background: '#FFFFFF', position: 'relative' }}>
+        <Image src="assets/banner.jpg" style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 60, objectFit: 'cover' }} />
+    <Text style={{ position: 'absolute', top: 15, left: 60, width: 820, fontSize: 28, fontWeight: 'bold', color: '#FFFFFF', letterSpacing: 1 }}>数据与预处理：RadioMapSeer</Text>
+    <Text style={{ position: 'absolute', top: 23, left: 900, width: 100, fontSize: 15, color: '#BBD9F2', textAlign: 'right' }}>03 · 实验设置</Text>
+    <Image src="assets/logo_bar.png" style={{ position: 'absolute', top: 8, left: 1010, width: 210, height: 44, objectFit: 'contain' }} />
+
+    <Box style={{ position: 'absolute', top: 72, left: 60, width: 1160, height: 616, flexDirection: 'column' }}>
+
+        <Box style={{ flexDirection: 'row', marginTop: 22 }}>
+            <Box style={{ width: 556, flexDirection: 'column' }}>
+                <Text style={{ fontSize: 15, color: '#1E5A9E', letterSpacing: 2 }}>DATASET</Text>
+
+                <Box style={{ flexDirection: 'row', alignItems: 'center', height: 52, borderBottom: '1px solid #D8DEE7' }}>
+                    <Text style={{ fontSize: 17, color: '#5A6675', width: 130 }}>城市地图</Text>
+                    <Text style={{ fontSize: 17, color: '#1A2230' }}>701 张，256 × 256 m²，分辨率 1 m</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', alignItems: 'center', height: 52, borderBottom: '1px solid #D8DEE7' }}>
+                    <Text style={{ fontSize: 17, color: '#5A6675', width: 130 }}>发射机</Text>
+                    <Text style={{ fontSize: 17, color: '#1A2230' }}>每图 80 个，高 1.5 m，全向天线</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', alignItems: 'center', height: 52, borderBottom: '1px solid #D8DEE7' }}>
+                    <Text style={{ fontSize: 17, color: '#5A6675', width: 130 }}>发射参数</Text>
+                    <Text style={{ fontSize: 17, color: '#1A2230' }}>23 dBm，5.9 GHz，单一频点</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', alignItems: 'center', height: 52, borderBottom: '1px solid #D8DEE7' }}>
+                    <Text style={{ fontSize: 17, color: '#5A6675', width: 130 }}>传播模型</Text>
+                    <Text style={{ fontSize: 17, color: '#1A2230' }}>DPM，与 RadioUNet 一致</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', alignItems: 'center', height: 52, borderBottom: '1px solid #D8DEE7' }}>
+                    <Text style={{ fontSize: 17, color: '#5A6675', width: 130 }}>数据划分</Text>
+                    <Text style={{ fontSize: 17, color: '#1A2230' }}>500 / 100 / 100，<span style={{ color: '#C0392B' }}>按城市切分</span></Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', alignItems: 'center', height: 52, borderBottom: '1px solid #D8DEE7' }}>
+                    <Text style={{ fontSize: 17, color: '#5A6675', width: 130 }}>观测点数</Text>
+                    <Text style={{ fontSize: 17, color: '#1A2230' }}>每图 10–300 个，不足 0.5% 像素</Text>
+                </Box>
+            </Box>
+
+            <Box style={{ flex: 1, flexDirection: 'column', marginLeft: 60 }}>
+                <Text style={{ fontSize: 15, color: '#1E5A9E', letterSpacing: 2 }}>PRE-PROCESSING</Text>
+
+                <Box style={{ flexDirection: 'row', marginTop: 14 }}>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#123C6E', width: 34 }}>①</Text>
+                    <Box style={{ flexDirection: 'column', width: 470 }}>
+                        <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#1A2230' }}>线性归一化</Text>
+                        <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.5, marginTop: 4 }}>
+                            路径损耗 [−127, −47] dB 线性映射到 [0, 1]。
+                        </Text>
+                    </Box>
+                </Box>
+                <Box style={{ flexDirection: 'row', marginTop: 18 }}>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#123C6E', width: 34 }}>②</Text>
+                    <Box style={{ flexDirection: 'column', width: 470 }}>
+                        <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#1A2230' }}>阈值截断</Text>
+                        <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.5, marginTop: 4 }}>
+                            归一化值低于 0.2 的像素置零，去掉极弱与噪声信号。
+                        </Text>
+                    </Box>
+                </Box>
+                <Box style={{ flexDirection: 'row', marginTop: 18 }}>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#123C6E', width: 34 }}>③</Text>
+                    <Box style={{ flexDirection: 'column', width: 470 }}>
+                        <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#1A2230' }}>重新拉伸</Text>
+                        <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.5, marginTop: 4 }}>
+                            剩余值再归一化到 [0, 1]，恢复动态范围。
+                        </Text>
+                    </Box>
+                </Box>
+
+                <Box style={{ background: '#E8F0FA', borderLeft: '4px solid #123C6E', padding: '14px 18px', marginTop: 22 }}>
+                    <Text style={{ fontSize: 17, color: '#1A2230', lineHeight: 1.55 }}>
+                        阈值化是容易被忽略的一步：它把"弱到无意义"的信号变成真正的空白，模型必须先学会判断哪里本来就没有信号。
+                    </Text>
+                </Box>
+            </Box>
+        </Box>
+    </Box>
+</Slide>

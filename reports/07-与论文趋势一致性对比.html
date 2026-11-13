@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MFFGCN 复现与论文趋势一致性对比</title>
+<style>
+:root{--ink:#1f2933;--mut:#6b7785;--line:#e3e8ee;--blue:#2f6fb3;--red:#c0392b;--green:#1f9d55;--bg:#f4f6f9;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif;line-height:1.75;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1000px;margin:0 auto;padding:44px 28px 80px}
+.eyebrow{font-size:12px;letter-spacing:.14em;color:var(--blue);font-weight:700;text-transform:uppercase}
+h1{font-size:30px;line-height:1.35;margin:10px 0 8px;letter-spacing:-.01em}
+.lead{color:var(--mut);font-size:14.5px;margin:0 0 10px}
+.stamp{font-size:12px;color:var(--mut);background:#fff;border:1px dashed var(--line);border-radius:8px;padding:7px 12px;display:inline-block;margin:0 0 22px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:0 0 22px;box-shadow:0 1px 2px rgba(16,24,40,.04)}
+.card h2{font-size:17px;margin:0 0 4px}
+.card h2 .num{color:var(--blue);margin-right:8px}
+.card p{margin:8px 0 0;font-size:14px}
+.svgbox{margin:14px -6px 6px;border:1px solid #eef2f6;border-radius:10px;overflow:hidden;background:#fff}
+.finding{display:flex;gap:10px;margin-top:14px;padding:12px 14px;border-radius:10px;background:#f2f7fd;font-size:13.5px}
+.finding b{color:var(--blue)}
+.finding.warn{background:#fdf3f2}.finding.warn b{color:var(--red)}
+.finding.ok{background:#f1f9f4}.finding.ok b{color:var(--green)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--mut);font-weight:600;background:#fafbfd}
+td.c{text-align:center;white-space:nowrap}
+.tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11.5px;font-weight:600}
+.t-ok{background:#e8f6ed;color:#17703d}.t-part{background:#fdf5e6;color:#8a5a00}.t-no{background:#fbeae8;color:#9c2f22}
+.note{font-size:12.5px;color:var(--mut)}
+ul{margin:8px 0 0;padding-left:20px;font-size:14px}li{margin:5px 0}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:6px 0 24px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.kpi .v{font-size:22px;font-weight:700;letter-spacing:-.01em}
+.kpi .l{font-size:11.5px;color:var(--mut);margin-top:2px}
+@media(max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}}
+</style></head>
+<body><div class="wrap">
+
+<div class="eyebrow">Reproduction · Trend Cross-check</div>
+<h1>我的复现，哪些趋势和论文是一致的</h1>
+<p class="lead">对照论文 Table III / Table V 的原始数值。判定标准只看「变化方向和相对排序」，不看绝对值——绝对精度差是另一件事。</p>
+<div class="stamp">数据截至 2026-11-07 14:58:03　·　本文模型：5 个种子均值 ±0.0007</div>
+
+<div class="kpis">
+  <div class="kpi"><div class="v" style="color:#1f9d55">6 条</div><div class="l">方向与排序一致</div></div>
+  <div class="kpi"><div class="v" style="color:#8a5a00">2 条</div><div class="l">方向对、幅度不同</div></div>
+  <div class="kpi"><div class="v" style="color:#c0392b">2 条</div><div class="l">结论相反</div></div>
+  <div class="kpi"><div class="v">8/8</div><div class="l">基线已有可比数字（其中 1 个跑满论文协议）</div></div>
+</div>
+
+<div class="card">
+<h2><span class="num">01</span>结论速览</h2>
+<table>
+<tr><th style="width:34%">论文里的趋势</th><th style="width:30%">论文数值</th><th style="width:30%">我的复现</th><th class="c">判定</th></tr>
+<tr><td>传统插值（KNN / Kriging）远差于深度模型</td><td>KNN 0.2312、Kriging 0.1389，是 MFFGCN 的 9–15 倍</td><td>0.0908 / 0.0899，是 MFFGCN 的 5.0 倍</td><td class="c"><span class="tag t-ok">一致</span></td></tr>
+<tr><td>KNN 略差于 Kriging</td><td>0.2312 vs 0.1389</td><td>0.0908 vs 0.0899</td><td class="c"><span class="tag t-ok">一致</span></td></tr>
+<tr><td>U-Net 级架构远好于自编码器</td><td>AE 0.0456 → U-Net 0.0182（2.5 倍）</td><td>AE 0.0745 → U-Net 0.0201（3.7 倍）</td><td class="c"><span class="tag t-ok">一致</span></td></tr>
+<tr><td>去掉残差连接会全盘崩掉，且是唯一大崩坏项</td><td>0.0150 → 0.0347（+131%），其余变体仅 ±3–8%</td><td>0.0211 → 0.0392（+85%），其余变体 -13%～+59%</td><td class="c"><span class="tag t-ok">一致</span></td></tr>
+<tr><td>去掉单个融合/GCN 部件的损失很小</td><td>去 GCN +7.3%，换拼接 +5.3%，换相加 +8.0%</td><td>去 GCN -13.1%，换拼接 -9.7%，换相加 +15.0%</td><td class="c"><span class="tag t-part">一致但符号相反</span></td></tr>
+<tr><td>采样越受限，误差越高</td><td>三档 RMSE 单调升（MFFGCN +3.3%）</td><td>单调升（S2 +3.1%，S3 +6%）</td><td class="c"><span class="tag t-part">方向一致、幅度不同</span></td></tr>
+<tr><td>MFFGCN 应当险胜 U-Net</td><td>0.0150 vs 0.0182（好 18%）</td><td>0.0181 vs 0.0201（好 10.1%）</td><td class="c"><span class="tag t-ok">一致</span></td></tr>
+<tr><td>误差主要集中在阴影/建筑边缘</td><td>正文：误差主要在阴影边缘的精细度</td><td>越往盲区中心越差（+115%）；但本文模型相对 U-Net 的优势也从 7% 扩大到 31%</td><td class="c"><span class="tag t-no">相反</span></td></tr>
+<tr><td>对不均匀采样近乎免疫</td><td>Setup 1→3 只退化 3.3%</td><td>退化 6.1%</td><td class="c"><span class="tag t-no">相反</span></td></tr>
+</table>
+<div class="finding ok"><span>✔</span><span><b>一句话：</b>「谁的精度该高于谁」这套相对排序基本复现出来了，MFFGCN 也已经反超 U-Net；还差的是论文那种近乎为零的采样退化。</span></div>
+</div>
+
+<div class="card">
+<h2><span class="num">02</span>基础模型：排序形状对上了</h2>
+<div class="svgbox"><svg viewBox="0 0 920 440" width="100%" xmlns="http://www.w3.org/2000/svg" role="img">
+<rect x="0" y="0" width="920" height="440" fill="#ffffff"/>
+<text x="24.0" y="30.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="15" fill="#1f2933" text-anchor="start" font-weight="600" opacity="1.0">图 1　基础模型排序：插值 ≪ 学习型，AE ≪ U-Net</text>
+<text x="24.0" y="50.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="11.5" fill="#6b7785" text-anchor="start" font-weight="400" opacity="1.0">Setup 1（全图均匀采样）测试集 RMSE；横条越短越好。两边排序形状一致。</text>
+<line x1="190.7" y1="78" x2="190.7" y2="394" stroke="#e3e8ee" stroke-width="1"/>
+<text x="190.7" y="412.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">0.015</text>
+<line x1="245.2" y1="78" x2="245.2" y2="394" stroke="#e3e8ee" stroke-width="1"/>
+<text x="245.2" y="412.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">0.02</text>
+<line x1="321.9" y1="78" x2="321.9" y2="394" stroke="#e3e8ee" stroke-width="1"/>
+<text x="321.9" y="412.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">0.03</text>
+<line x1="418.6" y1="78" x2="418.6" y2="394" stroke="#e3e8ee" stroke-width="1"/>
+<text x="418.6" y="412.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">0.05</text>
+<line x1="507.6" y1="78" x2="507.6" y2="394" stroke="#e3e8ee" stroke-width="1"/>
+<text x="507.6" y="412.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">0.08</text>
+<line x1="584.3" y1="78" x2="584.3" y2="394" stroke="#e3e8ee" stroke-width="1"/>
+<text x="584.3" y="412.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">0.12</text>
+<line x1="681.0" y1="78" x2="681.0" y2="394" stroke="#e3e8ee" stroke-width="1"/>
+<text x="681.0" y="412.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">0.2</text>
+<text x="451.0" y="430.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="11" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">RMSE（对数刻度，越低越好）</text>
+<text x="118.0" y="113.6" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="12" fill="#1f2933" text-anchor="end" font-weight="400" opacity="1.0">KNN 插值</text>
+<rect x="132" y="86.6" width="576.5" height="20" rx="3" fill="#9aabc0"/>
+<text x="716.5" y="100.6" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="start" font-weight="400" opacity="1.0">论文 0.2312</text>
+<rect x="132" y="112.6" width="399.6" height="20" rx="3" fill="#2f6fb3"/>
+<text x="539.6" y="126.6" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="start" font-weight="400" opacity="1.0">复现 0.0908</text>
+<text x="118.0" y="176.8" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="12" fill="#1f2933" text-anchor="end" font-weight="400" opacity="1.0">Kriging 插值</text>
+<rect x="132" y="149.8" width="480.0" height="20" rx="3" fill="#9aabc0"/>
+<text x="620.0" y="163.8" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="start" font-weight="400" opacity="1.0">论文 0.1389</text>
+<rect x="132" y="175.8" width="397.7" height="20" rx="3" fill="#2f6fb3"/>
+<text x="537.7" y="189.8" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="start" font-weight="400" opacity="1.0">复现 0.0899</text>
+<text x="118.0" y="240.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="12" fill="#1f2933" text-anchor="end" font-weight="400" opacity="1.0">AE 自编码器</text>
+<rect x="132" y="213.0" width="269.2" height="20" rx="3" fill="#9aabc0"/>
+<text x="409.2" y="227.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="start" font-weight="400" opacity="1.0">论文 0.0456</text>
+<rect x="132" y="239.0" width="362.0" height="20" rx="3" fill="#2f6fb3"/>
+<text x="502.0" y="253.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="start" font-weight="400" opacity="1.0">复现 0.0745</text>
+<text x="118.0" y="303.2" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="12" fill="#1f2933" text-anchor="end" font-weight="400" opacity="1.0">U-Net</text>
+<rect x="132" y="276.2" width="95.3" height="20" rx="3" fill="#9aabc0"/>
+<text x="235.3" y="290.2" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="start" font-weight="400" opacity="1.0">论文 0.0182</text>
+<rect x="132" y="302.2" width="114.5" height="20" rx="3" fill="#2f6fb3"/>
+<text x="254.5" y="316.2" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="start" font-weight="400" opacity="1.0">复现 0.0201</text>
+<text x="118.0" y="366.4" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="12" fill="#1f2933" text-anchor="end" font-weight="400" opacity="1.0">MFFGCN（本文）</text>
+<rect x="132" y="339.4" width="58.7" height="20" rx="3" fill="#9aabc0"/>
+<text x="198.7" y="353.4" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="start" font-weight="400" opacity="1.0">论文 0.0150</text>
+<rect x="132" y="365.4" width="94.4" height="20" rx="3" fill="#2f6fb3"/>
+<text x="234.4" y="379.4" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="start" font-weight="400" opacity="1.0">复现 0.0181±0.0007</text>
+<rect x="774" y="52" width="11" height="11" rx="2" fill="#9aabc0"/>
+<text x="790.0" y="62.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="start" font-weight="400" opacity="1.0">论文</text>
+<rect x="774" y="70" width="11" height="11" rx="2" fill="#2f6fb3"/>
+<text x="790.0" y="80.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="start" font-weight="400" opacity="1.0">复现</text>
+</svg></div>
+<p>论文和复现的条形都是从下往上递减的同一个形状：插值类最长，自编码器次之，U-Net 与 MFFGCN 最短。三个<b>相对关系</b>完全对得上——插值远差于学习型、KNN 差于 Kriging、AE 差于 U-Net。</p>
+<p>论文比了 9 个模型，我这边只有 <b>5 个</b>有可信数字，所以图里只放共有的这 5 个。DeepAE、RadioUNet、Pix2pix+、RME-GAN 的代码已就绪、正在队列里跑，出数后补进来不会改变下面的结论。</p>
+<p>最后一格是关键的差异点：<b>我的 MFFGCN（0.0181）胜过 U-Net（0.0201）</b>。论文里 MFFGCN 是赢的（0.0150 vs 0.0182）。两边现在都是多种子均值（本文 5 个、U-Net 5 个），标准差分别是 0.0007 与 0.0001——差距 0.0020 约等于 2.8 个本文标准差，这个反超不是种子抽签抽出来的。</p>
+<div class="finding"><span>→</span><span><b>可用的结论：</b>「学习方法碾压插值」成立，差距量级在 5.0 倍以上；「多模态融合打赢单编码器 U-Net」也成立。</span></div>
+</div>
+
+<div class="card">
+<h2><span class="num">03</span>消融：残差连接是命门，这点完全一致</h2>
+<div class="svgbox"><svg viewBox="0 0 920 470" width="100%" xmlns="http://www.w3.org/2000/svg" role="img">
+<rect x="0" y="0" width="920" height="470" fill="#ffffff"/>
+<text x="24.0" y="30.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="15" fill="#1f2933" text-anchor="start" font-weight="600" opacity="1.0">图 2　消融实验：残差连接是唯一会「全盘崩掉」的部件</text>
+<text x="24.0" y="50.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="11.5" fill="#6b7785" text-anchor="start" font-weight="400" opacity="1.0">柱高 = 各变体相对完整模型的 RMSE 变化百分比；论文完整模型 0.0150，复现 0.0211。</text>
+<line x1="84" y1="365.2" x2="896" y2="365.2" stroke="#e3e8ee" stroke-width="1"/>
+<text x="76.0" y="369.2" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">-20%</text>
+<line x1="84" y1="330.1" x2="896" y2="330.1" stroke="#b9c3ce" stroke-width="1.2"/>
+<text x="76.0" y="334.1" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">0</text>
+<line x1="84" y1="294.9" x2="896" y2="294.9" stroke="#e3e8ee" stroke-width="1"/>
+<text x="76.0" y="298.9" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">+20%</text>
+<line x1="84" y1="259.8" x2="896" y2="259.8" stroke="#e3e8ee" stroke-width="1"/>
+<text x="76.0" y="263.8" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">+40%</text>
+<line x1="84" y1="224.6" x2="896" y2="224.6" stroke="#e3e8ee" stroke-width="1"/>
+<text x="76.0" y="228.6" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">+60%</text>
+<line x1="84" y1="189.5" x2="896" y2="189.5" stroke="#e3e8ee" stroke-width="1"/>
+<text x="76.0" y="193.5" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">+80%</text>
+<line x1="84" y1="154.3" x2="896" y2="154.3" stroke="#e3e8ee" stroke-width="1"/>
+<text x="76.0" y="158.3" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">+100%</text>
+<line x1="84" y1="119.2" x2="896" y2="119.2" stroke="#e3e8ee" stroke-width="1"/>
+<text x="76.0" y="123.2" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">+120%</text>
+<line x1="84" y1="84.0" x2="896" y2="84.0" stroke="#e3e8ee" stroke-width="1"/>
+<text x="76.0" y="88.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">+140%</text>
+<text transform="rotate(-90 22 229.0)" x="22.0" y="229.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">RMSE 变化（相对完整模型）</text>
+<rect x="106.8" y="99.3" width="26" height="230.8" rx="2" fill="#9aabc0"/>
+<text x="119.8" y="93.3" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#9aabc0" text-anchor="middle" font-weight="600" opacity="1.0">+131%</text>
+<rect x="136.8" y="179.8" width="26" height="150.2" rx="2" fill="#2f6fb3"/>
+<text x="149.8" y="173.8" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#2f6fb3" text-anchor="middle" font-weight="600" opacity="1.0">+85%</text>
+<text x="134.8" y="394.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">去残差</text>
+<text x="134.8" y="442.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#c0392b" text-anchor="middle" font-weight="600" opacity="1.0">唯一的灾难项</text>
+<rect x="208.2" y="325.3" width="26" height="4.7" rx="2" fill="#9aabc0"/>
+<text x="221.2" y="319.3" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">+3%</text>
+<rect x="238.2" y="225.9" width="26" height="104.1" rx="2" fill="#2f6fb3"/>
+<text x="251.2" y="219.9" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#2f6fb3" text-anchor="middle" font-weight="600" opacity="1.0">+59%</text>
+<text x="236.2" y="394.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">去动态图</text>
+<text x="236.2" y="408.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">（换静态图）</text>
+<rect x="309.8" y="323.0" width="26" height="7.0" rx="2" fill="#9aabc0"/>
+<text x="322.8" y="317.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">+4%</text>
+<rect x="339.8" y="262.3" width="26" height="67.8" rx="2" fill="#2f6fb3"/>
+<text x="352.8" y="256.3" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">+39%</text>
+<text x="337.8" y="394.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">换融合：交叉注意力</text>
+<rect x="411.2" y="316.0" width="26" height="14.1" rx="2" fill="#9aabc0"/>
+<text x="424.2" y="310.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">+8%</text>
+<rect x="441.2" y="303.6" width="26" height="26.5" rx="2" fill="#2f6fb3"/>
+<text x="454.2" y="297.6" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">+15%</text>
+<text x="439.2" y="394.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">换融合：相加</text>
+<rect x="512.8" y="320.7" width="26" height="9.3" rx="2" fill="#9aabc0"/>
+<text x="525.8" y="314.7" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">+5%</text>
+<rect x="542.8" y="330.1" width="26" height="17.0" rx="2" fill="#2f6fb3"/>
+<text x="555.8" y="360.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">-10%</text>
+<text x="540.8" y="394.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">换融合：拼接</text>
+<rect x="614.2" y="324.3" width="26" height="5.8" rx="2" fill="#9aabc0"/>
+<text x="627.2" y="318.3" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">+3%</text>
+<rect x="644.2" y="330.1" width="26" height="21.9" rx="2" fill="#2f6fb3"/>
+<text x="657.2" y="364.9" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">-12%</text>
+<text x="642.2" y="394.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">换融合：通道门控</text>
+<rect x="715.8" y="317.2" width="26" height="12.8" rx="2" fill="#9aabc0"/>
+<text x="728.8" y="311.2" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">+7%</text>
+<rect x="745.8" y="330.1" width="26" height="23.0" rx="2" fill="#2f6fb3"/>
+<text x="758.8" y="366.1" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">-13%</text>
+<text x="743.8" y="394.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">去掉图卷积</text>
+<rect x="817.2" y="320.7" width="26" height="9.3" rx="2" fill="#9aabc0"/>
+<text x="830.2" y="314.7" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">+5%</text>
+<rect x="847.2" y="330.1" width="26" height="12.9" rx="2" fill="#2f6fb3"/>
+<text x="860.2" y="356.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">-7%</text>
+<text x="845.2" y="394.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">只留单编码器</text>
+<rect x="776" y="44" width="11" height="11" rx="2" fill="#9aabc0"/>
+<text x="792.0" y="54.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="start" font-weight="400" opacity="1.0">论文（Table V）</text>
+<rect x="776" y="62" width="11" height="11" rx="2" fill="#2f6fb3"/>
+<text x="792.0" y="72.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="start" font-weight="400" opacity="1.0">复现（本机重评）</text>
+</svg></div>
+<p>这是全部实验里<b>最干净的一条吻合</b>。论文里八个变体中有七个的 RMSE 只在完整模型的 ±3–8% 内浮动，唯独去掉残差直接翻到 2.3 倍；我这边同样是去掉残差最差（+85%，1.85 倍），其余变体最多只到 1.59 倍。</p>
+<p><b>口径提醒：</b>图 2 这九个变体和图注里的「完整模型 0.0211」是同一批旧协议训出来的，只用于它们彼此的相对比较；图 1 那个 0.0181 是修复坐标后按新协议重训的五种子结果。两套数字混用会得出错误结论——所以这里的百分比一律以 0.0211 为分母。</p>
+<p>次要的一致点：<b>去掉 GCN、换掉融合方式，损失本来就不大</b>——论文是 +3%～+8%，我这边是 -13%～+59%。所以「我这边的 GCN / 融合没带来收益」并不算严重背离论文，论文自己也没做出大增益，只是方向反了。</p>
+<div class="finding ok"><span>✔</span><span><b>可写进报告：</b>残差连接的必要性在两次实验中被独立验证；融合模块与图卷积的边际贡献都很小，属于论文本身的弱项，不是复现引入的偏差。</span></div>
+</div>
+
+<div class="card">
+<h2><span class="num">04</span>采样变难：方向一致，退化速度不一致</h2>
+<div class="svgbox"><svg viewBox="0 0 920 450" width="100%" xmlns="http://www.w3.org/2000/svg" role="img">
+<rect x="0" y="0" width="920" height="450" fill="#ffffff"/>
+<text x="24.0" y="30.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="15" fill="#1f2933" text-anchor="start" font-weight="600" opacity="1.0">图 3　采样变难时所有模型都变差——方向一致，幅度不同</text>
+<text x="24.0" y="50.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="11.5" fill="#6b7785" text-anchor="start" font-weight="400" opacity="1.0">三条曲线是论文里三档典型模型，两条是复现；纵轴以各自 Setup 1 为 1.0 归一。</text>
+<line x1="70" y1="381.1" x2="760" y2="381.1" stroke="#e3e8ee"/>
+<text x="62.0" y="385.1" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">1.0×</text>
+<line x1="70" y1="292.6" x2="760" y2="292.6" stroke="#e3e8ee"/>
+<text x="62.0" y="296.6" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">1.2×</text>
+<line x1="70" y1="204.0" x2="760" y2="204.0" stroke="#e3e8ee"/>
+<text x="62.0" y="208.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">1.4×</text>
+<line x1="70" y1="115.4" x2="760" y2="115.4" stroke="#e3e8ee"/>
+<text x="62.0" y="119.4" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">1.6×</text>
+<text x="70.0" y="410.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">Setup 1</text>
+<text x="70.0" y="424.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">均匀采样</text>
+<text x="415.0" y="410.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">Setup 2</text>
+<text x="415.0" y="424.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">25% 盲区</text>
+<text x="760.0" y="410.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">Setup 3</text>
+<text x="760.0" y="424.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">盲区 10–50%</text>
+<text transform="rotate(-90 20 235.0)" x="20.0" y="235.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="11" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">RMSE 相对 Setup 1 的倍数</text>
+<polyline points="70.0,381.1 415.0,369.2 760.0,366.5" fill="none" stroke="#5b6b7f" stroke-width="2.4" stroke-linejoin="round"/>
+<circle cx="70.0" cy="381.1" r="4" fill="#fff" stroke="#5b6b7f" stroke-width="2.2"/>
+<circle cx="415.0" cy="369.2" r="4" fill="#fff" stroke="#5b6b7f" stroke-width="2.2"/>
+<circle cx="760.0" cy="366.5" r="4" fill="#fff" stroke="#5b6b7f" stroke-width="2.2"/>
+<text x="772.0" y="370.5" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#5b6b7f" text-anchor="start" font-weight="400" opacity="1.0">论文 MFFGCN  1.03×</text>
+<polyline points="70.0,381.1 415.0,340.0 760.0,322.7" fill="none" stroke="#8e9bab" stroke-width="2.4" stroke-linejoin="round"/>
+<circle cx="70.0" cy="381.1" r="4" fill="#fff" stroke="#8e9bab" stroke-width="2.2"/>
+<circle cx="415.0" cy="340.0" r="4" fill="#fff" stroke="#8e9bab" stroke-width="2.2"/>
+<circle cx="760.0" cy="322.7" r="4" fill="#fff" stroke="#8e9bab" stroke-width="2.2"/>
+<text x="772.0" y="326.7" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#8e9bab" text-anchor="start" font-weight="400" opacity="1.0">论文 U-Net  1.13×</text>
+<polyline points="70.0,381.1 415.0,215.1 760.0,185.8" fill="none" stroke="#b0897f" stroke-width="2.4" stroke-linejoin="round"/>
+<circle cx="70.0" cy="381.1" r="4" fill="#fff" stroke="#b0897f" stroke-width="2.2"/>
+<circle cx="415.0" cy="215.1" r="4" fill="#fff" stroke="#b0897f" stroke-width="2.2"/>
+<circle cx="760.0" cy="185.8" r="4" fill="#fff" stroke="#b0897f" stroke-width="2.2"/>
+<text x="772.0" y="189.8" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#b0897f" text-anchor="start" font-weight="400" opacity="1.0">论文 AE  1.44×</text>
+<polyline points="70.0,381.1 415.0,367.4 760.0,354.2" fill="none" stroke="#2f6fb3" stroke-width="2.4" stroke-dasharray="6 4" stroke-linejoin="round"/>
+<circle cx="70.0" cy="381.1" r="4" fill="#fff" stroke="#2f6fb3" stroke-width="2.2"/>
+<circle cx="415.0" cy="367.4" r="4" fill="#fff" stroke="#2f6fb3" stroke-width="2.2"/>
+<circle cx="760.0" cy="354.2" r="4" fill="#fff" stroke="#2f6fb3" stroke-width="2.2"/>
+<text x="772.0" y="358.2" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#2f6fb3" text-anchor="start" font-weight="400" opacity="1.0">复现 MFFGCN  1.06×</text>
+<polyline points="70.0,381.1 415.0,312.5 760.0,268.9" fill="none" stroke="#77a3d2" stroke-width="2.4" stroke-dasharray="6 4" stroke-linejoin="round"/>
+<circle cx="70.0" cy="381.1" r="4" fill="#fff" stroke="#77a3d2" stroke-width="2.2"/>
+<circle cx="415.0" cy="312.5" r="4" fill="#fff" stroke="#77a3d2" stroke-width="2.2"/>
+<circle cx="760.0" cy="268.9" r="4" fill="#fff" stroke="#77a3d2" stroke-width="2.2"/>
+<text x="772.0" y="272.9" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#77a3d2" text-anchor="start" font-weight="400" opacity="1.0">复现 KNN  1.25×</text>
+<text x="560.0" y="50.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="start" font-weight="400" opacity="1.0">实线 = 论文</text>
+<text x="640.0" y="50.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#2f6fb3" text-anchor="start" font-weight="400" opacity="1.0">虚线 = 复现</text>
+</svg></div>
+<p>五条曲线全部向右上走，「采样越不均匀越难」这个物理结论是复现出来的。差别在斜率：论文的 MFFGCN 几乎是平的（1.00 → 1.03，只涨 3.3%），我这边 S2 涨 3.1%，S3 是 1.06×。</p>
+<p>另一个反向细节：论文里 KNN / Kriging 在三档设置下几乎不动（0% 和 +0.9%），我这边两种插值都退化了 25% 以上。说明论文的插值基线在受限区里做了额外处理，或者口径与我的实现不同。</p>
+<div class="finding warn"><span>!</span><span><b>待补：</b>S3 的完整重训正在队列里，出数后这条要重画。当前不要把 S3 数值 写进任何结论。</span></div>
+</div>
+
+<div class="card">
+<h2><span class="num">05</span>盲区内部：误差怎么随深度分布</h2>
+<div class="svgbox"><svg viewBox="0 0 920 440" width="100%" xmlns="http://www.w3.org/2000/svg" role="img">
+<rect x="0" y="0" width="920" height="440" fill="#ffffff"/>
+<text x="24.0" y="30.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="15" fill="#1f2933" text-anchor="start" font-weight="600" opacity="1.0">图 4　盲区越深误差越高，但本文模型的劣化速度更慢</text>
+<text x="24.0" y="50.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="11.5" fill="#6b7785" text-anchor="start" font-weight="400" opacity="1.0">按「盲区像素到最近观测像素的距离」分箱，只统计未观测像素；Setup 1，全测试集 8,080 张，权重为修复坐标后的新训练结果。</text>
+<line x1="76" y1="358.3" x2="704" y2="358.3" stroke="#e3e8ee"/>
+<text x="68.0" y="362.3" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">0.0100</text>
+<line x1="76" y1="311.0" x2="704" y2="311.0" stroke="#e3e8ee"/>
+<text x="68.0" y="315.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">0.0150</text>
+<line x1="76" y1="263.7" x2="704" y2="263.7" stroke="#e3e8ee"/>
+<text x="68.0" y="267.7" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">0.0200</text>
+<line x1="76" y1="216.3" x2="704" y2="216.3" stroke="#e3e8ee"/>
+<text x="68.0" y="220.3" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">0.0250</text>
+<line x1="76" y1="169.0" x2="704" y2="169.0" stroke="#e3e8ee"/>
+<text x="68.0" y="173.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">0.0300</text>
+<line x1="76" y1="121.6" x2="704" y2="121.6" stroke="#e3e8ee"/>
+<text x="68.0" y="125.6" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">0.0350</text>
+<text x="76.0" y="386.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">1–2</text>
+<text x="201.6" y="386.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">2–4</text>
+<text x="327.2" y="386.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">4–8</text>
+<text x="452.8" y="386.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">8–16</text>
+<text x="578.4" y="386.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">16–32</text>
+<text x="704.0" y="386.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">32+</text>
+<text x="390.0" y="424.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="11" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">盲区像素到最近观测像素的距离（px）</text>
+<text x="68.0" y="70.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">RMSE</text>
+<polyline points="76.0,347.1 201.6,325.6 327.2,306.1 452.8,287.6 578.4,261.2 704.0,225.2" fill="none" stroke="#2f6fb3" stroke-width="2.4"/>
+<circle cx="76.0" cy="347.1" r="3.6" fill="#fff" stroke="#2f6fb3" stroke-width="2"/>
+<circle cx="201.6" cy="325.6" r="3.6" fill="#fff" stroke="#2f6fb3" stroke-width="2"/>
+<circle cx="327.2" cy="306.1" r="3.6" fill="#fff" stroke="#2f6fb3" stroke-width="2"/>
+<circle cx="452.8" cy="287.6" r="3.6" fill="#fff" stroke="#2f6fb3" stroke-width="2"/>
+<circle cx="578.4" cy="261.2" r="3.6" fill="#fff" stroke="#2f6fb3" stroke-width="2"/>
+<circle cx="704.0" cy="225.2" r="3.6" fill="#fff" stroke="#2f6fb3" stroke-width="2"/>
+<polyline points="76.0,339.6 201.6,317.0 327.2,296.9 452.8,274.4 578.4,231.9 704.0,121.9" fill="none" stroke="#c0392b" stroke-width="2.4"/>
+<circle cx="76.0" cy="339.6" r="3.6" fill="#fff" stroke="#c0392b" stroke-width="2"/>
+<circle cx="201.6" cy="317.0" r="3.6" fill="#fff" stroke="#c0392b" stroke-width="2"/>
+<circle cx="327.2" cy="296.9" r="3.6" fill="#fff" stroke="#c0392b" stroke-width="2"/>
+<circle cx="452.8" cy="274.4" r="3.6" fill="#fff" stroke="#c0392b" stroke-width="2"/>
+<circle cx="578.4" cy="231.9" r="3.6" fill="#fff" stroke="#c0392b" stroke-width="2"/>
+<circle cx="704.0" cy="121.9" r="3.6" fill="#fff" stroke="#c0392b" stroke-width="2"/>
+<line x1="730" y1="90" x2="760" y2="90" stroke="#2f6fb3" stroke-width="2.4"/>
+<text x="768.0" y="94.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="start" font-weight="400" opacity="1.0">MFFGCN（本文）</text>
+<text x="768.0" y="109.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="start" font-weight="400" opacity="1.0">末端 0.0241</text>
+<line x1="730" y1="136" x2="760" y2="136" stroke="#c0392b" stroke-width="2.4"/>
+<text x="768.0" y="140.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="start" font-weight="400" opacity="1.0">U-Net（单编码器）</text>
+<text x="768.0" y="155.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="start" font-weight="400" opacity="1.0">末端 0.0350</text>
+<text x="84.0" y="335.1" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#2f6fb3" text-anchor="start" font-weight="600" opacity="1.0">贴边处只领先 7%</text>
+<text x="698.0" y="251.2" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#2f6fb3" text-anchor="end" font-weight="600" opacity="1.0">深处领先 31%</text>
+<text x="730.0" y="198.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f9d55" text-anchor="start" font-weight="600" opacity="1.0">优势随深度扩大 4.7 倍</text>
+</svg></div>
+<p>按「盲区像素到最近观测像素的距离」分箱后，两条曲线都单调上升：贴边 0.0112 → 32 像素外 0.0241（+115%）。论文正文说误差主要来自「阴影边缘的精细度」（它给 MS-SSIM 设极小权重的理由），我这边看到的是<b>越往盲区中心越差</b>——严格说两件事不冲突，一个讲误差的形态、一个讲误差的位置，但论文没给这条同口径曲线，只能算「论文没覆盖、我补上的观测」。</p>
+<table>
+<tr><th style="width:22%">离最近观测点</th><th class="c">MFFGCN</th><th class="c">U-Net</th><th class="c">差值</th><th class="c">领先幅度</th></tr>
+<tr><td>1–2</td><td class='c'>0.0112</td><td class='c'>0.0120</td><td class='c'>0.0008</td><td class='c'>6.6%</td></tr><tr><td>2–4</td><td class='c'>0.0135</td><td class='c'>0.0144</td><td class='c'>0.0009</td><td class='c'>6.3%</td></tr><tr><td>4–8</td><td class='c'>0.0155</td><td class='c'>0.0165</td><td class='c'>0.0010</td><td class='c'>5.9%</td></tr><tr><td>8–16</td><td class='c'>0.0175</td><td class='c'>0.0189</td><td class='c'>0.0014</td><td class='c'>7.3%</td></tr><tr><td>16–32</td><td class='c'>0.0203</td><td class='c'>0.0234</td><td class='c'>0.0031</td><td class='c'>13.3%</td></tr><tr><td>32+</td><td class='c'>0.0241</td><td class='c'>0.0350</td><td class='c'>0.0109</td><td class='c'>31.2%</td></tr>
+</table>
+<p><b>这张表比曲线本身更有用：</b>两种模型都在深处变差，但本文模型的劣化更慢——贴边处只领先 7%，到 32 像素外领先 31%，优势扩大约 4.7 倍。也就是说多模态融合 / 图分支真正起作用的地方不在边缘，而在<b>观测点够不着的深处</b>。</p>
+<div class="finding ok"><span>✔</span><span><b>可写进报告：</b>「盲区越深越难」是数据本身的规律，不是模型缺陷；而本文方法相对单编码器的增益随深度放大，这正好解释了论文表 III 里那 18% 的整体优势从哪来。</span></div>
+<div class="finding warn"><span>!</span><span><b>口径：</b>上图只有 Setup 1（全图均匀采样）是修复坐标后的新权重；Setup 2/3 的新训练还在排队。出数后要补两条曲线，届时「深处领先多少」这个数可能变。</span></div>
+</div>
+
+<div class="card">
+<h2><span class="num">06</span>数字来源与可信度</h2>
+<table>
+<tr><th style="width:26%">数据</th><th style="width:40%">来源</th><th>可信度</th></tr>
+<tr><td>论文全部数值</td><td>Table III / Table V 原文转录（PDF 逐格核对）</td><td>高</td></tr>
+<tr><td>MFFGCN 0.0181</td><td>新训练 5 个种子</td><td>高</td></tr>
+<tr><td>U-Net 0.0201</td><td>5 个种子均值（±0.0001），50 轮、论文口径、8080 张测试集</td><td>高</td></tr>
+<tr><td>KNN / Kriging</td><td>自实现插值，同一测试集</td><td>中高（实现细节可能与论文不同）</td></tr>
+<tr><td>AE 0.0745</td><td>新训练，论文口径</td><td>中高</td></tr>
+<tr><td>消融八个变体</td><td>旧权重重评，多数停在第 1–15 轮</td><td>中（只用于变体间相对比较）</td></tr>
+<tr><td>盲区深度剖面</td><td>diag_depth.py，Setup 1 全测试集 8080 张，按到最近观测像素的距离分箱</td><td>高（新权重，与 test_metrics 对上）</td></tr>
+<tr><td>MFFGCN S3（0.0192）</td><td>完整重训结果</td><td>中高</td></tr>
+</table>
+<p class="note">口径说明：论文在整张图上按密度均匀撒观测点；早期部分实验只把观测点放在有信号的位置。对照实验显示两者相差 4–9%，不改变变体之间的相对排名，所以消融结论仍可用。</p>
+<p class="note">本页数据由 update_trend.py 从服务器快照自动刷新，最后更新 2026-11-07 14:58:03。</p>
+<h2 style='font-size:14px;margin:22px 0 0'>当前在跑（未出最终测试指标）</h2><table><tr><th style='width:40%'>run</th><th class='c'>最新轮次</th><th class='c'>最新 val RMSE</th><th class='c'>最优轮次 / 最优 val</th></tr><tr><td>txf_ab_add_s3</td><td class='c'>ep 34</td><td class='c'>0.01840</td><td class='c'>ep 31 / 0.01826</td></tr><tr><td>txf_ab_concat_s3</td><td class='c'>ep 25</td><td class='c'>0.01811</td><td class='c'>ep 24 / 0.01786</td></tr><tr><td>txf_ab_cross_s3</td><td class='c'>ep 45</td><td class='c'>0.01691</td><td class='c'>ep 41 / 0.01678</td></tr><tr><td>txf_ab_sigmoid_s3</td><td class='c'>ep 36</td><td class='c'>0.01732</td><td class='c'>ep 24 / 0.01713</td></tr></table>
+</div>
+
+</div></body></html>

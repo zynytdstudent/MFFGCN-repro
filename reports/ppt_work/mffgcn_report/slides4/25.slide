@@ -1,0 +1,45 @@
+<Slide style={{ width: 1280, height: 720, padding: 0, background: '#FFFFFF', position: 'relative' }}>
+    <Image src="assets/banner.jpg" style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 60, objectFit: 'cover' }} />
+    <Text style={{ position: 'absolute', top: 15, left: 60, width: 735, fontSize: 28, fontWeight: 'bold', color: '#FFFFFF', letterSpacing: 1 }}>鲁棒性（一）：盲区形状与损失权重</Text>
+    <Text style={{ position: 'absolute', top: 23, left: 800, width: 200, fontSize: 15, color: '#BBD9F2', textAlign: 'right' }}>03 · <span style={{ color: '#FFF2CC', fontWeight: 'bold' }}>阶段 4</span> · 鲁棒与代价</Text>
+    <Image src="assets/logo_bar.png" style={{ position: 'absolute', top: 8, left: 1010, width: 210, height: 44, objectFit: 'contain' }} />
+
+    <Box style={{ position: 'absolute', top: 72, left: 60, width: 1160, height: 616, flexDirection: 'column', justifyContent: 'center' }}>
+
+        <Box style={{ flexDirection: 'row', marginTop: 20 }}>
+            <Box style={{ width: 540, flexDirection: 'column' }}>
+                <Image src="assets/t6.png" style={{ width: 540, height: 169 }} />
+                <Text style={{ fontSize: 13, color: '#8B97A8', lineHeight: 1.45, marginTop: 8 }}>
+                    表 VI　用矩形盲区训练，直接零样本测试圆形与三角形。
+                </Text>
+                <Image src="assets/t7.png" style={{ width: 540, height: 213, marginTop: 16 }} />
+                <Text style={{ fontSize: 13, color: '#8B97A8', lineHeight: 1.45, marginTop: 8 }}>
+                    表 VII　三项损失权重 λ₁ / λ₂ / λ₃ 的敏感性。
+                </Text>
+            </Box>
+
+            <Box style={{ flex: 1, flexDirection: 'column', marginLeft: 44 }}>
+                <Text style={{ fontSize: 15, color: '#1E5A9E', letterSpacing: 2 }}>SHAPE</Text>
+                <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#1A2230', marginTop: 10 }}>换形状不用重训</Text>
+                <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.6, marginTop: 8 }}>
+                    矩形训练、圆形与三角形直接测试，S2 从 0.0045 只变到 0.0046。从数据角度看这很自然——形状不改变可用观测的<span style={{ fontWeight: 'bold', color: '#1A2230' }}>数量与质量</span>，只是换了个缺口轮廓。
+                </Text>
+
+                <Box style={{ height: 1, background: '#D8DEE7', marginTop: 20 }} />
+
+                <Text style={{ fontSize: 15, color: '#1E5A9E', letterSpacing: 2, marginTop: 20 }}>LAMBDA</Text>
+                <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#1A2230', marginTop: 10 }}>λ₁ = 0.5 是拐点</Text>
+                <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.6, marginTop: 8 }}>
+                    λ₁ 从 0.1 到 1.0，0.5 时误差最低（0.0043）；太小则细修不动，太大则粗估计被带偏。λ₃ 取 0.0001 时 MS-SSIM 既约束住阴影边缘，又不会把局部纹理抹糊。
+                </Text>
+
+                <Box style={{ background: '#FBF3F2', borderLeft: '4px solid #C0392B', padding: '12px 16px', marginTop: 18 }}>
+                    <Text style={{ fontSize: 15, color: '#1A2230', lineHeight: 1.55 }}>
+                        <span style={{ fontWeight: 'bold', color: '#C0392B' }}>这里有个坑　</span>
+                        表 VII 里 λ₁=0.5 的结果（0.0043/0.0045/0.0046）与表 III 完全一致，但正文写的是"λ₁=0.1"（0.0048/0.0051/0.0053）。复现时得自己核，别照正文抄。
+                    </Text>
+                </Box>
+            </Box>
+        </Box>
+    </Box>
+</Slide>

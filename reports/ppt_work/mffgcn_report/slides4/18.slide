@@ -1,0 +1,47 @@
+<Slide style={{ width: 1280, height: 720, padding: 0, background: '#FFFFFF', position: 'relative' }}>
+        <Image src="assets/banner.jpg" style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 60, objectFit: 'cover' }} />
+    <Text style={{ position: 'absolute', top: 15, left: 60, width: 735, fontSize: 28, fontWeight: 'bold', color: '#FFFFFF', letterSpacing: 1 }}>极端稀疏：只剩两个方法还能用</Text>
+    <Text style={{ position: 'absolute', top: 23, left: 800, width: 200, fontSize: 15, color: '#BBD9F2', textAlign: 'right' }}>03 · <span style={{ color: '#FFF2CC', fontWeight: 'bold' }}>阶段 1</span> · 基准对比</Text>
+    <Image src="assets/logo_bar.png" style={{ position: 'absolute', top: 8, left: 1010, width: 210, height: 44, objectFit: 'contain' }} />
+
+    <Box style={{ position: 'absolute', top: 74, left: 60, width: 1160, height: 614, flexDirection: 'column' }}>
+
+        <Box style={{ flexDirection: 'column', alignItems: 'center', marginTop: 6 }}>
+            <Image src="assets/p_tab04b.png" style={{ width: 1010, height: 205 }} />
+        </Box>
+        <Text style={{ fontSize: 13, color: '#8B97A8', marginTop: 8 }}>
+            表 IV　仅在 RME-GAN 的原始设置（Setup 4 / 5）下比较——其余基线在这个稀疏度下已经失效，没有可比数字。
+        </Text>
+
+        <Box style={{ flexDirection: 'row', gap: 20, marginTop: 26 }}>
+            <Box style={{ width: 300, padding: '14px 18px', background: '#FBF3F2', borderLeft: '4px solid #C0392B', flexDirection: 'column' }}>
+                <Text style={{ fontSize: 14, color: '#5A6675' }}>Setup 4　NMSE 相对 RME-GAN</Text>
+                <Text style={{ fontSize: 30, fontWeight: 'bold', color: '#C0392B', marginTop: 4 }}>低 36.1%</Text>
+            </Box>
+            <Box style={{ width: 300, padding: '14px 18px', background: '#FBF3F2', borderLeft: '4px solid #C0392B', flexDirection: 'column' }}>
+                <Text style={{ fontSize: 14, color: '#5A6675' }}>Setup 5　NMSE 相对 RME-GAN</Text>
+                <Text style={{ fontSize: 30, fontWeight: 'bold', color: '#C0392B', marginTop: 4 }}>低 36.8%</Text>
+            </Box>
+            <Box style={{ flex: 1, padding: '14px 18px', background: '#E8F0FA', flexDirection: 'column' }}>
+                <Text style={{ fontSize: 16, color: '#1A2230', lineHeight: 1.55 }}>
+                    观测越少，本文方法相对 RME-GAN 的优势越大——这两列是全表最大的差距。
+                </Text>
+            </Box>
+        </Box>
+
+        <Box style={{ flexDirection: 'row', gap: 28, marginTop: 26 }}>
+            <Box style={{ width: 556, flexDirection: 'column' }}>
+                <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#1A2230' }}>① 为什么数值比 S1 还低</Text>
+                <Text style={{ fontSize: 15, color: '#5A6675', lineHeight: 1.55, marginTop: 6 }}>
+                    不是模型变强。S4/S5 里禁区消失、采样率升到 1%–10%，可观测信息远多于 S1 的 0.5%，两列不能横比。
+                </Text>
+            </Box>
+            <Box style={{ flex: 1, flexDirection: 'column' }}>
+                <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#1A2230' }}>② 优势幅度为什么突然跳变</Text>
+                <Text style={{ fontSize: 15, color: '#5A6675', lineHeight: 1.55, marginTop: 6 }}>
+                    S2 是 11.8%、S3 是 16.4%，到这里突然 36%。这是全文证据链最薄的一处：只有两行、两个方法，没有第三方复现。
+                </Text>
+            </Box>
+        </Box>
+    </Box>
+</Slide>

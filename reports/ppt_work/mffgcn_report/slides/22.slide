@@ -1,0 +1,48 @@
+<Slide style={{ width: 1280, height: 720, padding: 0, background: '#FFFFFF', position: 'relative' }}>
+        <Image src="assets/banner.jpg" style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 60, objectFit: 'cover' }} />
+    <Text style={{ position: 'absolute', top: 15, left: 60, width: 820, fontSize: 28, fontWeight: 'bold', color: '#FFFFFF', letterSpacing: 1 }}>定性对比：红框之内才是难点</Text>
+    <Text style={{ position: 'absolute', top: 23, left: 900, width: 100, fontSize: 15, color: '#BBD9F2', textAlign: 'right' }}>04 · 实验结果</Text>
+    <Image src="assets/logo_bar.png" style={{ position: 'absolute', top: 8, left: 1010, width: 210, height: 44, objectFit: 'contain' }} />
+
+    <Box style={{ position: 'absolute', top: 72, left: 60, width: 1160, height: 616, flexDirection: 'column' }}>
+
+        <Box style={{ flexDirection: 'row', marginTop: 14 }}>
+            <Box style={{ width: 380, flexDirection: 'column' }}>
+                <Image src="assets/fig11_a.png" style={{ width: 380, height: 254 }} />
+                <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#123C6E', marginTop: 8 }}>MFFGCN（本文）</Text>
+            </Box>
+            <Box style={{ width: 380, flexDirection: 'column', marginLeft: 36 }}>
+                <Image src="assets/fig11_d.png" style={{ width: 380, height: 254 }} />
+                <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#1A2230', marginTop: 8 }}>RadioUNet</Text>
+            </Box>
+
+            <Box style={{ flex: 1, flexDirection: 'column', marginLeft: 34 }}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230' }}>怎么看这两组图</Text>
+                <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.5, marginTop: 8 }}>
+                    每格上排是估计结果，下排是偏差图；颜色越深偏差越大。红框标出的是观测受限区。
+                </Text>
+                <Box style={{ height: 1, background: '#D8DEE7', marginTop: 14 }} />
+                <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.5, marginTop: 14 }}>
+                    RadioUNet 的偏差图在建筑边缘成片深红，且 S3 的深色面积明显扩大；MFFGCN 的偏差始终是细窄的边缘线。
+                </Text>
+                <Box style={{ height: 1, background: '#D8DEE7', marginTop: 14 }} />
+                <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.5, marginTop: 14 }}>
+                    红框内部，RadioUNet 的建筑物轮廓变糊、阴影边界外扩；MFFGCN 与框外几乎无差别。
+                </Text>
+            </Box>
+        </Box>
+
+        <Box style={{ flexDirection: 'row', gap: 30, marginTop: 22 }}>
+            <Box style={{ flex: 1, background: '#E8F0FA', borderLeft: '4px solid #123C6E', padding: '14px 20px' }}>
+                <Text style={{ fontSize: 17, color: '#1A2230', lineHeight: 1.5 }}>
+                    MFFGCN 的误差是<span style={{ fontWeight: 'bold' }}>边缘定位偏差</span>，不是整片区域缺失——这说明它确实把信息补进了禁区。
+                </Text>
+            </Box>
+            <Box style={{ width: 380, flexDirection: 'column' }}>
+                <Text style={{ fontSize: 14, color: '#8B97A8', lineHeight: 1.5 }}>
+                    图 11　六种方法的可视化对比，此处取 (a) MFFGCN 与 (d) RadioUNet 两组。
+                </Text>
+            </Box>
+        </Box>
+    </Box>
+</Slide>

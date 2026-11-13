@@ -1,0 +1,35 @@
+<Slide style={{ width: 1280, height: 720, padding: 0, background: '#FFFFFF', position: 'relative' }}>
+        <Image src="assets/banner.jpg" style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 60, objectFit: 'cover' }} />
+    <Text style={{ position: 'absolute', top: 15, left: 60, width: 820, fontSize: 28, fontWeight: 'bold', color: '#FFFFFF', letterSpacing: 1 }}>两条支路：先粗估，再精化</Text>
+    <Text style={{ position: 'absolute', top: 23, left: 900, width: 100, fontSize: 15, color: '#BBD9F2', textAlign: 'right' }}>02 · 方法设计</Text>
+    <Image src="assets/logo_bar.png" style={{ position: 'absolute', top: 8, left: 1010, width: 210, height: 44, objectFit: 'contain' }} />
+
+    <Box style={{ position: 'absolute', top: 72, left: 60, width: 1160, height: 616, flexDirection: 'column' }}>
+
+        <Box style={{ flexDirection: 'row', gap: 26, marginTop: 22 }}>
+            <Box style={{ padding: '6px 14px', background: '#123C6E' }}>
+                <Text style={{ fontSize: 16, color: '#FFFFFF' }}>① 双编码器融合 → 粗估计</Text>
+            </Box>
+            <Box style={{ padding: '6px 14px', background: '#E8F0FA' }}>
+                <Text style={{ fontSize: 16, color: '#123C6E' }}>② Patch 建图 → 动态图卷积 → 残差</Text>
+            </Box>
+            <Box style={{ padding: '6px 14px', background: '#E8F0FA' }}>
+                <Text style={{ fontSize: 16, color: '#123C6E' }}>③ 粗估计 + 残差 = 精化结果</Text>
+            </Box>
+        </Box>
+
+        <Box style={{ flexDirection: 'row', justifyContent: 'center', width: '100%', marginTop: 14 }}>
+            <Image src="assets/fig02.png" style={{ width: 980, height: 386 }} />
+        </Box>
+
+        <Text style={{ fontSize: 14, color: '#5A6675', lineHeight: 1.5, marginTop: 10 }}>
+            图 2　MFFGCN 总体结构。左：多模态特征融合网络，观测与建筑图分别编码、逐级经 AFM 融合；右：图卷积精化网络，粗估计切成 patch 建图、消息传递后还原为残差，与粗估计相加。
+        </Text>
+
+        <Box style={{ background: '#E8F0FA', borderLeft: '4px solid #123C6E', padding: '14px 22px', marginTop: 14 }}>
+            <Text style={{ fontSize: 18, color: '#1A2230', lineHeight: 1.5 }}>
+                分工很明确：左支路负责"整体对"，右支路只学"差多少"，不重画整张图。
+            </Text>
+        </Box>
+    </Box>
+</Slide>

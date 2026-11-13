@@ -1,0 +1,63 @@
+<Slide style={{ width: 1280, height: 720, padding: 0, background: '#FFFFFF', position: 'relative' }}>
+        <Image src="assets/banner.jpg" style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 60, objectFit: 'cover' }} />
+    <Text style={{ position: 'absolute', top: 15, left: 60, width: 820, fontSize: 28, fontWeight: 'bold', color: '#FFFFFF', letterSpacing: 1 }}>问题建模：三路输入合成一张图</Text>
+    <Text style={{ position: 'absolute', top: 23, left: 900, width: 100, fontSize: 15, color: '#BBD9F2', textAlign: 'right' }}>01 · 研究背景</Text>
+    <Image src="assets/logo_bar.png" style={{ position: 'absolute', top: 8, left: 1010, width: 210, height: 44, objectFit: 'contain' }} />
+
+    <Box style={{ position: 'absolute', top: 72, left: 60, width: 1160, height: 616, flexDirection: 'column' }}>
+
+        <Box style={{ flexDirection: 'row', gap: 28, marginTop: 22 }}>
+            <Box style={{ width: 368, padding: 22, background: '#F7F9FC', border: '1px solid #D8DEE7', flexDirection: 'column' }}>
+                <Text style={{ fontSize: 14, color: '#1E5A9E', letterSpacing: 1.5 }}>INPUT 1</Text>
+                <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1A2230', marginTop: 8 }}>稀疏观测 f</Text>
+                <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.55, marginTop: 8 }}>
+                    仅传感器所在栅格有实测值，其余像素置 0，有效像素不足 0.5%。
+                </Text>
+            </Box>
+            <Box style={{ width: 368, padding: 22, background: '#F7F9FC', border: '1px solid #D8DEE7', flexDirection: 'column' }}>
+                <Text style={{ fontSize: 14, color: '#1E5A9E', letterSpacing: 1.5 }}>INPUT 2</Text>
+                <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1A2230', marginTop: 8 }}>环境图 m</Text>
+                <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.55, marginTop: 8 }}>
+                    卫星图对应的建筑二值掩码，决定信号被哪堵墙挡住、朝哪里衍射。
+                </Text>
+            </Box>
+            <Box style={{ width: 368, padding: 22, background: '#F7F9FC', border: '1px solid #D8DEE7', flexDirection: 'column' }}>
+                <Text style={{ fontSize: 14, color: '#1E5A9E', letterSpacing: 1.5 }}>INPUT 3</Text>
+                <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1A2230', marginTop: 8 }}>发射机图 p</Text>
+                <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.55, marginTop: 8 }}>
+                    发射机位置为 1，其余为 0，提供信号的"源"与主瓣方向。
+                </Text>
+            </Box>
+        </Box>
+
+        <Box style={{ flexDirection: 'row', alignItems: 'center', marginTop: 34 }}>
+            <Box style={{ width: 116, flexDirection: 'column' }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1A2230' }}>观测模型</Text>
+                <Text style={{ fontSize: 15, color: '#8B97A8', marginTop: 4 }}>式 (1)</Text>
+            </Box>
+            <Math latex="\\tilde{y}(x_n)=\\sum_{t=1}^{N_t}\\Upsilon_t\\,|H_t(x_n)|^{2}+n(x_n)" width={470} display={true} color="#123C6E" />
+            <Box style={{ flex: 1 }} />
+            <Text style={{ fontSize: 16, color: '#5A6675', width: 480, lineHeight: 1.55 }}>
+                接收功率是各发射机信道响应的功率叠加，再叠加热噪声与背景噪声。
+            </Text>
+        </Box>
+
+        <Box style={{ flexDirection: 'row', alignItems: 'center', marginTop: 26 }}>
+            <Box style={{ width: 116, flexDirection: 'column' }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1A2230' }}>估计目标</Text>
+                <Text style={{ fontSize: 15, color: '#8B97A8', marginTop: 4 }}>式 (2)</Text>
+            </Box>
+            <Math latex="y_i=g\\left(f_i,\\,m_i,\\,p_i\\right)\\in\\mathbb{R}^{H/r\\times W/r}" width={360} display={true} color="#123C6E" />
+            <Box style={{ flex: 1 }} />
+            <Text style={{ fontSize: 16, color: '#5A6675', width: 480, lineHeight: 1.55 }}>
+                学一个映射 g，把三路输入还原成全域高分辨率地图，而不只是补观测点之间的洞。
+            </Text>
+        </Box>
+
+        <Box style={{ background: '#E8F0FA', borderLeft: '4px solid #123C6E', padding: '16px 22px', marginTop: 30 }}>
+            <Text style={{ fontSize: 18, color: '#1A2230', lineHeight: 1.5 }}>
+                三路输入缺一不可：建筑图给出遮挡结构，发射机图给出信号源，稀疏观测负责校准绝对电平。
+            </Text>
+        </Box>
+    </Box>
+</Slide>

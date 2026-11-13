@@ -1,0 +1,12 @@
+<Slide style={{ width: 1280, height: 720, padding: 0, background: 'linear-gradient(120deg, #0C2C57 0%, #164574 100%)', position: 'relative' }}>
+    <Image src="assets/logo_white.png" style={{ position: 'absolute', top: 52, left: 60, width: 168, height: 107, objectFit: 'contain' }} />
+
+    <Box style={{ position: 'absolute', top: 268, left: 60, width: 1160, flexDirection: 'row', alignItems: 'flex-end' }}>
+        <Text style={{ fontSize: 132, fontWeight: 'bold', color: '#2C5E96', lineHeight: 1 }}>03</Text>
+        <Box style={{ flexDirection: 'column', marginLeft: 34, paddingBottom: 14 }}>
+            <Text style={{ fontSize: 38, fontWeight: 'bold', color: '#FFFFFF' }}>实验设置</Text>
+            <Text style={{ fontSize: 16, color: '#9BB8D8', marginTop: 10, letterSpacing: 1 }}>EXPERIMENTAL SETUP</Text>
+        </Box>
+    </Box>
+    <Box style={{ position: 'absolute', top: 438, left: 60, width: 640, height: 3, background: '#4E86C4' }} />
+</Slide>

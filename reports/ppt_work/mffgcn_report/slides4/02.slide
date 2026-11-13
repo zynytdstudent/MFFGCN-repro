@@ -1,0 +1,53 @@
+<Slide style={{ width: 1280, height: 720, padding: 0, background: '#FFFFFF', position: 'relative' }}>
+    <Image src="assets/banner.jpg" style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 60, objectFit: 'cover' }} />
+    <Text style={{ position: 'absolute', top: 15, left: 60, width: 820, fontSize: 28, fontWeight: 'bold', color: '#FFFFFF', letterSpacing: 1 }}>目录</Text>
+    <Text style={{ position: 'absolute', top: 23, left: 900, width: 100, fontSize: 15, color: '#BBD9F2', textAlign: 'right' }}>CONTENTS</Text>
+    <Image src="assets/logo_bar.png" style={{ position: 'absolute', top: 8, left: 1010, width: 210, height: 44, objectFit: 'contain' }} />
+
+    <Box style={{ position: 'absolute', top: 72, left: 60, width: 1160, height: 616, flexDirection: 'column', justifyContent: 'center' }}>
+
+        <Box style={{ flexDirection: 'row', alignItems: 'center', height: 132, borderBottom: '1px solid #D8DEE7', marginTop: 10 }}>
+            <Text style={{ fontSize: 30, fontWeight: 'bold', color: '#1E5A9E', width: 88 }}>01</Text>
+            <Box style={{ flexDirection: 'column', width: 660 }}>
+                <Text style={{ fontSize: 23, fontWeight: 'bold', color: '#1A2230' }}>绪论与相关工作</Text>
+                <Text style={{ fontSize: 14, color: '#8B97A8', marginTop: 5 }}>RME 是什么 · 四条技术路线各自卡在哪 · 本文要补的那个缺口</Text>
+            </Box>
+            <Box style={{ flex: 1 }} />
+            <Text style={{ fontSize: 14, color: '#8B97A8', width: 150, textAlign: 'right' }}>INTRODUCTION</Text>
+            <Text style={{ fontSize: 14, color: '#8B97A8', width: 46, textAlign: 'right' }}>P03</Text>
+        </Box>
+
+        <Box style={{ flexDirection: 'row', alignItems: 'center', height: 132, borderBottom: '1px solid #D8DEE7' }}>
+            <Text style={{ fontSize: 30, fontWeight: 'bold', color: '#1E5A9E', width: 88 }}>02</Text>
+            <Box style={{ flexDirection: 'column', width: 660 }}>
+                <Text style={{ fontSize: 23, fontWeight: 'bold', color: '#1A2230' }}>所提方法 MFFGCN</Text>
+                <Text style={{ fontSize: 14, color: '#8B97A8', marginTop: 5 }}>整体架构与三个创新 · 双编码器 + AFM · Patch 动态图 · 残差与公式</Text>
+            </Box>
+            <Box style={{ flex: 1 }} />
+            <Text style={{ fontSize: 14, color: '#8B97A8', width: 150, textAlign: 'right' }}>METHODOLOGY</Text>
+            <Text style={{ fontSize: 14, color: '#8B97A8', width: 46, textAlign: 'right' }}>P06</Text>
+        </Box>
+
+        <Box style={{ flexDirection: 'row', alignItems: 'center', height: 132, borderBottom: '1px solid #D8DEE7' }}>
+            <Text style={{ fontSize: 30, fontWeight: 'bold', color: '#1E5A9E', width: 88 }}>03</Text>
+            <Box style={{ flexDirection: 'column', width: 660 }}>
+                <Text style={{ fontSize: 23, fontWeight: 'bold', color: '#1A2230' }}>实验</Text>
+                <Text style={{ fontSize: 14, color: '#8B97A8', marginTop: 5 }}>设置 · 主对比 · 盲区专项 · 消融 · 鲁棒性 · 复杂度</Text>
+            </Box>
+            <Box style={{ flex: 1 }} />
+            <Text style={{ fontSize: 14, color: '#8B97A8', width: 150, textAlign: 'right' }}>EXPERIMENTS</Text>
+            <Text style={{ fontSize: 14, color: '#8B97A8', width: 46, textAlign: 'right' }}>P13</Text>
+        </Box>
+
+        <Box style={{ flexDirection: 'row', alignItems: 'center', height: 132 }}>
+            <Text style={{ fontSize: 30, fontWeight: 'bold', color: '#1E5A9E', width: 88 }}>04</Text>
+            <Box style={{ flexDirection: 'column', width: 660 }}>
+                <Text style={{ fontSize: 23, fontWeight: 'bold', color: '#1A2230' }}>总结</Text>
+                <Text style={{ fontSize: 14, color: '#8B97A8', marginTop: 5 }}>三个创新点 · 四条实验结论 · 一句话因果链</Text>
+            </Box>
+            <Box style={{ flex: 1 }} />
+            <Text style={{ fontSize: 14, color: '#8B97A8', width: 150, textAlign: 'right' }}>SUMMARY</Text>
+            <Text style={{ fontSize: 14, color: '#8B97A8', width: 46, textAlign: 'right' }}>P28</Text>
+        </Box>
+    </Box>
+</Slide>

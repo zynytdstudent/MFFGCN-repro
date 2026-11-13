@@ -1,0 +1,72 @@
+[
+ {
+  "tag": "calib_single",
+  "epoch": 34,
+  "nmse": 0.006264120049785869,
+  "rmse": 0.020758234191573376,
+  "coarse_nmse": 0.006264120049785869,
+  "coarse_rmse": 0.020758234191573376,
+  "obs_on_signal": false,
+  "setup": "s1"
+ },
+ {
+  "tag": "calib_mffgcn",
+  "epoch": 17,
+  "nmse": 0.005005171630617695,
+  "rmse": 0.018555380236539097,
+  "coarse_nmse": 0.006611385870328179,
+  "coarse_rmse": 0.02132586343702798,
+  "obs_on_signal": false,
+  "setup": "s1"
+ },
+ {
+  "tag": "calib_sigmoid",
+  "epoch": 21,
+  "nmse": 0.005117356593860676,
+  "rmse": 0.018762176264742917,
+  "coarse_nmse": 0.006580333964798982,
+  "coarse_rmse": 0.021275723565049486,
+  "obs_on_signal": false,
+  "setup": "s1"
+ },
+ {
+  "tag": "bs15_s1",
+  "epoch": 28,
+  "nmse": 0.004385729366336126,
+  "rmse": 0.01736925877716011,
+  "coarse_nmse": 0.005919417533322026,
+  "coarse_rmse": 0.02017901013436748,
+  "obs_on_signal": true,
+  "setup": "s1"
+ },
+ {
+  "tag": "ab_single_s1",
+  "epoch": 26,
+  "nmse": 0.005575790959099963,
+  "rmse": 0.01958455071075359,
+  "coarse_nmse": 0.005575790959099963,
+  "coarse_rmse": 0.01958455071075359,
+  "obs_on_signal": true,
+  "setup": "s1"
+ },
+ {
+  "tag": "ab_nogcn_s1",
+  "epoch": 13,
+  "nmse": 0.004902922694306474,
+  "rmse": 0.01836487150406204,
+  "coarse_nmse": 0.006063733177760417,
+  "coarse_rmse": 0.020423511421538122,
+  "obs_on_signal": true,
+  "setup": "s1"
+ },
+ {
+  "tag": "FINAL_s1",
+  "epoch": 20,
+  "nmse": 0.006491611693681763,
+  "rmse": 0.021131807124996536,
+  "coarse_nmse": 0.012672176343284224,
+  "coarse_rmse": 0.02952473274367998,
+  "obs_on_signal": true,
+  "setup": "s1"
+ }
+]

@@ -1,0 +1,98 @@
+<Slide style={{ width: 1280, height: 720, padding: 0, background: '#FFFFFF', position: 'relative' }}>
+    <Image src="assets/banner.jpg" style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 60, objectFit: 'cover' }} />
+    <Text style={{ position: 'absolute', top: 15, left: 60, width: 820, fontSize: 28, fontWeight: 'bold', color: '#FFFFFF', letterSpacing: 1 }}>总结：三个创新，四条结论</Text>
+    <Text style={{ position: 'absolute', top: 23, left: 900, width: 100, fontSize: 15, color: '#BBD9F2', textAlign: 'right' }}>04 · 总结</Text>
+    <Image src="assets/logo_bar.png" style={{ position: 'absolute', top: 8, left: 1010, width: 210, height: 44, objectFit: 'contain' }} />
+
+    <Box style={{ position: 'absolute', top: 72, left: 60, width: 1160, height: 616, flexDirection: 'column' }}>
+
+        <Box style={{ flexDirection: 'row', height: 452 }}>
+
+            <Box style={{ width: 548, flexDirection: 'column' }}>
+                <Text style={{ fontSize: 14, color: '#1E5A9E', letterSpacing: 2 }}>PROPOSED · 三个创新点</Text>
+
+                <Box style={{ flexDirection: 'row', marginTop: 34 }}>
+                    <Text style={{ width: 40, fontSize: 20, fontWeight: 'bold', color: '#123C6E' }}>01</Text>
+                    <Box style={{ width: 484, flexDirection: 'column' }}>
+                        <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#123C6E' }}>双编码器 + AFM 自适应门控</Text>
+                        <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.55, marginTop: 7 }}>
+                            观测图与环境图分两路编码，AFM 在每一层学 0–1 门控矩阵，逐级决定该信环境先验还是信实测观测。
+                        </Text>
+                    </Box>
+                </Box>
+
+                <Box style={{ flexDirection: 'row', marginTop: 34 }}>
+                    <Text style={{ width: 40, fontSize: 20, fontWeight: 'bold', color: '#123C6E' }}>02</Text>
+                    <Box style={{ width: 484, flexDirection: 'column' }}>
+                        <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#123C6E' }}>patch 级动态 KNN 建图</Text>
+                        <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.55, marginTop: 7 }}>
+                            把粗估图切成 patch 当节点，按语义特征相似度建边，不受空间距离约束——远处结构相似的观测因此能直达盲区。
+                        </Text>
+                    </Box>
+                </Box>
+
+                <Box style={{ flexDirection: 'row', marginTop: 34 }}>
+                    <Text style={{ width: 40, fontSize: 20, fontWeight: 'bold', color: '#123C6E' }}>03</Text>
+                    <Box style={{ width: 484, flexDirection: 'column' }}>
+                        <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#123C6E' }}>残差精修</Text>
+                        <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.55, marginTop: 7 }}>
+                            GCN 不重画整张图，只输出修正量，最终结果 = 粗估计 + 残差。图操作会破坏像素对齐，残差是绕开它的写法。
+                        </Text>
+                    </Box>
+                </Box>
+            </Box>
+
+            <Box style={{ width: 1, background: '#D8DEE7', marginLeft: 26, marginRight: 26 }} />
+
+            <Box style={{ flex: 1, flexDirection: 'column' }}>
+                <Text style={{ fontSize: 14, color: '#C0392B', letterSpacing: 2 }}>RESULTS · 四条实验结论</Text>
+
+                <Box style={{ flexDirection: 'row', marginTop: 20 }}>
+                    <Text style={{ width: 26, fontSize: 18, fontWeight: 'bold', color: '#C0392B' }}>①</Text>
+                    <Box style={{ flex: 1, flexDirection: 'column' }}>
+                        <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#1A2230' }}>均匀采样与业界最优打平</Text>
+                        <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.55, marginTop: 6 }}>
+                            S1 的 NMSE 0.0043，与 RME-GAN 基本一致——基础重建能力不输。
+                        </Text>
+                    </Box>
+                </Box>
+
+                <Box style={{ flexDirection: 'row', marginTop: 20 }}>
+                    <Text style={{ width: 26, fontSize: 18, fontWeight: 'bold', color: '#C0392B' }}>②</Text>
+                    <Box style={{ flex: 1, flexDirection: 'column' }}>
+                        <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#1A2230' }}>盲区越大，优势越明显</Text>
+                        <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.55, marginTop: 6 }}>
+                            S2 低 <span style={{ fontWeight: 'bold', color: '#C0392B' }}>11.8%</span>、S3 低 <span style={{ fontWeight: 'bold', color: '#C0392B' }}>16.4%</span>；S3 的劣化只有 RME-GAN 的四分之一。
+                        </Text>
+                    </Box>
+                </Box>
+
+                <Box style={{ flexDirection: 'row', marginTop: 20 }}>
+                    <Text style={{ width: 26, fontSize: 18, fontWeight: 'bold', color: '#C0392B' }}>③</Text>
+                    <Box style={{ flex: 1, flexDirection: 'column' }}>
+                        <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#1A2230' }}>极端稀疏下大幅领先</Text>
+                        <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.55, marginTop: 6 }}>
+                            S4 / S5 相对 RME-GAN 低 <span style={{ fontWeight: 'bold', color: '#C0392B' }}>36.1% / 36.8%</span>，此时其余基线已失效。
+                        </Text>
+                    </Box>
+                </Box>
+
+                <Box style={{ flexDirection: 'row', marginTop: 20 }}>
+                    <Text style={{ width: 26, fontSize: 18, fontWeight: 'bold', color: '#C0392B' }}>④</Text>
+                    <Box style={{ flex: 1, flexDirection: 'column' }}>
+                        <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#1A2230' }}>消融：只有残差不可替代</Text>
+                        <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.55, marginTop: 6 }}>
+                            去残差 NMSE <span style={{ fontWeight: 'bold', color: '#C0392B' }}>0.0043 → 0.0231</span>（5.4 倍）；其余变体最多劣化 16.3%。
+                        </Text>
+                    </Box>
+                </Box>
+            </Box>
+        </Box>
+
+        <Box style={{ background: '#E8F0FA', borderLeft: '4px solid #123C6E', padding: '14px 22px', marginTop: 28 }}>
+            <Text style={{ fontSize: 17, color: '#1A2230', lineHeight: 1.6 }}>
+                三个创新是一条因果链：粗估计不崩 → 远处观测进禁区 → 送进来的信息不被图操作打乱，缺一段就掉一个档。代价也可控——<span style={{ fontWeight: 'bold', color: '#C0392B' }}>40.32 G FLOPs 比 RadioUNet 低 14.5%，推理 5.17 ms 略慢 1.4%</span>。
+            </Text>
+        </Box>
+    </Box>
+</Slide>

@@ -1,0 +1,37 @@
+<Slide style={{ width: 1280, height: 720, padding: 0, background: '#0B2B52', position: 'relative' }}>
+    <Image src="assets/bg_cover.jpg" style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 720, objectFit: 'cover' }} />
+    <Box style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 720, background: 'linear-gradient(100deg, rgba(7,26,50,0.86) 0%, rgba(7,26,50,0.62) 52%, rgba(7,26,50,0.18) 100%)' }} />
+
+    <Image src="assets/logo_white.png" style={{ position: 'absolute', top: 48, left: 60, width: 184, height: 117, objectFit: 'contain' }} />
+
+    <Box style={{ position: 'absolute', top: 286, left: 60, width: 940, flexDirection: 'column' }}>
+        <Text style={{ fontSize: 46, fontWeight: 'bold', color: '#FFFFFF', lineHeight: 1.26, letterSpacing: 0.5 }}>
+            面向非均匀空间采样的无线电地图估计
+        </Text>
+        <Text style={{ fontSize: 46, fontWeight: 'bold', color: '#FFFFFF', lineHeight: 1.26, marginTop: 6 }}>
+            MFFGCN：多模态特征融合图卷积网络
+        </Text>
+        <Box style={{ width: 96, height: 3, background: '#5FA8E8', marginTop: 26 }} />
+        <Text style={{ fontSize: 18, color: '#BBD3EC', lineHeight: 1.5, marginTop: 24 }}>
+            MFFGCN: Multimodal Feature Fusion Graph Convolution Network
+        </Text>
+        <Text style={{ fontSize: 18, color: '#BBD3EC', lineHeight: 1.5 }}>
+            for Radio Map Estimation With Uneven Spatial Sampling
+        </Text>
+    </Box>
+
+    <Box style={{ position: 'absolute', top: 596, left: 60, width: 1160, flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+        <Box style={{ flexDirection: 'column', gap: 6 }}>
+            <Text style={{ fontSize: 16, color: '#E4EEF9' }}>
+                IEEE Transactions on Mobile Computing, Vol. 24, No. 12, Dec. 2025
+            </Text>
+            <Text style={{ fontSize: 15, color: '#93B2D4' }}>
+                H. Zhang, Y. Han, L. Meng, G. Gui, W. Xiang, Y. Lin
+            </Text>
+        </Box>
+        <Box style={{ flexDirection: 'column', gap: 6, alignItems: 'flex-end' }}>
+            <Text style={{ fontSize: 15, color: '#E4EEF9' }}>组会文献汇报</Text>
+            <Text style={{ fontSize: 15, color: '#93B2D4' }}>2026 年 11 月</Text>
+        </Box>
+    </Box>
+</Slide>

@@ -1,0 +1,35 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.bak
+*.egg-info/
+.ipynb_checkpoints/
+
+# ---- 工作区/工具 ----
+.workbuddy/
+.vscode/
+_trash_*/
+*.tmp
+*~
+
+# ---- 数据（3.5G 缓存与原始包，只存在于服务器）----
+data/cache/
+data/raw/
+data/*.tar.gz
+
+# 论文原文，不随仓库分发
+data/paper.pdf
+
+# ---- 训练产物：只保留指标，权重不入库 ----
+runs/*/best.pt
+runs/*/last.pt
+runs/*/*.pth
+
+# ---- PPT 中间产物 ----
+reports/ppt_work/**/render/
+reports/ppt_work/**/.cache/
+reports/ppt_work/**/.slidep/
+
+# ---- 系统 ----
+Thumbs.db
+.DS_Store

@@ -1,0 +1,52 @@
+<Slide style={{ width: 1280, height: 720, padding: 60, background: '#FFFFFF' }}>
+    <Box style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#123C6E' }}>主对比：三个设置、九个基线</Text>
+        <Text style={{ fontSize: 16, color: '#8B97A8' }}>04 · 实验结果</Text>
+    </Box>
+    <Box style={{ width: '100%', height: 1, background: '#123C6E', marginTop: 18 }} />
+
+    <Table
+        style={{ width: '100%', height: 420, marginTop: 12 }}
+        defaultTextStyle={{ fontSize: 16, textAlign: 'center', color: '#1A2230' }}
+        defaultCellStyle={{ border: { bottom: { width: 1, color: '#E2E7EE' } } }}
+        cells={[
+            [
+                { text: '模型', textStyle: { bold: true, color: '#FFFFFF', textAlign: 'left' }, cellStyle: { background: { color: '#123C6E' } } },
+                { text: 'S1 NMSE', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#123C6E' } } },
+                { text: 'S1 RMSE', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#123C6E' } } },
+                { text: 'S2 NMSE', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#123C6E' } } },
+                { text: 'S2 RMSE', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#123C6E' } } },
+                { text: 'S3 NMSE', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#123C6E' } } },
+                { text: 'S3 RMSE', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#123C6E' } } },
+            ],
+            [{ text: 'KNN', textStyle: { textAlign: 'left' } }, '0.9973', '0.2312', '0.9980', '0.2313', '0.9981', '0.2313'],
+            [{ text: 'Kriging', textStyle: { textAlign: 'left' } }, '0.4545', '0.1389', '0.4545', '0.1389', '0.4575', '0.1401'],
+            [{ text: 'AE', textStyle: { textAlign: 'left' } }, '0.0387', '0.0456', '0.0736', '0.0627', '0.0823', '0.0657'],
+            [{ text: 'DeepAE', textStyle: { textAlign: 'left' } }, '0.0156', '0.0288', '0.0310', '0.0408', '0.0339', '0.0422'],
+            [{ text: 'U-Net', textStyle: { textAlign: 'left' } }, '0.0063', '0.0182', '0.0075', '0.0199', '0.0081', '0.0206'],
+            [{ text: 'RadioUNet', textStyle: { textAlign: 'left' } }, '0.0049', '0.0160', '0.0058', '0.0175', '0.0063', '0.0181'],
+            [{ text: 'Pix2pix+', textStyle: { textAlign: 'left' } }, '0.0046', '0.0156', '0.0053', '0.0169', '0.0054', '0.0171'],
+            [{ text: 'RME-GAN', textStyle: { textAlign: 'left' } }, '0.0043', '0.0151', '0.0051', '0.0165', '0.0055', '0.0172'],
+            [
+                { text: 'MFFGCN（本文）', textStyle: { textAlign: 'left', bold: true, color: '#C0392B' }, cellStyle: { background: { color: '#FBF3F2' }, border: { top: { width: 2, color: '#C0392B' }, bottom: { width: 2, color: '#C0392B' } } } },
+                { text: '0.0043', textStyle: { bold: true, color: '#C0392B' }, cellStyle: { background: { color: '#FBF3F2' }, border: { top: { width: 2, color: '#C0392B' }, bottom: { width: 2, color: '#C0392B' } } } },
+                { text: '0.0150', textStyle: { bold: true, color: '#C0392B' }, cellStyle: { background: { color: '#FBF3F2' }, border: { top: { width: 2, color: '#C0392B' }, bottom: { width: 2, color: '#C0392B' } } } },
+                { text: '0.0045', textStyle: { bold: true, color: '#C0392B' }, cellStyle: { background: { color: '#FBF3F2' }, border: { top: { width: 2, color: '#C0392B' }, bottom: { width: 2, color: '#C0392B' } } } },
+                { text: '0.0154', textStyle: { bold: true, color: '#C0392B' }, cellStyle: { background: { color: '#FBF3F2' }, border: { top: { width: 2, color: '#C0392B' }, bottom: { width: 2, color: '#C0392B' } } } },
+                { text: '0.0046', textStyle: { bold: true, color: '#C0392B' }, cellStyle: { background: { color: '#FBF3F2' }, border: { top: { width: 2, color: '#C0392B' }, bottom: { width: 2, color: '#C0392B' } } } },
+                { text: '0.0155', textStyle: { bold: true, color: '#C0392B' }, cellStyle: { background: { color: '#FBF3F2' }, border: { top: { width: 2, color: '#C0392B' }, bottom: { width: 2, color: '#C0392B' } } } },
+            ],
+        ]}
+    />
+
+    <Box style={{ flexDirection: 'row', gap: 30, marginTop: 16 }}>
+        <Text style={{ fontSize: 14, color: '#8B97A8', width: 520, lineHeight: 1.5 }}>
+            表 III　数值为 5 次不同随机种子的均值（标准差见原文）；NMSE 越低越好。
+        </Text>
+        <Box style={{ flex: 1, background: '#E8F0FA', borderLeft: '4px solid #123C6E', padding: '12px 18px' }}>
+            <Text style={{ fontSize: 17, color: '#1A2230', lineHeight: 1.45 }}>
+                Setup 1 上与 RME-GAN <span style={{ fontWeight: 'bold' }}>完全打平</span>，差距只在 S2/S3 才显现。
+            </Text>
+        </Box>
+    </Box>
+</Slide>

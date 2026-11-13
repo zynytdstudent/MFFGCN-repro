@@ -1,0 +1,56 @@
+<Slide style={{ width: 1280, height: 720, padding: 60, background: '#FFFFFF' }}>
+    <Box style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#123C6E' }}>消融：只有残差不可替代</Text>
+        <Text style={{ fontSize: 16, color: '#8B97A8' }}>04 · 实验结果</Text>
+    </Box>
+    <Box style={{ width: '100%', height: 1, background: '#123C6E', marginTop: 18 }} />
+
+    <Table
+        style={{ width: '100%', height: 352, marginTop: 10 }}
+        defaultTextStyle={{ fontSize: 16, textAlign: 'center', color: '#1A2230' }}
+        defaultCellStyle={{ border: { bottom: { width: 1, color: '#E2E7EE' } } }}
+        cells={[
+            [
+                { text: '变体', textStyle: { bold: true, color: '#FFFFFF', textAlign: 'left' }, cellStyle: { background: { color: '#123C6E' } } },
+                { text: 'S1 NMSE', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#123C6E' } } },
+                { text: 'S1 RMSE', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#123C6E' } } },
+                { text: 'S2 NMSE', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#123C6E' } } },
+                { text: 'S2 RMSE', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#123C6E' } } },
+                { text: 'S3 NMSE', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#123C6E' } } },
+                { text: 'S3 RMSE', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#123C6E' } } },
+            ],
+            [{ text: '单编码器', textStyle: { textAlign: 'left' } }, '0.0048', '0.0158', '0.0053', '0.0168', '0.0053', '0.0167'],
+            [{ text: '加性融合', textStyle: { textAlign: 'left' } }, '0.0050', '0.0162', '0.0056', '0.0171', '0.0059', '0.0175'],
+            [{ text: '直接拼接', textStyle: { textAlign: 'left' } }, '0.0047', '0.0158', '0.0053', '0.0166', '0.0053', '0.0167'],
+            [{ text: '通道注意力', textStyle: { textAlign: 'left' } }, '0.0045', '0.0155', '0.0051', '0.0164', '0.0053', '0.0165'],
+            [{ text: '交叉注意力', textStyle: { textAlign: 'left' } }, '0.0046', '0.0156', '0.0052', '0.0164', '0.0053', '0.0164'],
+            [{ text: '去 GCN', textStyle: { textAlign: 'left' } }, '0.0049', '0.0161', '0.0054', '0.0166', '0.0055', '0.0170'],
+            [{ text: '去动态图', textStyle: { textAlign: 'left' } }, '0.0046', '0.0154', '0.0049', '0.0161', '0.0049', '0.0162'],
+            [{ text: '去残差', textStyle: { textAlign: 'left', bold: true, color: '#C0392B' } },
+             { text: '0.0231', textStyle: { bold: true, color: '#C0392B' } }, '0.0347',
+             { text: '0.0234', textStyle: { bold: true, color: '#C0392B' } }, '0.0350',
+             { text: '0.0237', textStyle: { bold: true, color: '#C0392B' } }, '0.0352'],
+            [{ text: '完整模型（本文）', textStyle: { textAlign: 'left', bold: true }, cellStyle: { background: { color: '#F0F5FB' }, border: { top: { width: 2, color: '#123C6E' }, bottom: { width: 2, color: '#123C6E' } } } },
+             { text: '0.0043', textStyle: { bold: true }, cellStyle: { background: { color: '#F0F5FB' }, border: { top: { width: 2, color: '#123C6E' }, bottom: { width: 2, color: '#123C6E' } } } },
+             { text: '0.0150', textStyle: { bold: true }, cellStyle: { background: { color: '#F0F5FB' }, border: { top: { width: 2, color: '#123C6E' }, bottom: { width: 2, color: '#123C6E' } } } },
+             { text: '0.0045', textStyle: { bold: true }, cellStyle: { background: { color: '#F0F5FB' }, border: { top: { width: 2, color: '#123C6E' }, bottom: { width: 2, color: '#123C6E' } } } },
+             { text: '0.0154', textStyle: { bold: true }, cellStyle: { background: { color: '#F0F5FB' }, border: { top: { width: 2, color: '#123C6E' }, bottom: { width: 2, color: '#123C6E' } } } },
+             { text: '0.0046', textStyle: { bold: true }, cellStyle: { background: { color: '#F0F5FB' }, border: { top: { width: 2, color: '#123C6E' }, bottom: { width: 2, color: '#123C6E' } } } },
+             { text: '0.0155', textStyle: { bold: true }, cellStyle: { background: { color: '#F0F5FB' }, border: { top: { width: 2, color: '#123C6E' }, bottom: { width: 2, color: '#123C6E' } } } }],
+        ]}
+    />
+
+    <Box style={{ flexDirection: 'row', gap: 34, marginTop: 16 }}>
+        <Box style={{ width: 520, flexDirection: 'column' }}>
+            <Text style={{ fontSize: 14, color: '#8B97A8' }}>表 V　消融实验，NMSE 越低越好。</Text>
+            <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.55, marginTop: 8 }}>
+                去掉残差后 NMSE 从 0.0043 涨到 0.0231，劣化 <span style={{ fontWeight: 'bold', color: '#C0392B' }}>5.4 倍</span>，是唯一"不可替代"的设计。
+            </Text>
+        </Box>
+        <Box style={{ flex: 1, flexDirection: 'column', background: '#E8F0FA', padding: '14px 20px' }}>
+            <Text style={{ fontSize: 17, color: '#1A2230', lineHeight: 1.55 }}>
+                其余 7 个变体的劣化全都在 <span style={{ fontWeight: 'bold' }}>+4.7% ~ +16.3%</span> 的窄带内：融合方式、图类型、编码器数量，影响量级远小于"有没有残差"。
+            </Text>
+        </Box>
+    </Box>
+</Slide>

@@ -1,0 +1,49 @@
+<Slide style={{ width: 1280, height: 720, padding: 60, background: '#FFFFFF' }}>
+    <Box style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#123C6E' }}>目录</Text>
+        <Text style={{ fontSize: 16, color: '#8B97A8', letterSpacing: 2 }}>CONTENTS</Text>
+    </Box>
+    <Box style={{ width: '100%', height: 1, background: '#123C6E', marginTop: 18 }} />
+
+    <Box style={{ flexDirection: 'column', marginTop: 46 }}>
+        <Box style={{ flexDirection: 'row', alignItems: 'center', height: 112, borderBottom: '1px solid #D8DEE7' }}>
+            <Text style={{ fontSize: 30, fontWeight: 'bold', color: '#1E5A9E', width: 88 }}>01</Text>
+            <Box style={{ flexDirection: 'column', width: 700 }}>
+                <Text style={{ fontSize: 24, color: '#1A2230' }}>研究背景与问题</Text>
+                <Text style={{ fontSize: 15, color: '#8B97A8', marginTop: 6 }}>Radio Map Estimation under observation-constrained sampling</Text>
+            </Box>
+            <Box style={{ flex: 1 }} />
+            <Text style={{ fontSize: 15, color: '#8B97A8' }}>P03</Text>
+        </Box>
+
+        <Box style={{ flexDirection: 'row', alignItems: 'center', height: 112, borderBottom: '1px solid #D8DEE7' }}>
+            <Text style={{ fontSize: 30, fontWeight: 'bold', color: '#1E5A9E', width: 88 }}>02</Text>
+            <Box style={{ flexDirection: 'column', width: 700 }}>
+                <Text style={{ fontSize: 24, color: '#1A2230' }}>MFFGCN 方法设计</Text>
+                <Text style={{ fontSize: 15, color: '#8B97A8', marginTop: 6 }}>Dual-encoder fusion network and graph convolution refinement</Text>
+            </Box>
+            <Box style={{ flex: 1 }} />
+            <Text style={{ fontSize: 15, color: '#8B97A8' }}>P06</Text>
+        </Box>
+
+        <Box style={{ flexDirection: 'row', alignItems: 'center', height: 112, borderBottom: '1px solid #D8DEE7' }}>
+            <Text style={{ fontSize: 30, fontWeight: 'bold', color: '#1E5A9E', width: 88 }}>03</Text>
+            <Box style={{ flexDirection: 'column', width: 700 }}>
+                <Text style={{ fontSize: 24, color: '#1A2230' }}>实验设置</Text>
+                <Text style={{ fontSize: 15, color: '#8B97A8', marginTop: 6 }}>Dataset, five sampling setups, metrics</Text>
+            </Box>
+            <Box style={{ flex: 1 }} />
+            <Text style={{ fontSize: 15, color: '#8B97A8' }}>P12</Text>
+        </Box>
+
+        <Box style={{ flexDirection: 'row', alignItems: 'center', height: 112, borderBottom: '1px solid #D8DEE7' }}>
+            <Text style={{ fontSize: 30, fontWeight: 'bold', color: '#1E5A9E', width: 88 }}>04</Text>
+            <Box style={{ flexDirection: 'column', width: 700 }}>
+                <Text style={{ fontSize: 24, color: '#1A2230' }}>实验结果与分析</Text>
+                <Text style={{ fontSize: 15, color: '#8B97A8', marginTop: 6 }}>Comparison, ablation, robustness, complexity</Text>
+            </Box>
+            <Box style={{ flex: 1 }} />
+            <Text style={{ fontSize: 15, color: '#8B97A8' }}>P16</Text>
+        </Box>
+    </Box>
+</Slide>

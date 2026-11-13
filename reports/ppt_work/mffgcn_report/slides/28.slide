@@ -1,0 +1,14 @@
+<Slide style={{ width: 1280, height: 720, padding: 0, background: '#1A6CAC', position: 'relative' }}>
+    <Image src="assets/bg_cover.jpg" style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 720, objectFit: 'cover' }} />
+    <Box style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 720, background: 'linear-gradient(105deg, rgba(8,38,74,0.86) 0%, rgba(12,52,96,0.66) 60%, rgba(16,62,110,0.38) 100%)' }} />
+
+    <Image src="assets/logo_bar.png" style={{ position: 'absolute', top: 40, left: 60, width: 210, height: 44, objectFit: 'contain' }} />
+
+    <Box style={{ position: 'absolute', top: 292, left: 60, width: 720, flexDirection: 'column' }}>
+        <Text style={{ fontSize: 48, fontWeight: 'bold', color: '#FFFFFF' }}>谢谢，请各位批评指正</Text>
+        <Box style={{ width: 96, height: 3, background: '#FFF2CC', marginTop: 26, opacity: 0.85 }} />
+        <Text style={{ fontSize: 17, color: '#CFE2F3', lineHeight: 1.6, marginTop: 26, fontFamily: 'Times New Roman' }}>
+            Zhang et al., “MFFGCN: Multimodal Feature Fusion Graph Convolution Network for Radio Map Estimation With Uneven Spatial Sampling,” IEEE TMC, 24(12), 2025.
+        </Text>
+    </Box>
+</Slide>

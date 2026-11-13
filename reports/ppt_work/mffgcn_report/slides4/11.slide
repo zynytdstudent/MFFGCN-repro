@@ -1,0 +1,65 @@
+<Slide style={{ width: 1280, height: 720, padding: 0, background: '#FFFFFF', position: 'relative' }}>
+        <Image src="assets/banner.jpg" style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 60, objectFit: 'cover' }} />
+    <Text style={{ position: 'absolute', top: 15, left: 60, width: 820, fontSize: 28, fontWeight: 'bold', color: '#FFFFFF', letterSpacing: 1 }}>训练流程：两个网络，一遍训完</Text>
+    <Text style={{ position: 'absolute', top: 23, left: 900, width: 100, fontSize: 15, color: '#BBD9F2', textAlign: 'right' }}>02 · 所提方法</Text>
+    <Image src="assets/logo_bar.png" style={{ position: 'absolute', top: 8, left: 1010, width: 210, height: 44, objectFit: 'contain' }} />
+
+    <Box style={{ position: 'absolute', top: 74, left: 60, width: 1160, height: 614, flexDirection: 'column' }}>
+
+        <Box style={{ flexDirection: 'row' }}>
+            <Box style={{ width: 416, flexDirection: 'column', alignItems: 'center', width: 440 }}>
+                <Image src="assets/p_algo1.png" style={{ width: 436, height: 502 }} />
+                <Text style={{ fontSize: 13, color: '#8B97A8', marginTop: 6 }}>算法 1　MFFGCN 的完整训练流程（论文原文）</Text>
+            </Box>
+
+            <Box style={{ flex: 1, flexDirection: 'column', marginLeft: 40 }}>
+
+                <Box style={{ flexDirection: 'row' }}>
+                    <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#1E5A9E', width: 30 }}>①</Text>
+                    <Box style={{ flexDirection: 'column', width: 640 }}>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230' }}>前向：粗估 → 残差 → 相加</Text>
+                        <Text style={{ fontSize: 15, color: '#5A6675', lineHeight: 1.55, marginTop: 4 }}>
+                            第 10 行得到 y_c，第 12 行得到 y_r，第 13 行 y = y_c + y_r。精化分支永远只输出修正量。
+                        </Text>
+                    </Box>
+                </Box>
+
+                <Box style={{ flexDirection: 'row', marginTop: 28 }}>
+                    <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#1E5A9E', width: 30 }}>②</Text>
+                    <Box style={{ flexDirection: 'column', width: 640 }}>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230' }}>一次反向，同时改两套参数</Text>
+                        <Text style={{ fontSize: 15, color: '#5A6675', lineHeight: 1.55, marginTop: 4 }}>
+                            第 16 行只做一次 Adam 更新，W₁ 与 W₂ 一起动。RadioUNet 要拆成两阶段、各训 50 轮。
+                        </Text>
+                    </Box>
+                </Box>
+
+                <Box style={{ flexDirection: 'row', marginTop: 28 }}>
+                    <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#1E5A9E', width: 30 }}>③</Text>
+                    <Box style={{ flexDirection: 'column', width: 640 }}>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230' }}>超参直接写在算法里</Text>
+                        <Text style={{ fontSize: 15, color: '#5A6675', lineHeight: 1.55, marginTop: 4 }}>
+                            T_max = 50 轮、batch = 15、初始学习率 1e−3，第 40 轮降 0.1 倍，Adam。
+                        </Text>
+                    </Box>
+                </Box>
+
+                <Box style={{ flexDirection: 'row', marginTop: 28 }}>
+                    <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#1E5A9E', width: 30 }}>④</Text>
+                    <Box style={{ flexDirection: 'column', width: 640 }}>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230' }}>损失按式 (15) 加权</Text>
+                        <Text style={{ fontSize: 15, color: '#5A6675', lineHeight: 1.55, marginTop: 4 }}>
+                            第 15 行算 L：粗估项、精化项、MS-SSIM 项三项相加，权重 λ 见下一页。
+                        </Text>
+                    </Box>
+                </Box>
+
+                <Box style={{ background: '#FBF3F2', borderLeft: '4px solid #C0392B', padding: '13px 18px', marginTop: 22 }}>
+                    <Text style={{ fontSize: 16, color: '#1A2230', lineHeight: 1.55 }}>
+                        <span style={{ fontWeight: 'bold', color: '#C0392B' }}>端到端</span>不是口号：一次前向串起两个网络，一次反向同时改两套参数，所以 50 轮就能收敛。
+                    </Text>
+                </Box>
+            </Box>
+        </Box>
+    </Box>
+</Slide>

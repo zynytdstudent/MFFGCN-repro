@@ -1,0 +1,70 @@
+<svg viewBox="0 0 920 470" width="100%" xmlns="http://www.w3.org/2000/svg" role="img">
+<rect x="0" y="0" width="920" height="470" fill="#ffffff"/>
+<text x="24.0" y="30.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="15" fill="#1f2933" text-anchor="start" font-weight="600" opacity="1.0">图 2　消融实验：残差连接是唯一会「全盘崩掉」的部件</text>
+<text x="24.0" y="50.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="11.5" fill="#6b7785" text-anchor="start" font-weight="400" opacity="1.0">柱高 = 各变体相对完整模型的 RMSE 变化百分比；论文完整模型 0.0150，复现 0.0211。</text>
+<line x1="84" y1="365.2" x2="896" y2="365.2" stroke="#e3e8ee" stroke-width="1"/>
+<text x="76.0" y="369.2" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">-20%</text>
+<line x1="84" y1="330.1" x2="896" y2="330.1" stroke="#b9c3ce" stroke-width="1.2"/>
+<text x="76.0" y="334.1" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">0</text>
+<line x1="84" y1="294.9" x2="896" y2="294.9" stroke="#e3e8ee" stroke-width="1"/>
+<text x="76.0" y="298.9" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">+20%</text>
+<line x1="84" y1="259.8" x2="896" y2="259.8" stroke="#e3e8ee" stroke-width="1"/>
+<text x="76.0" y="263.8" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">+40%</text>
+<line x1="84" y1="224.6" x2="896" y2="224.6" stroke="#e3e8ee" stroke-width="1"/>
+<text x="76.0" y="228.6" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">+60%</text>
+<line x1="84" y1="189.5" x2="896" y2="189.5" stroke="#e3e8ee" stroke-width="1"/>
+<text x="76.0" y="193.5" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">+80%</text>
+<line x1="84" y1="154.3" x2="896" y2="154.3" stroke="#e3e8ee" stroke-width="1"/>
+<text x="76.0" y="158.3" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">+100%</text>
+<line x1="84" y1="119.2" x2="896" y2="119.2" stroke="#e3e8ee" stroke-width="1"/>
+<text x="76.0" y="123.2" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">+120%</text>
+<line x1="84" y1="84.0" x2="896" y2="84.0" stroke="#e3e8ee" stroke-width="1"/>
+<text x="76.0" y="88.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="end" font-weight="400" opacity="1.0">+140%</text>
+<text transform="rotate(-90 22 229.0)" x="22.0" y="229.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">RMSE 变化（相对完整模型）</text>
+<rect x="106.8" y="99.3" width="26" height="230.8" rx="2" fill="#9aabc0"/>
+<text x="119.8" y="93.3" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#9aabc0" text-anchor="middle" font-weight="600" opacity="1.0">+131%</text>
+<rect x="136.8" y="179.8" width="26" height="150.2" rx="2" fill="#2f6fb3"/>
+<text x="149.8" y="173.8" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#2f6fb3" text-anchor="middle" font-weight="600" opacity="1.0">+85%</text>
+<text x="134.8" y="394.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">去残差</text>
+<text x="134.8" y="442.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#c0392b" text-anchor="middle" font-weight="600" opacity="1.0">唯一的灾难项</text>
+<rect x="208.2" y="325.3" width="26" height="4.7" rx="2" fill="#9aabc0"/>
+<text x="221.2" y="319.3" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">+3%</text>
+<rect x="238.2" y="225.9" width="26" height="104.1" rx="2" fill="#2f6fb3"/>
+<text x="251.2" y="219.9" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#2f6fb3" text-anchor="middle" font-weight="600" opacity="1.0">+59%</text>
+<text x="236.2" y="394.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">去动态图</text>
+<text x="236.2" y="408.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">（换静态图）</text>
+<rect x="309.8" y="323.0" width="26" height="7.0" rx="2" fill="#9aabc0"/>
+<text x="322.8" y="317.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">+4%</text>
+<rect x="339.8" y="262.3" width="26" height="67.8" rx="2" fill="#2f6fb3"/>
+<text x="352.8" y="256.3" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">+39%</text>
+<text x="337.8" y="394.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">换融合：交叉注意力</text>
+<rect x="411.2" y="316.0" width="26" height="14.1" rx="2" fill="#9aabc0"/>
+<text x="424.2" y="310.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">+8%</text>
+<rect x="441.2" y="303.6" width="26" height="26.5" rx="2" fill="#2f6fb3"/>
+<text x="454.2" y="297.6" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">+15%</text>
+<text x="439.2" y="394.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">换融合：相加</text>
+<rect x="512.8" y="320.7" width="26" height="9.3" rx="2" fill="#9aabc0"/>
+<text x="525.8" y="314.7" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">+5%</text>
+<rect x="542.8" y="330.1" width="26" height="17.0" rx="2" fill="#2f6fb3"/>
+<text x="555.8" y="360.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">-10%</text>
+<text x="540.8" y="394.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">换融合：拼接</text>
+<rect x="614.2" y="324.3" width="26" height="5.8" rx="2" fill="#9aabc0"/>
+<text x="627.2" y="318.3" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">+3%</text>
+<rect x="644.2" y="330.1" width="26" height="21.9" rx="2" fill="#2f6fb3"/>
+<text x="657.2" y="364.9" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">-12%</text>
+<text x="642.2" y="394.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">换融合：通道门控</text>
+<rect x="715.8" y="317.2" width="26" height="12.8" rx="2" fill="#9aabc0"/>
+<text x="728.8" y="311.2" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">+7%</text>
+<rect x="745.8" y="330.1" width="26" height="23.0" rx="2" fill="#2f6fb3"/>
+<text x="758.8" y="366.1" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">-13%</text>
+<text x="743.8" y="394.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">去掉图卷积</text>
+<rect x="817.2" y="320.7" width="26" height="9.3" rx="2" fill="#9aabc0"/>
+<text x="830.2" y="314.7" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#6b7785" text-anchor="middle" font-weight="400" opacity="1.0">+5%</text>
+<rect x="847.2" y="330.1" width="26" height="12.9" rx="2" fill="#2f6fb3"/>
+<text x="860.2" y="356.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">-7%</text>
+<text x="845.2" y="394.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="400" opacity="1.0">只留单编码器</text>
+<rect x="776" y="44" width="11" height="11" rx="2" fill="#9aabc0"/>
+<text x="792.0" y="54.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="start" font-weight="400" opacity="1.0">论文（Table V）</text>
+<rect x="776" y="62" width="11" height="11" rx="2" fill="#2f6fb3"/>
+<text x="792.0" y="72.0" font-family="Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif font-size="10.5" fill="#6b7785" text-anchor="start" font-weight="400" opacity="1.0">复现（本机重评）</text>
+</svg>

@@ -1,0 +1,73 @@
+<Slide style={{ width: 1280, height: 720, padding: 0, background: '#FFFFFF', position: 'relative' }}>
+        <Image src="assets/banner.jpg" style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 60, objectFit: 'cover' }} />
+    <Text style={{ position: 'absolute', top: 15, left: 60, width: 820, fontSize: 28, fontWeight: 'bold', color: '#FFFFFF', letterSpacing: 1 }}>关键公式：四步就是整篇论文</Text>
+    <Text style={{ position: 'absolute', top: 23, left: 900, width: 100, fontSize: 15, color: '#BBD9F2', textAlign: 'right' }}>02 · 所提方法</Text>
+    <Image src="assets/logo_bar.png" style={{ position: 'absolute', top: 8, left: 1010, width: 210, height: 44, objectFit: 'contain' }} />
+
+    <Box style={{ position: 'absolute', top: 74, left: 60, width: 1160, height: 614, flexDirection: 'column' }}>
+
+        <Box style={{ flexDirection: 'row', gap: 20, marginTop: 8 }}>
+
+            <Box style={{ width: 570, height: 252, padding: 18, background: '#F7F9FC', border: '1px solid #D8DEE7', flexDirection: 'column' }}>
+                <Box style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#1E5A9E', width: 28 }}>①</Text>
+                    <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#1A2230' }}>观测模型与估计目标</Text>
+                    <Box style={{ flex: 1 }} />
+                    <Text style={{ fontSize: 13, color: '#8B97A8' }}>式 (1)(2)</Text>
+                </Box>
+                <Image src="assets/eq01.png" style={{ width: 420, height: 77, marginTop: 8, marginLeft: 30 }} />
+                <Image src="assets/eq02.png" style={{ width: 420, height: 41, marginTop: 4, marginLeft: 30 }} />
+                <Text style={{ fontSize: 14, color: '#5A6675', lineHeight: 1.5, marginTop: 6 }}>
+                    接收功率是各发射机信道增益的功率叠加；要学的是三路输入到全图功率的映射 g。
+                </Text>
+            </Box>
+
+            <Box style={{ width: 570, height: 252, padding: 18, background: '#F7F9FC', border: '1px solid #D8DEE7', flexDirection: 'column' }}>
+                <Box style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#1E5A9E', width: 28 }}>②</Text>
+                    <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#1A2230' }}>逐级融合</Text>
+                    <Box style={{ flex: 1 }} />
+                    <Text style={{ fontSize: 13, color: '#8B97A8' }}>式 (3)</Text>
+                </Box>
+                <Image src="assets/eq03.png" style={{ width: 380, height: 48, marginTop: 26, marginLeft: 30 }} />
+                <Text style={{ fontSize: 14, color: '#5A6675', lineHeight: 1.5, marginTop: 26 }}>
+                    第 s 层的融合结果是观测特征与环境特征过 AFM 的产物——每个 stage 都融合一次，而不是只在输入端拼一次。
+                </Text>
+            </Box>
+        </Box>
+
+        <Box style={{ flexDirection: 'row', gap: 20, marginTop: 16 }}>
+
+            <Box style={{ width: 570, height: 252, padding: 18, background: '#F7F9FC', border: '1px solid #D8DEE7', flexDirection: 'column' }}>
+                <Box style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#1E5A9E', width: 28 }}>③</Text>
+                    <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#1A2230' }}>门控加权</Text>
+                    <Box style={{ flex: 1 }} />
+                    <Text style={{ fontSize: 13, color: '#8B97A8' }}>式 (4)</Text>
+                </Box>
+                <Image src="assets/eq04.png" style={{ width: 380, height: 45, marginTop: 26, marginLeft: 30 }} />
+                <Text style={{ fontSize: 14, color: '#5A6675', lineHeight: 1.5, marginTop: 28 }}>
+                    W 由环境特征经 3×3 卷积 + Softmax 得到，取值 0–1：<span style={{ fontWeight: 'bold', color: '#C0392B' }}>有观测处压低、盲区处抬高</span>环境先验的权重。
+                </Text>
+            </Box>
+
+            <Box style={{ width: 570, height: 252, padding: 18, background: '#F7F9FC', border: '1px solid #D8DEE7', flexDirection: 'column' }}>
+                <Box style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#1E5A9E', width: 28 }}>④</Text>
+                    <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#1A2230' }}>三项损失加权</Text>
+                    <Box style={{ flex: 1 }} />
+                    <Text style={{ fontSize: 13, color: '#8B97A8' }}>式 (10)(15)</Text>
+                </Box>
+                <Image src="assets/eq10.png" style={{ width: 400, height: 63, marginTop: 6, marginLeft: 30 }} />
+                <Image src="assets/eq15.png" style={{ width: 400, height: 36, marginTop: 8, marginLeft: 30 }} />
+                <Text style={{ fontSize: 14, color: '#5A6675', lineHeight: 1.5, marginTop: 8 }}>
+                    粗估、精化各一项 MSE，再加一项 MS-SSIM 约束结构；论文取 λ₁=0.1、λ₂=1、λ₃=1e−4。
+                </Text>
+            </Box>
+        </Box>
+
+        <Text style={{ fontSize: 13, color: '#8B97A8', marginTop: 14 }}>
+            公式均直接取自论文原文，编号与原文一致，方便对照；推导细节见原文 Section III–IV。
+        </Text>
+    </Box>
+</Slide>

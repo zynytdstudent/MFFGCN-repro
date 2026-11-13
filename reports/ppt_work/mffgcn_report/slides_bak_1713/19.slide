@@ -1,0 +1,80 @@
+<Slide style={{ width: 1280, height: 720, padding: 60, background: '#FFFFFF' }}>
+    <Box style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#123C6E' }}>极端稀疏：只剩两个方法还能用</Text>
+        <Text style={{ fontSize: 16, color: '#8B97A8' }}>04 · 实验结果</Text>
+    </Box>
+    <Box style={{ width: '100%', height: 1, background: '#123C6E', marginTop: 18 }} />
+
+    <Box style={{ flexDirection: 'row', marginTop: 24 }}>
+        <Box style={{ width: 640, flexDirection: 'column' }}>
+            <Table
+                style={{ width: '100%', height: 196 }}
+                defaultTextStyle={{ fontSize: 16, textAlign: 'center', color: '#1A2230' }}
+                defaultCellStyle={{ border: { bottom: { width: 1, color: '#E2E7EE' } } }}
+                cells={[
+                    [
+                        { text: '模型', textStyle: { bold: true, color: '#FFFFFF', textAlign: 'left' }, cellStyle: { background: { color: '#123C6E' } } },
+                        { text: 'S4 NMSE', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#123C6E' } } },
+                        { text: 'S4 RMSE', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#123C6E' } } },
+                        { text: 'S5 NMSE', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#123C6E' } } },
+                        { text: 'S5 RMSE', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#123C6E' } } },
+                    ],
+                    [{ text: 'RME-GAN', textStyle: { textAlign: 'left' } }, '0.0036', '0.0130', '0.0038', '0.0140'],
+                    [{ text: 'MFFGCN（本文）', textStyle: { textAlign: 'left', bold: true, color: '#C0392B' }, cellStyle: { background: { color: '#FBF3F2' } } },
+                     { text: '0.0023', textStyle: { bold: true, color: '#C0392B' }, cellStyle: { background: { color: '#FBF3F2' } } },
+                     { text: '0.0110', textStyle: { bold: true, color: '#C0392B' }, cellStyle: { background: { color: '#FBF3F2' } } },
+                     { text: '0.0024', textStyle: { bold: true, color: '#C0392B' }, cellStyle: { background: { color: '#FBF3F2' } } },
+                     { text: '0.0113', textStyle: { bold: true, color: '#C0392B' }, cellStyle: { background: { color: '#FBF3F2' } } }],
+                ]}
+            />
+            <Text style={{ fontSize: 14, color: '#8B97A8', marginTop: 10 }}>
+                表 IV　仅在 RME-GAN 的原始设置下比较，其余基线在该稀疏度下已失效。
+            </Text>
+
+            <Box style={{ flexDirection: 'row', gap: 24, marginTop: 24 }}>
+                <Box style={{ width: 300, flexDirection: 'column', borderTop: '3px solid #C0392B', paddingTop: 12 }}>
+                    <Text style={{ fontSize: 40, fontWeight: 'bold', color: '#C0392B', lineHeight: 1 }}>36.1%</Text>
+                    <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.5, marginTop: 8 }}>
+                        Setup 4 上 NMSE 相对 RME-GAN 的降幅。
+                    </Text>
+                </Box>
+                <Box style={{ width: 300, flexDirection: 'column', borderTop: '3px solid #C0392B', paddingTop: 12 }}>
+                    <Text style={{ fontSize: 40, fontWeight: 'bold', color: '#C0392B', lineHeight: 1 }}>36.8%</Text>
+                    <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.5, marginTop: 8 }}>
+                        Setup 5 上 NMSE 相对 RME-GAN 的降幅。
+                    </Text>
+                </Box>
+            </Box>
+        </Box>
+
+        <Box style={{ flex: 1, flexDirection: 'column', marginLeft: 52 }}>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1A2230' }}>两点值得追问</Text>
+
+            <Box style={{ flexDirection: 'row', marginTop: 16 }}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1E5A9E', width: 34 }}>①</Text>
+                <Box style={{ flexDirection: 'column', width: 428 }}>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230' }}>为什么数值比 S1 还低</Text>
+                    <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.5, marginTop: 6 }}>
+                        不是模型变强，而是禁区消失、采样率升到 1%–10%，可观测信息远多于 S1 的 0.5%，两列不可横比。
+                    </Text>
+                </Box>
+            </Box>
+
+            <Box style={{ flexDirection: 'row', marginTop: 22 }}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1E5A9E', width: 34 }}>②</Text>
+                <Box style={{ flexDirection: 'column', width: 428 }}>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230' }}>优势幅度出现跳变</Text>
+                    <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.5, marginTop: 6 }}>
+                        对 RME-GAN 的 NMSE 优势：S1 为 0%、S2 为 11.8%、S3 为 14.8%，这里突然跳到 36%。
+                    </Text>
+                </Box>
+            </Box>
+
+            <Box style={{ background: '#E8F0FA', borderLeft: '4px solid #123C6E', padding: '14px 18px', marginTop: 24 }}>
+                <Text style={{ fontSize: 16, color: '#1A2230', lineHeight: 1.55 }}>
+                    这一段是全文证据链最薄的地方：只有两行、两个方法，没有第三方复现支撑。
+                </Text>
+            </Box>
+        </Box>
+    </Box>
+</Slide>

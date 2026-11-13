@@ -1,0 +1,69 @@
+<Slide style={{ width: 1280, height: 720, padding: 0, background: '#FFFFFF', position: 'relative' }}>
+        <Image src="assets/banner.jpg" style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 60, objectFit: 'cover' }} />
+    <Text style={{ position: 'absolute', top: 15, left: 60, width: 820, fontSize: 28, fontWeight: 'bold', color: '#FFFFFF', letterSpacing: 1 }}>鲁棒性（一）：超参与禁区形状</Text>
+    <Text style={{ position: 'absolute', top: 23, left: 900, width: 100, fontSize: 15, color: '#BBD9F2', textAlign: 'right' }}>04 · 实验结果</Text>
+    <Image src="assets/logo_bar.png" style={{ position: 'absolute', top: 8, left: 1010, width: 210, height: 44, objectFit: 'contain' }} />
+
+    <Box style={{ position: 'absolute', top: 72, left: 60, width: 1160, height: 616, flexDirection: 'column' }}>
+
+        <Box style={{ flexDirection: 'row', marginTop: 12 }}>
+            <Box style={{ width: 272, flexDirection: 'column' }}>
+                <Image src="assets/fig13.png" style={{ width: 264, height: 389 }} />
+                <Text style={{ fontSize: 13, color: '#5A6675', lineHeight: 1.45, marginTop: 6 }}>
+                    图 13　迭代步数与邻居数的影响。
+                </Text>
+            </Box>
+
+            <Box style={{ width: 386, flexDirection: 'column', marginLeft: 40 }}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230' }}>迭代步数：3 步之后饱和</Text>
+                <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.55, marginTop: 6 }}>
+                    步数太少，邻居信息传播不到禁区；超过 3 步收益几乎为零。邻居数从 4 增到 16 有小幅改善。
+                </Text>
+
+                <Box style={{ height: 1, background: '#D8DEE7', marginTop: 16 }} />
+
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230', marginTop: 16 }}>禁区形状几乎无影响</Text>
+                <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.55, marginTop: 6 }}>
+                    用矩形训练，直接测试圆形与三角形禁区，误差几乎不变：
+                </Text>
+                <Box style={{ flexDirection: 'row', marginTop: 10, borderBottom: '1px solid #D8DEE7', paddingBottom: 6 }}>
+                    <Text style={{ fontSize: 15, color: '#8B97A8', width: 120 }}>禁区形状</Text>
+                    <Text style={{ fontSize: 15, color: '#8B97A8', width: 110 }}>S2 NMSE</Text>
+                    <Text style={{ fontSize: 15, color: '#8B97A8' }}>S3 NMSE</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', height: 32, alignItems: 'center', borderBottom: '1px solid #EEF1F5' }}>
+                    <Text style={{ fontSize: 16, color: '#1A2230', width: 120 }}>矩形</Text>
+                    <Text style={{ fontSize: 16, color: '#1A2230', width: 110 }}>0.0045</Text>
+                    <Text style={{ fontSize: 16, color: '#1A2230' }}>0.0046</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', height: 32, alignItems: 'center', borderBottom: '1px solid #EEF1F5' }}>
+                    <Text style={{ fontSize: 16, color: '#1A2230', width: 120 }}>圆形</Text>
+                    <Text style={{ fontSize: 16, color: '#1A2230', width: 110 }}>0.0046</Text>
+                    <Text style={{ fontSize: 16, color: '#1A2230' }}>0.0046</Text>
+                </Box>
+                <Box style={{ flexDirection: 'row', height: 32, alignItems: 'center', borderBottom: '1px solid #EEF1F5' }}>
+                    <Text style={{ fontSize: 16, color: '#1A2230', width: 120 }}>三角形</Text>
+                    <Text style={{ fontSize: 16, color: '#1A2230', width: 110 }}>0.0046</Text>
+                    <Text style={{ fontSize: 16, color: '#1A2230' }}>0.0047</Text>
+                </Box>
+            </Box>
+
+            <Box style={{ flex: 1, flexDirection: 'column', marginLeft: 40 }}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1A2230' }}>损失权重：一处需要对照原文</Text>
+                <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.55, marginTop: 6 }}>
+                    表 VII 中 λ₃ 固定为 1e−4 时，λ₁ = 0.5 给出 0.0043/0.0045/0.0046，与表 III 完全一致；而正文写的是 λ₁ = 0.1，对应 0.0048/0.0051/0.0053。
+                </Text>
+
+                <Box style={{ background: '#FBF3F2', borderLeft: '4px solid #C0392B', padding: '12px 16px', marginTop: 14 }}>
+                    <Text style={{ fontSize: 16, color: '#1A2230', lineHeight: 1.55 }}>
+                        两处对不上：实际训练用的应该是 λ₁ = 0.5，正文的 0.1 可能是笔误。复现时这里必须自己核一遍。
+                    </Text>
+                </Box>
+
+                <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.55, marginTop: 14 }}>
+                    λ₃ 太小则 MS-SSIM 不生效，地图出现非自然纹理；太大则保留局部伪影、细节变糊。1e−4 是折中点。
+                </Text>
+            </Box>
+        </Box>
+    </Box>
+</Slide>

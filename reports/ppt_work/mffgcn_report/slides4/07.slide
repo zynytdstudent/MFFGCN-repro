@@ -1,0 +1,61 @@
+<Slide style={{ width: 1280, height: 720, padding: 0, background: '#FFFFFF', position: 'relative' }}>
+        <Image src="assets/banner.jpg" style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 60, objectFit: 'cover' }} />
+    <Text style={{ position: 'absolute', top: 15, left: 60, width: 820, fontSize: 28, fontWeight: 'bold', color: '#FFFFFF', letterSpacing: 1 }}>整体架构与三个创新：一条主干，两次精化</Text>
+    <Text style={{ position: 'absolute', top: 23, left: 900, width: 100, fontSize: 15, color: '#BBD9F2', textAlign: 'right' }}>02 · 所提方法</Text>
+    <Image src="assets/logo_bar.png" style={{ position: 'absolute', top: 8, left: 1010, width: 210, height: 44, objectFit: 'contain' }} />
+
+    <Box style={{ position: 'absolute', top: 72, left: 60, width: 1160, height: 616, flexDirection: 'column' }}>
+
+        <Box style={{ flexDirection: 'row', justifyContent: 'center', width: '100%', marginTop: 4 }}>
+            <Image src="assets/fig02.png" style={{ width: 940, height: 370 }} />
+        </Box>
+
+        <Text style={{ fontSize: 13, color: '#5A6675', lineHeight: 1.5, marginTop: 6 }}>
+            图 2　左：多模态特征融合网络（双编码器 + AFM）输出粗估计；右：图卷积精化网络把粗估计切成 patch 建图，只输出残差，与粗估计相加得最终结果。
+        </Text>
+
+        <Box style={{ flexDirection: 'row', gap: 18, marginTop: 14 }}>
+            <Box style={{ width: 374, padding: '12px 16px', background: '#F7F9FC', border: '1px solid #D8DEE7', flexDirection: 'column' }}>
+                <Box style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Box style={{ width: 26, height: 26, background: '#123C6E', alignItems: 'center', justifyContent: 'center' }}>
+                        <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#FFFFFF' }}>1</Text>
+                    </Box>
+                    <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#1A2230', marginLeft: 10 }}>双编码器 + AFM</Text>
+                </Box>
+                <Text style={{ fontSize: 14, color: '#5A6675', lineHeight: 1.5, marginTop: 8 }}>
+                    观测与建筑图各走一路编码器，<span style={{ fontWeight: 'bold', color: '#C0392B' }}>每个 stage</span> 都用 AFM 加权融合，而不是输入端拼一次。
+                </Text>
+            </Box>
+
+            <Box style={{ width: 374, padding: '12px 16px', background: '#F7F9FC', border: '1px solid #D8DEE7', flexDirection: 'column' }}>
+                <Box style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Box style={{ width: 26, height: 26, background: '#123C6E', alignItems: 'center', justifyContent: 'center' }}>
+                        <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#FFFFFF' }}>2</Text>
+                    </Box>
+                    <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#1A2230', marginLeft: 10 }}>Patch 级动态 KNN 图</Text>
+                </Box>
+                <Text style={{ fontSize: 14, color: '#5A6675', lineHeight: 1.5, marginTop: 8 }}>
+                    粗图切块当节点、按特征相似度连边，<span style={{ fontWeight: 'bold', color: '#C0392B' }}>不受空间距离限制</span>，盲区才能借到远处的观测。
+                </Text>
+            </Box>
+
+            <Box style={{ width: 374, padding: '12px 16px', background: '#F7F9FC', border: '1px solid #D8DEE7', flexDirection: 'column' }}>
+                <Box style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Box style={{ width: 26, height: 26, background: '#123C6E', alignItems: 'center', justifyContent: 'center' }}>
+                        <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#FFFFFF' }}>3</Text>
+                    </Box>
+                    <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#1A2230', marginLeft: 10 }}>残差精修</Text>
+                </Box>
+                <Text style={{ fontSize: 14, color: '#5A6675', lineHeight: 1.5, marginTop: 8 }}>
+                    GCN 只学修正量，粗估 + 残差 = 最终图，<span style={{ fontWeight: 'bold', color: '#C0392B' }}>避开图操作破坏像素对齐</span>。
+                </Text>
+            </Box>
+        </Box>
+
+        <Box style={{ background: '#E8F0FA', borderLeft: '4px solid #123C6E', padding: '12px 20px', marginTop: 18 }}>
+            <Text style={{ fontSize: 17, color: '#1A2230', lineHeight: 1.5 }}>
+                分工很明确：左支路负责<span style={{ fontWeight: 'bold' }}>整体对</span>，右支路只学<span style={{ fontWeight: 'bold', color: '#C0392B' }}>差多少</span>，不重画整张图——这就是残差设计的意义。
+            </Text>
+        </Box>
+    </Box>
+</Slide>

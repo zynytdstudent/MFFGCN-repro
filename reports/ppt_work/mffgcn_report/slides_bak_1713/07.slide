@@ -1,0 +1,33 @@
+<Slide style={{ width: 1280, height: 720, padding: 60, background: '#FFFFFF' }}>
+    <Box style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#123C6E' }}>两条支路：先粗估，再精化</Text>
+        <Text style={{ fontSize: 16, color: '#8B97A8' }}>02 · 方法设计</Text>
+    </Box>
+    <Box style={{ width: '100%', height: 1, background: '#123C6E', marginTop: 18 }} />
+
+    <Box style={{ flexDirection: 'row', gap: 26, marginTop: 20 }}>
+        <Box style={{ padding: '6px 14px', background: '#123C6E' }}>
+            <Text style={{ fontSize: 16, color: '#FFFFFF' }}>① 双编码器融合 → 粗估计</Text>
+        </Box>
+        <Box style={{ padding: '6px 14px', background: '#E8F0FA' }}>
+            <Text style={{ fontSize: 16, color: '#123C6E' }}>② Patch 建图 → 动态图卷积 → 残差</Text>
+        </Box>
+        <Box style={{ padding: '6px 14px', background: '#E8F0FA' }}>
+            <Text style={{ fontSize: 16, color: '#123C6E' }}>③ 粗估计 + 残差 = 精化结果</Text>
+        </Box>
+    </Box>
+
+    <Box style={{ flexDirection: 'row', justifyContent: 'center', width: '100%', marginTop: 14 }}>
+        <Image src="assets/fig02.png" style={{ width: 980, height: 386 }} />
+    </Box>
+
+    <Text style={{ fontSize: 14, color: '#5A6675', lineHeight: 1.5, marginTop: 10 }}>
+        图 2　MFFGCN 总体结构。左：多模态特征融合网络，观测与建筑图分别编码、逐级经 AFM 融合；右：图卷积精化网络，粗估计切成 patch 建图、消息传递后还原为残差，与粗估计相加。
+    </Text>
+
+    <Box style={{ background: '#E8F0FA', borderLeft: '4px solid #123C6E', padding: '14px 22px', marginTop: 14 }}>
+        <Text style={{ fontSize: 18, color: '#1A2230', lineHeight: 1.5 }}>
+            分工很明确：左支路负责"整体对"，右支路只学"差多少"，不重画整张图。
+        </Text>
+    </Box>
+</Slide>

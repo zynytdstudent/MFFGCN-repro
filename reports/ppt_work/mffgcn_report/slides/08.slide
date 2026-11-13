@@ -1,0 +1,37 @@
+<Slide style={{ width: 1280, height: 720, padding: 0, background: '#FFFFFF', position: 'relative' }}>
+        <Image src="assets/banner.jpg" style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 60, objectFit: 'cover' }} />
+    <Text style={{ position: 'absolute', top: 15, left: 60, width: 820, fontSize: 28, fontWeight: 'bold', color: '#FFFFFF', letterSpacing: 1 }}>多模态融合网络：双编码器逐级融合</Text>
+    <Text style={{ position: 'absolute', top: 23, left: 900, width: 100, fontSize: 15, color: '#BBD9F2', textAlign: 'right' }}>02 · 方法设计</Text>
+    <Image src="assets/logo_bar.png" style={{ position: 'absolute', top: 8, left: 1010, width: 210, height: 44, objectFit: 'contain' }} />
+
+    <Box style={{ position: 'absolute', top: 72, left: 60, width: 1160, height: 616, flexDirection: 'column' }}>
+
+        <Box style={{ flexDirection: 'row', justifyContent: 'center', width: '100%', marginTop: 16 }}>
+            <Image src="assets/fig03.png" style={{ width: 880, height: 416 }} />
+        </Box>
+
+        <Text style={{ fontSize: 14, color: '#5A6675', lineHeight: 1.5, marginTop: 10 }}>
+            图 3　观测图与卫星环境图分别送入两条编码支路，每个 stage 用 AFM 把环境特征注入观测支路；解码器逐级上采样并跳连拼接，输出粗估计。
+        </Text>
+
+        <Box style={{ flexDirection: 'row', gap: 32, marginTop: 16 }}>
+            <Box style={{ width: 360, flexDirection: 'column' }}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#123C6E' }}>为什么不早期融合</Text>
+                <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.5, marginTop: 6 }}>
+                    拼接成 3 通道直接进 U-Net，禁区内没有观测可依，建筑特征会被大量零值稀释。
+                </Text>
+            </Box>
+            <Box style={{ width: 360, flexDirection: 'column' }}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#123C6E' }}>逐级融合的好处</Text>
+                <Text style={{ fontSize: 17, color: '#5A6675', lineHeight: 1.5, marginTop: 6 }}>
+                    浅层对齐纹理、深层对齐语义，每个尺度都有一次跨模态校正机会。
+                </Text>
+            </Box>
+            <Box style={{ flex: 1, flexDirection: 'column', background: '#E8F0FA', padding: '12px 18px' }}>
+                <Text style={{ fontSize: 17, color: '#1A2230', lineHeight: 1.5 }}>
+                    消融显示：双编码器比单编码器 NMSE 低 9–10%。
+                </Text>
+            </Box>
+        </Box>
+    </Box>
+</Slide>

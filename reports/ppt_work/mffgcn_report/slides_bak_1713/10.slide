@@ -1,0 +1,36 @@
+<Slide style={{ width: 1280, height: 720, padding: 60, background: '#FFFFFF' }}>
+    <Box style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#123C6E' }}>图精化：把粗估计切成 patch 建图</Text>
+        <Text style={{ fontSize: 16, color: '#8B97A8' }}>02 · 方法设计</Text>
+    </Box>
+    <Box style={{ width: '100%', height: 1, background: '#123C6E', marginTop: 18 }} />
+
+    <Box style={{ flexDirection: 'row', justifyContent: 'center', width: '100%', marginTop: 14 }}>
+        <Image src="assets/fig05.png" style={{ width: 830, height: 360 }} />
+    </Box>
+
+    <Text style={{ fontSize: 14, color: '#5A6675', lineHeight: 1.5, marginTop: 10 }}>
+        图 5　上图：粗估计切 patch、展平并加位置编码后 KNN 建边；下图：观测支路（Map，1 通道）与粗估计支路（Guide，81 通道）拼接后送入 GCN，再经转置卷积还原为图像。
+    </Text>
+
+    <Box style={{ flexDirection: 'row', gap: 24, marginTop: 14 }}>
+        <Box style={{ width: 372, flexDirection: 'column' }}>
+            <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#123C6E' }}>① 为什么是 patch 级</Text>
+            <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.45, marginTop: 4 }}>
+                16×16 切成 256 个节点；像素级建图复杂度是平方级，算不动。
+            </Text>
+        </Box>
+        <Box style={{ width: 372, flexDirection: 'column' }}>
+            <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#123C6E' }}>② 边按语义相似度连</Text>
+            <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.45, marginTop: 4 }}>
+                KNN 在特征空间找近邻，不按空间距离，因此能跨过禁区连边。
+            </Text>
+        </Box>
+        <Box style={{ width: 372, flexDirection: 'column' }}>
+            <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#123C6E' }}>③ 图是动态的</Text>
+            <Text style={{ fontSize: 16, color: '#5A6675', lineHeight: 1.45, marginTop: 4 }}>
+                每个输入单独建图；位置信息只用于建边，不进消息传递。
+            </Text>
+        </Box>
+    </Box>
+</Slide>

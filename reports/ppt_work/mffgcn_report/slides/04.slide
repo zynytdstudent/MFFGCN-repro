@@ -1,0 +1,56 @@
+<Slide style={{ width: 1280, height: 720, padding: 0, background: '#FFFFFF', position: 'relative' }}>
+        <Image src="assets/banner.jpg" style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 60, objectFit: 'cover' }} />
+    <Text style={{ position: 'absolute', top: 15, left: 60, width: 820, fontSize: 28, fontWeight: 'bold', color: '#FFFFFF', letterSpacing: 1 }}>观测受限是无线电地图落地的硬约束</Text>
+    <Text style={{ position: 'absolute', top: 23, left: 900, width: 100, fontSize: 15, color: '#BBD9F2', textAlign: 'right' }}>01 · 研究背景</Text>
+    <Image src="assets/logo_bar.png" style={{ position: 'absolute', top: 8, left: 1010, width: 210, height: 44, objectFit: 'contain' }} />
+
+    <Box style={{ position: 'absolute', top: 72, left: 60, width: 1160, height: 616, flexDirection: 'column' }}>
+
+        <Box style={{ flexDirection: 'row', marginTop: 22 }}>
+            <Box style={{ width: 480, flexDirection: 'column' }}>
+                <Image src="assets/fig01.png" style={{ width: 452, height: 364 }} />
+                <Text style={{ fontSize: 14, color: '#5A6675', lineHeight: 1.5, marginTop: 14 }}>
+                    图 1　(a) 理想条件：传感器可覆盖全图；(b) 存在观测受限区（深红块），该区域只能靠其余区域推断。
+                </Text>
+            </Box>
+
+            <Box style={{ flex: 1, flexDirection: 'column', marginLeft: 56 }}>
+                <Box style={{ flexDirection: 'row' }}>
+                    <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#123C6E', width: 40 }}>Ⅰ</Text>
+                    <Box style={{ flexDirection: 'column', width: 560 }}>
+                        <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1A2230' }}>观测天然稀疏</Text>
+                        <Text style={{ fontSize: 18, color: '#5A6675', lineHeight: 1.55, marginTop: 8 }}>
+                            每张 256×256 地图只有 10–300 个观测点，不足总像素的 0.5%，其余全为 0。
+                        </Text>
+                    </Box>
+                </Box>
+
+                <Box style={{ flexDirection: 'row', marginTop: 26 }}>
+                    <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#123C6E', width: 40 }}>Ⅱ</Text>
+                    <Box style={{ flexDirection: 'column', width: 560 }}>
+                        <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1A2230' }}>分布天然不均</Text>
+                        <Text style={{ fontSize: 18, color: '#5A6675', lineHeight: 1.55, marginTop: 8 }}>
+                            受建筑物理遮挡、政策与隐私限制，整块矩形区域无法布点，形成"观测真空带"。
+                        </Text>
+                    </Box>
+                </Box>
+
+                <Box style={{ flexDirection: 'row', marginTop: 26 }}>
+                    <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#123C6E', width: 40 }}>Ⅲ</Text>
+                    <Box style={{ flexDirection: 'column', width: 560 }}>
+                        <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1A2230' }}>早期融合在这里失效</Text>
+                        <Text style={{ fontSize: 18, color: '#5A6675', lineHeight: 1.55, marginTop: 8 }}>
+                            把稀疏观测与建筑图直接拼成输入，禁区内没有观测可依，模型只能凭建筑轮廓猜，遮挡细节丢失。
+                        </Text>
+                    </Box>
+                </Box>
+
+                <Box style={{ background: '#E8F0FA', borderLeft: '4px solid #123C6E', padding: '18px 22px', marginTop: 30 }}>
+                    <Text style={{ fontSize: 19, color: '#1A2230', lineHeight: 1.5 }}>
+                        核心问题：观测稀疏且分布不均匀时，如何仍恢复出建筑遮挡带来的细节纹理？
+                    </Text>
+                </Box>
+            </Box>
+        </Box>
+    </Box>
+</Slide>
